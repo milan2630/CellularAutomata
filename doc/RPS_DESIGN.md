@@ -11,7 +11,7 @@ Classes:
     * Class Purpose:
         * manages game play
         * makes the players 
-        * Makes theweapons from text file
+        * Makes the weapons from text file
         * tells the results after the play has happened
     * Private variables:
         * ``List<Player> activePlayers``
@@ -27,7 +27,9 @@ Classes:
             * Updates scores by calling ``.updateScore()`` on each player
             * Prints winner and game status by calling ``printPointStatus()`` on each Player in activePlayers
             * ``numRounds--;``
-        * call ``.makeMove()`` on each Player
+        * ``public void weaponFileUpdated(File weaponRules)``
+            * update defeats list in each of the weapons by calling ``Weapon.updateDefeats``
+            * update each player with the new weapon by calling ``Player.updateChoices()``
     * Collaborating classes:
         * Makes a list of Weapons
         * Makes a list of Players
@@ -51,6 +53,8 @@ Classes:
             * returns the player's Weapon
         * ``public void updateScore(int points)``
             * add points to score
+        * ``public void updateChoices(Weapon additionalWeapon)``
+            * add ``additionalWeapon`` to ``weaponChoices``
         * ``public void printPointStatus``
             * print ``playerName`` and ``score``
     * Collaborating classes:
@@ -69,5 +73,7 @@ Classes:
             * Initializes instance variables
         * ``public boolean thisBeats(Weapon otherWeapon)``
             * returns ``defeats.contains(otherWeapon)``
+        * ``public void updateDefeats(List<Weapon> newThisBeats)``
+            * update ``defeats`` if the weapons rules text file is changed
     * Collaborating classes:
         * Game calls ``thisBeats``
