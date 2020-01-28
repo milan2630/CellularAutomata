@@ -17,8 +17,7 @@ public class Visualizer extends Application {
      * @param startRoot the first board
      */
     public Visualizer(Group startRoot) {
-        root = startRoot;
-        myScene = new Scene(root);
+        myScene = new Scene(startRoot);
         myStage = new Stage();
         start(myStage);
     }
@@ -36,10 +35,10 @@ public class Visualizer extends Application {
 
     /**
      *  Given a new root, change the display
-     * @param root
+     * @param currentBoardGroup
      */
-    public void updateDisplay(Group root) { //this root comes from the board
-        myScene = new Scene(root); //create the new scene
+    public void updateDisplay(Group currentBoardGroup) { //this root comes from the board
+        myScene = new Scene(currentBoardGroup); //create the new scene
         start(myStage);
     }
 
