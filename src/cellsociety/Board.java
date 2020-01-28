@@ -13,6 +13,7 @@ public class Board {
     private double yPos;
     private double xPos;
     private double height;
+    private Group root;
 
     public Board(int num_Cells_width, int num_Cells_Height){
         for(int i=0; i<num_Cells_Height; i++){
@@ -27,6 +28,19 @@ public class Board {
         }
     }
     public Group boardView(){
+        root = new Group();
+        addCellsToRoot();
+        return root;
+        
+    }
+
+    private void addCellsToRoot(){
+        for(Cell[] cell_row : myCells){
+            for(Cell cell: cell_row){
+                root.getChildren().add(cell);
+
+            }
+        }
 
     }
 
