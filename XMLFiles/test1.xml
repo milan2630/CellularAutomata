@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <Simulation_Type>Fire</Simulation_Type>
+    <Title>Test</Title>
+    <Author>Milan</Author>
+    <Rules_Parameters></Rules_Parameters>
+    <Colors>
+        <State0>AZURE</State0>
+        <State1>YELLOW</State1>
+    </Colors>
+    <Grid_Config>
+        <Screen_Height>500</Screen_Height>
+        <Screen_Width>500</Screen_Width>
+        <Cells>
+            <Cell>
+                <Row>1</Row>
+                <Column>1</Column>
+                <State>0</State>
+            </Cell>
+        </Cells>
+    </Grid_Config>
+</Root>

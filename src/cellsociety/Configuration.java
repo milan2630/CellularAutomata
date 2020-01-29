@@ -1,5 +1,7 @@
 package cellsociety;
 
+import javafx.scene.paint.Color;
+
 import java.io.File;
 
 public class Configuration {
@@ -7,8 +9,8 @@ public class Configuration {
     File myXML;
     Rules myRules;
 
-    public Configuration(File inputfile){
-        myXML = inputfile;
+    public Configuration(String inputfileName){
+        myXML = new File(inputfileName);
         myRules = parseRules(myXML);
     }
 
@@ -22,10 +24,10 @@ public class Configuration {
 
     public Board getInitBoard(){
         Board myBoard = new Board(parseCellWidth(), parseCellHeight());
-        for(line in myXML){
+        /*for(line in myXML){
             Cell c = new Cell(parseState(), parseColor());
             myBoard.insertCell(c, parseRow(), parseCol());
-        }
+        }*/
 
     }
 
