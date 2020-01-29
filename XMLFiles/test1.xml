@@ -3,11 +3,15 @@
     <Simulation_Type>Fire</Simulation_Type>
     <Title>Test</Title>
     <Author>Milan</Author>
-    <Rules_Parameters></Rules_Parameters>
-    <Colors>
-        <State0>AZURE</State0>
-        <State1>YELLOW</State1>
-    </Colors>
+    <Rules_Info>
+        <Rules_Parameters>
+            <probCatch>.1</probCatch>
+        </Rules_Parameters>
+        <Colors>
+            <State0>AZURE</State0>
+            <State1>YELLOW</State1>
+        </Colors>
+    </Rules_Info>
     <Grid_Config>
         <Screen_Height>500</Screen_Height>
         <Screen_Width>500</Screen_Width>
