@@ -1,20 +1,52 @@
 package cellsociety;
 
 import javafx.scene.paint.Color;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 
 public class Configuration {
 
-    File myXML;
+    Element myXML;
     Rules myRules;
 
     public Configuration(String inputfileName){
-        myXML = new File(inputfileName);
-        myRules = parseRules(myXML);
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        Document document = null;
+        try {
+            document = builder.parse(new File(inputfileName));
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        document.getDocumentElement().normalize();
+
+        myXML = document.getDocumentElement();
+
+        //myRules = parseRules();
     }
 
-    private Rules parseRules(File myXML) {
+    private Rules parseRules() {
+        String simType = myXML.getElementsByTagName("Simulation_Type").item(0).getTextContent();
+        NodeList rulesNodes = myXML.getElementsByTagName("Rules_Info");
 
     }
 
