@@ -6,4 +6,5 @@ public class PredatorOrPrey extends Rules {
   void changeState(Cell cell) {
 
   }
+
 }
