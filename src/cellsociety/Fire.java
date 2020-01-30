@@ -42,6 +42,7 @@ public class Fire extends Rules {
     return Math.random()<=probCatch;
   }
 
+  @Override
   /**
    * gets the color for a cell that is created with a certain state
    * so that the board can be created
