@@ -2,6 +2,7 @@ package cellsociety;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import javafx.css.Rule;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
@@ -17,8 +18,10 @@ public class Board {
   private Group root;
   private double xPos = 0;
   private double yPos = 0;
+  private Rules myRules;
 
-  public Board(int num_Cells_width, int num_Cells_Height) {
+  public Board(int num_Cells_width, int num_Cells_Height, Rules rules) {
+    myRules=rules;
     for (int i = 0; i < num_Cells_Height; i++) {
       for (int j = 0; j < num_Cells_width; j++) {
         Cell myCell = new Cell(0, Color.BLUE);

@@ -8,7 +8,7 @@ public class Cell extends Rectangle {
 
   private int myState;
   private int turns_since_state_change;
-  private List<Cell> neighbors;
+  private List<Cell> myNeighbors;
   private Color myColor;
 
 
@@ -17,7 +17,8 @@ public class Cell extends Rectangle {
     super();
     myState = init_state;
     myColor = disp_color;
-    setFill(disp_color);
+    setFill(myColor);
+    myNeighbors= new ArrayList<Cell>();
     //setX(xPos);
     //setY(yPos);
   }
@@ -42,7 +43,7 @@ public class Cell extends Rectangle {
   }
 
   public void addNeighbor(Cell neighbor) {
-    neighbors.add(neighbor);
+    myNeighbors.add(neighbor);
   }
 
 
