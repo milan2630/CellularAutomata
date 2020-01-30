@@ -15,6 +15,7 @@ public class Simulation {
     myBoard = b;
     myRules = r;
     cycleNumber = 0;
+    myVisualizer = new Visualizer(myBoard.boardView());
   }
 
   /**
@@ -22,11 +23,9 @@ public class Simulation {
    * adds a number to the cycle count TODO THIS IS FOR DEBUGGING,
    * updates the visualizer
    */
-  public void step(){
+  public void nextCycle(){
     //myBoard.update
     cycleNumber++;
-    //so.. add a new void method to board that updates the states or is this done here? I think it should go into board
-    //that way the simulator is telling the board to update
     display();
   }
 
