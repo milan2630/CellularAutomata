@@ -35,6 +35,17 @@ public class Cell extends Rectangle {
 
   public int numberOfStateChanges(){
     return turns_since_state_change;
+<<<<<<< HEAD
+=======
+  }
+
+  public int getState(){
+    return myState;
+  }
+
+  public void addNeighbor(Cell neighbor) {
+    neighbors.add(neighbor);
+>>>>>>> d5cac44516ca2dd187923f1e04d5e3966dae4460
   }
 
   public int getState(){
