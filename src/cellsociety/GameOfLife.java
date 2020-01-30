@@ -1,10 +1,17 @@
 package cellsociety;
 
+import javafx.scene.paint.Color;
+
 public class GameOfLife extends Rules {
 
   @Override
   void changeState(Cell cell) {
-P
+
+  }
+
+  @Override
+  public Color getStateColor(int state) {
+    return null;
   }
 
 }
