@@ -37,7 +37,7 @@ public class Fire extends Rules {
   public void changeState(Cell cell) {
     int state = cell.getState();
 
-    if(state == tree && cell.neighborsWithGivenState(state)>0 && treeBurns()) {
+    if(state == tree && cell.neighborsWithGivenState(burning)>0 && treeBurns()) {
       cell.changeStateAndView(burning, stateColors[burning]);
     }
     if(state == burning){// && cell.numberOfStateChanges()>0){
