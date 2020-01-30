@@ -7,8 +7,4 @@ public class PredatorOrPrey extends Rules {
 
   }
 
-  @Override
-  void setStateColors() {
-
-  }
 }

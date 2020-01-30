@@ -7,8 +7,4 @@ public class GameOfLife extends Rules {
 P
   }
 
-  @Override
-  void setStateColors() {
-
-  }
 }

@@ -7,8 +7,4 @@ public class Segregation extends Rules {
 
   }
 
-  @Override
-  void setStateColors() {
-
-  }
 }
