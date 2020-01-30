@@ -26,7 +26,7 @@ public class Fire extends Rules {
     probCatch = Float.parseFloat(setupParameters.get("probCatch"));
   }
   @Override
-  void changeState(Cell cell) {
+  public void changeState(Cell cell) {
     int state = cell.getState();
     //TODO CHECK FOR NEIGHBOR IS BURNING
     if(state == tree && treeBurns()) {
@@ -42,6 +42,7 @@ public class Fire extends Rules {
     return Math.random()<=probCatch;
   }
 
+  @Override
   /**
    * gets the color for a cell that is created with a certain state
    * so that the board can be created
