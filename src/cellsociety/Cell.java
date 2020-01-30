@@ -53,6 +53,7 @@ public class Cell extends Rectangle {
     }
     return counter;
   }
+
   public int neighborsWithGivenState(int state) {
     int counter = 0;
     for (Cell neighbor : myNeighbors) {
@@ -61,5 +62,9 @@ public class Cell extends Rectangle {
       }
     }
     return counter;
+  }
+
+  public void setState(int state){
+    myState = state;
   }
 }
