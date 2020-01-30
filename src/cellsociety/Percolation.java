@@ -7,8 +7,4 @@ public class Percolation extends Rules {
 
   }
 
-  @Override
-  void setStateColors() {
-
-  }
 }
