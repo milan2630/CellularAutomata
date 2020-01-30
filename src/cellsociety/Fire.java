@@ -26,7 +26,7 @@ public class Fire extends Rules {
     probCatch = Float.parseFloat(setupParameters.get("probCatch"));
   }
   @Override
-  void changeState(Cell cell) {
+  public void changeState(Cell cell) {
     int state = cell.getState();
     //TODO CHECK FOR NEIGHBOR IS BURNING
 
