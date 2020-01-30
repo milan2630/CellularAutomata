@@ -6,9 +6,4 @@ public class PredatorOrPrey extends Rules {
   void changeState(Cell cell) {
 
   }
-
-  @Override
-  void setStateColors() {
-
-  }
 }

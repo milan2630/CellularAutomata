@@ -6,9 +6,5 @@ public class Percolation extends Rules {
   void changeState(Cell cell) {
 
   }
-
-  @Override
-  void setStateColors() {
-
-  }
+  
 }
