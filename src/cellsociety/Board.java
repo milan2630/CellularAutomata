@@ -90,4 +90,9 @@ public class Board {
       }
     }
   }
+
+  public void updateCell(int state, int row, int col){
+    myCells[col][row].setFill(myRules.getStateColor(state));
+    myCells[col][row].setState(state);
+  }
 }

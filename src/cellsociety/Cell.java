@@ -48,21 +48,23 @@ public class Cell extends Rectangle {
     int counter = 0;
     for (Cell neighbor : myNeighbors) {
       if (neighbor.getState() == myState) {
-<<<<<<< HEAD
-=======
         counter++;
       }
     }
     return counter;
   }
+
   public int neighborsWithGivenState(int state) {
     int counter = 0;
     for (Cell neighbor : myNeighbors) {
       if (neighbor.getState() == state) {
->>>>>>> b70b882672f2e18b745aba5995e7301144794b29
         counter++;
       }
     }
     return counter;
+  }
+
+  public void setState(int state){
+    myState = state;
   }
 }
