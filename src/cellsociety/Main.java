@@ -39,7 +39,7 @@ public class Main extends Application {
     private void step(double secondDelay) {
         if(u.getFilename() != null){
             config = new Configuration(u.getFilename());
-
+            System.out.println();
         }
 
     }
