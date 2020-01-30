@@ -32,11 +32,27 @@ public class Board {
     }
   }
 
+  // has to be changed to take into account the edges
   private void setCellPositionsandNeighbors(Cell cell, int col, int row) {
     cell.setX(xPos);
     cell.setY(yPos);
-    cell.addNeighbor(Arrays.asList(myCells[col][row+1], myCells[col][row-1], myCells[col+1][row], myCells[col-1][row]));
+    addNeighborstoCell(cell, col, row);
 
+  }
+
+  private void addNeighborstoCell(Cell cell, int col, int row) {
+    if (row + 1 <= num_rows) {
+      cell.addNeighbor(myCells[col][row + 1]);
+    }
+    if (row - 1 >= num_rows) {
+      cell.addNeighbor(myCells[col][row - 1]);
+    }
+    if (col + 1 <= num_cols) {
+      cell.addNeighbor(myCells[col + 1][row]);
+    }
+    if (col - 1 >= num_cols) {
+      cell.addNeighbor(myCells[col - 1][row]);
+    }
   }
 
   private void updateYPos() {
