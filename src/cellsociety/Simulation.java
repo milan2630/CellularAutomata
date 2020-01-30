@@ -3,17 +3,14 @@ package cellsociety;
 public class Simulation {
   private Board myBoard;
   private Visualizer myVisualizer;
-  private Rules myRules;
   private int cycleNumber;
 
   /**
    * constructor that takes in a starting board,
    * @param b incoming board
-   * @param r specific CA rules
    */
-  public Simulation(Board b, Rules r){
+  public Simulation(Board b){
     myBoard = b;
-    myRules = r;
     cycleNumber = 0;
     myVisualizer = new Visualizer(myBoard.boardView());
   }
