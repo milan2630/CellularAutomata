@@ -8,40 +8,49 @@ public class Cell extends Rectangle {
 
   private int myState;
   private int turns_since_state_change;
-  private List<Cell> neighbors;
+  private List<Cell> myNeighbors;
   private Color myColor;
-
 
 
   public Cell(int init_state, Color disp_color) {
     super();
     myState = init_state;
     myColor = disp_color;
-    setFill(disp_color);
+    setFill(myColor);
+    myNeighbors = new ArrayList<Cell>();
     //setX(xPos);
     //setY(yPos);
   }
 
   public void changeStateAndView(int state, Color viewColor) {
-    if(state == myState) {
+    if (state == myState) {
       turns_since_state_change++;
-    }
-    else {
-      turns_since_state_change=0;
+    } else {
+      turns_since_state_change = 0;
       myState = state;
-      myColor=viewColor;
+      myColor = viewColor;
     }
   }
 
-  public int numberOfStateChanges(){
+  public int numberOfStateChanges() {
     return turns_since_state_change;
   }
 
-  public int getState(){
+  public int getState() {
     return myState;
   }
 
   public void addNeighbor(Cell neighbor) {
-    neighbors.add(neighbor);
+    myNeighbors.add(neighbor);
+  }
+
+  public int numNeighborsOfSameState() {
+    int counter = 0;
+    for (Cell neighbor : myNeighbors) {
+      if (neighbor.getState() == myState) {
+        counter++;
+      }
+    }
+    return counter;
   }
 }
