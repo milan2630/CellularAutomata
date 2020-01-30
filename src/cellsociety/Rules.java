@@ -1,4 +1,8 @@
 package cellsociety;
 
-public class Rules {
+abstract class Rules {
+
+  abstract void changeState(Cell cell);
+  abstract void setStateColors();
+
 }
