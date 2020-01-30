@@ -25,11 +25,7 @@ public class Board {
         myCells[i][j] = myCell;
         height = myCell.getHeight();
         width = myCell.getWidth();
-<<<<<<< HEAD
-        setCellPositions(myCell, i, j);
-=======
         setCellPositionsandNeighbors(myCell, i, j);
->>>>>>> d5cac44516ca2dd187923f1e04d5e3966dae4460
         updateYPos();
       }
       updateXPos();

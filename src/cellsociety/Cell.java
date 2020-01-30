@@ -44,6 +44,6 @@ public class Cell extends Rectangle {
   public void addNeighbor(Cell neighbor) {
     neighbors.add(neighbor);
   }
-  
+
 
 }
