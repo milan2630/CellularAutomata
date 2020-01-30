@@ -14,8 +14,8 @@ public class Board {
   private double height;
   private double width;
   private Group root;
-  private double xPos =0;
-  private double yPos=0;
+  private double xPos = 0;
+  private double yPos = 0;
 
   public Board(int num_Cells_width, int num_Cells_Height) {
     for (int i = 0; i < num_Cells_Height; i++) {
@@ -23,7 +23,7 @@ public class Board {
         Cell myCell = new Cell(0, Color.BLUE);
         myCells[i][j] = myCell;
         height = myCell.getHeight();
-        width= myCell.getWidth();
+        width = myCell.getWidth();
         setCellPositions(myCell, i, j);
         updateYPos();
       }
@@ -45,9 +45,13 @@ public class Board {
   }
 
 
+  public void insertCell(Cell cell, int row, int col) {
+    myCells[col][row] = cell;
+  }
 
-  public void insertCell(Cell cell, int row, int col){
-    myCells[col][row]=cell;
+
+  // did not write yet
+  public void updateBoard() {
   }
 
   public Group boardView() {
@@ -61,10 +65,7 @@ public class Board {
     for (Cell[] cell_row : myCells) {
       for (Cell cell : cell_row) {
         root.getChildren().add(cell);
-
       }
     }
-
   }
-
 }
