@@ -1,6 +1,7 @@
 package cellsociety;
 
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
@@ -24,16 +25,18 @@ public class Board {
         myCells[i][j] = myCell;
         height = myCell.getHeight();
         width = myCell.getWidth();
-        setCellPositions(myCell, i, j);
+        setCellPositionsandNeighbors(myCell, i, j);
         updateYPos();
       }
       updateXPos();
     }
   }
 
-  private void setCellPositions(Cell cell, int col, int row) {
+  private void setCellPositionsandNeighbors(Cell cell, int col, int row) {
     cell.setX(xPos);
     cell.setY(yPos);
+    cell.addNeighbor(Arrays.asList(myCells[col][row+1], myCells[col][row-1], myCells[col+1][row], myCells[col-1][row]));
+
   }
 
   private void updateYPos() {
