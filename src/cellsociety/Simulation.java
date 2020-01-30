@@ -30,7 +30,7 @@ public class Simulation {
    * tell the visualizer to update the display to the new 'image' of the board
    */
   public void display(){
-    myVisualizer.updateDisplay(myBoard.boardView());
+    myVisualizer.updateDisplay();
   }
 
 }

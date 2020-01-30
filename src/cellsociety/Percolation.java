@@ -1,6 +1,5 @@
 package cellsociety;
 
-import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public class Percolation extends Rules {
@@ -44,6 +43,11 @@ public class Percolation extends Rules {
     }
   }
 
+  /**
+   * Return a color given a certain state, used for setting up the initial board
+   * @param state state to get the color of
+   * @return color associated with state
+   */
   @Override
   public Color getStateColor(int state) {
     return stateColors[state];
