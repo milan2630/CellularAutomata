@@ -31,6 +31,10 @@ public class UserInterface {
         return fileInput.getResult();
     }
 
+    public void createController(){
+        
+    }
+
 
 
 
