@@ -41,4 +41,8 @@ public class Cell extends Rectangle {
     return myState;
   }
 
+  public void addNeighbor(List<Cell> neighbor){
+    neighbors.addAll(neighbor);
+  }
+
 }
