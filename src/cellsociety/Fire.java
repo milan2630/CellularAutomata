@@ -15,6 +15,10 @@ public class Fire extends Rules {
   private  int empty;
   private float probCatch;
 
+  /**
+   * Initialize variables, get probability of a tree catching fire from setupParameters
+   * @param setupParameters
+   */
   public Fire(HashMap<String, String> setupParameters){
     burning = 2;
     tree = 1;
@@ -26,10 +30,14 @@ public class Fire extends Rules {
     probCatch = Float.parseFloat(setupParameters.get("probCatch"));
   }
   @Override
-  void changeState(Cell cell) {
+  /**
+   * Given a cell, change its state and color based on its current status & neighbor status
+   * @param cell cell to be updated
+   */
+  public void changeState(Cell cell) {
     int state = cell.getState();
-    //TODO CHECK FOR NEIGHBOR IS BURNING
-    if(state == tree && treeBurns()) {
+
+    if(state == tree && cell.neighborsWithGivenState(state)>0 && treeBurns()) {
       cell.changeStateAndView(burning, stateColors[burning]);
     }
     if(state == burning){// && cell.numberOfStateChanges()>0){
@@ -42,6 +50,7 @@ public class Fire extends Rules {
     return Math.random()<=probCatch;
   }
 
+  @Override
   /**
    * gets the color for a cell that is created with a certain state
    * so that the board can be created

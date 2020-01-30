@@ -18,8 +18,8 @@ import java.util.HashMap;
 
 public class Configuration {
 
-    Element myXML;
-    Rules myRules;
+    private Element myXML;
+    private Rules myRules;
 
     public Configuration(String inputfileName){
 
@@ -51,71 +51,78 @@ public class Configuration {
     private Rules parseRules(){
         String simType = myXML.getElementsByTagName("Simulation_Type").item(0).getTextContent();
         NodeList parametersNode = myXML.getElementsByTagName("Rules_Parameters").item(0).getChildNodes();
-        HashMap<String, String> parameters = new HashMap<>();
-        for(int i = 0; i < parametersNode.getLength(); i++){
-            Node n = parametersNode.item(i);
-            if(n.getNodeType() == Node.ELEMENT_NODE){
-                parameters.putIfAbsent(parametersNode.item(i).getNodeName(), parametersNode.item(i).getTextContent());
-            }
-        }
+        HashMap<String, String> parameters = getParameterVals(parametersNode);
+
         Object ret = new Object();
-        Class simClass = null;
+        Constructor rulesConstructor = getRulesConstructor(simType);
         try {
-            simClass = Class.forName("cellsociety."+simType);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Class[] parameterTypes = {HashMap.class};
-        Constructor constructor = null;
-        try {
-            constructor = simClass.getConstructor(parameterTypes);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        try {
-            assert constructor != null;
-            ret = constructor.newInstance(parameters);
+            assert rulesConstructor != null;
+            ret = rulesConstructor.newInstance(parameters);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return (Rules)ret;
     }
 
-    public Rules getInitRules(){
-        return myRules;
+    private Constructor getRulesConstructor(String simulationType){
+        Class simClass = null;
+        try {
+            simClass = Class.forName("cellsociety."+simulationType);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Class[] parameterTypes = {HashMap.class};
+        Constructor constructor = null;
+        try {
+            assert simClass != null;
+            constructor = simClass.getConstructor(parameterTypes);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return constructor;
     }
+
+    private HashMap<String, String> getParameterVals(NodeList pNode){
+        HashMap<String, String> parameterSet = new HashMap<>();
+        for(int i = 0; i < pNode.getLength(); i++){
+            Node n = pNode.item(i);
+            if(n.getNodeType() == Node.ELEMENT_NODE){
+                parameterSet.putIfAbsent(pNode.item(i).getNodeName(), pNode.item(i).getTextContent());
+            }
+        }
+        return parameterSet;
+    }
+
 
     public Board getInitBoard(){
-        Board myBoard = new Board(parseCellWidth(), parseCellHeight());
-        /*for(line in myXML){
-            Cell c = new Cell(parseState(), parseColor());
-            myBoard.insertCell(c, parseRow(), parseCol());
-        }*/
+        Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules);
+        NodeList cellList = myXML.getElementsByTagName("Cell");
+        for(int i = 0; i < cellList.getLength(); i++){
+            Element cellNode = (Element) cellList.item(i);
+            myBoard.updateCell(parseState(cellNode), parseRow(cellNode), parseCol(cellNode));
+        }
+        return myBoard;
 
     }
 
-    private int parseCol() {
-
+    private int parseCol(Element cell) {
+        return Integer.parseInt(cell.getElementsByTagName("Column").item(0).getTextContent());
     }
 
-    private int parseRow() {
-
+    private int parseRow(Element cell) {
+        return Integer.parseInt(cell.getElementsByTagName("Row").item(0).getTextContent());
     }
 
-    private Color parseColor() {
-
+    private int parseState(Element cell) {
+        return Integer.parseInt(cell.getElementsByTagName("State").item(0).getTextContent());
     }
 
-    private int parseState() {
-
+    private int parseBoardHeight() {
+        return Integer.parseInt(myXML.getElementsByTagName("Screen_Height").item(0).getTextContent());
     }
 
-    private int parseCellHeight() {
-
-    }
-
-    private int parseCellWidth() {
-
+    private int parseBoardWidth() {
+        return Integer.parseInt(myXML.getElementsByTagName("Screen_Width").item(0).getTextContent());
     }
 
 
