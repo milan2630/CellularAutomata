@@ -20,10 +20,13 @@ public class Board {
   private double yPos = 0;
   private Rules myRules;
 
-  public Board(int num_Cells_width, int num_Cells_Height, Rules rules) {
+  public Board(int num_Cells_Width, int num_Cells_Height, Rules rules) {
     myRules=rules;
+    myCells = new Cell[num_Cells_Height][num_Cells_Width];
+    num_rows = num_Cells_Height;
+    num_cols= num_Cells_Width;
     for (int i = 0; i < num_Cells_Height; i++) {
-      for (int j = 0; j < num_Cells_width; j++) {
+      for (int j = 0; j < num_Cells_Width; j++) {
         Cell myCell = new Cell(0, Color.BLUE);
         myCells[i][j] = myCell;
         height = myCell.getHeight();
