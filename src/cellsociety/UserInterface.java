@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -19,6 +20,8 @@ public class UserInterface {
 
     private Group UIroot;
     private Stage UIstage;
+
+    private int stepsPerSecond;
 
 
     public UserInterface(){
@@ -32,7 +35,9 @@ public class UserInterface {
     }
 
     public void createController(){
-        
+        HBox controls = new HBox();
+        Button stopButton = new Button();
+        Scene controllerScreen = new Scene(UIroot);
     }
 
 
