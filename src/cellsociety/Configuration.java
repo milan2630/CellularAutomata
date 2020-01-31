@@ -34,9 +34,7 @@ public class Configuration {
         Document document = null;
         try {
             document = builder.parse(new File(inputfileName));
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SAXException | IOException e) {
             e.printStackTrace();
         }
 
