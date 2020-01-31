@@ -38,7 +38,8 @@ public class UserInterface {
     public void createController(){
         HBox controls = new HBox();
         Button stopButton = new Button();
-        stopButton.setOnAction(e -> setStepsPerSecond(2));
+        stopButton.setOnAction(e -> setStepsPerSecond(0));
+        stopButton.setText("Stop");
         controls.getChildren().add(stopButton);
         UIroot.getChildren().add(controls);
         Scene controllerScreen = new Scene(UIroot, 500, 500);
