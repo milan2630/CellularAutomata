@@ -12,7 +12,7 @@ public class PredatorOrPrey extends Rules {
   private Color[] stateColors;
   private int water;
   private int fish;
-  private  int shark;
+  private int shark;
   private float probCatch;
 
   /**
@@ -27,8 +27,9 @@ public class PredatorOrPrey extends Rules {
     stateColors[shark] = SHARK_COLOR;
     stateColors[fish] = FISH_COLOR;
     stateColors[water] = WATER_COLOR;
-    probCatch = Float.parseFloat(setupParameters.get("probCatch"));
+    //probCatch = Float.parseFloat(setupParameters.get("probCatch"));
   }
+
   @Override
   /**
    * Given a cell, change its state and color based on its current status & neighbor status
@@ -36,24 +37,52 @@ public class PredatorOrPrey extends Rules {
    */
   public void changeState(Cell cell) {
     int state = cell.getState();
-    if (state == shark && cell.neighborsWithGivenState(fish)>0) {
-      List<Cell> fish_neighbors = cell.getNeighborOfState(fish);
-      int random = (int) (Math.random() * fish_neighbors.size());
-      Cell neighbor = fish_neighbors.get(random);
-      neighbor.changeStateAndView(water, stateColors[water]);
+    if (state == shark && cell.numNeighborsWithGivenState(fish)>0) {
+      sharkEatsFish(cell);
     }
-    else if (state == shark &&  0<cell.neighborsWithGivenState(water)){
-      List<Cell> water_neighbors = cell.getNeighborOfState(water);
-      int random = (int) (Math.random() * water_neighbors.size());
-      Cell neighbor = water_neighbors.get(random);
-      neighbor.changeStateAndView(shark, stateColors[shark]);
-      cell.changeStateAndView(water, stateColors[water]);
+    else if (state == shark && 0<cell.numNeighborsWithGivenState(water)){
+      mover(cell, shark);
+    }
+    else if (state == fish && cell.numNeighborsWithGivenState(shark)==0 && cell.numNeighborsWithGivenState(water)>0){
+      mover(cell, fish);
     }
   }
 
-  private boolean treeBurns(){
-    return Math.random()<=probCatch;
+  private void sharkEatsFish(Cell cell) {
+    List<Cell> fish_neighbors = cell.getNeighborsWithState(fish);
+    int random = getRandomIndex(fish_neighbors);
+    Cell fishEaten = fish_neighbors.get(random);
+    fishEaten.changeStateAndView(water, stateColors[water]);
+    moveOtherFish(fish_neighbors, fishEaten);
   }
+
+  private int getRandomIndex(List<Cell> given_state_neighbors) {
+    int random =1;
+    if(given_state_neighbors.size()!=1) {
+      random = (int) (Math.random() * given_state_neighbors.size());
+    }
+    return random;
+  }
+
+  private void moveOtherFish(List<Cell> fish_neighbors, Cell fishEaten) {
+    for (Cell fishNotEaten : fish_neighbors){
+      if (! fishNotEaten.equals(fishEaten)){
+        mover(fishNotEaten, fish);
+      }
+    }
+  }
+
+  private void mover(Cell cell, int state) {
+    List<Cell> water_neighbors = cell.getNeighborsWithState(water);
+    int random = getRandomIndex(water_neighbors);
+    Cell neighbor = water_neighbors.get(random);
+    neighbor.changeStateAndView(state, stateColors[state]);
+    cell.changeStateAndView(water, stateColors[water]);
+  }
+
+/*  private boolean treeBurns(){
+    return Math.random()<=probCatch;
+  }*/
 
   @Override
   /**
