@@ -36,9 +36,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /*u = new UserInterface();
+        u = new UserInterface();
         config = new Configuration(u.getFileName());
-        sim = new Simulation(config.getInitBoard());*/
+        sim = new Simulation(config.getInitBoard());
 
         framesPerSec = DEFAULT_FRAMES_PER_SECOND;
         millisecondDelay = 1000.0/framesPerSec;
