@@ -41,21 +41,13 @@ public class PredatorOrPrey extends Rules {
       int random = (int) (Math.random() * fish_neighbors.size());
       Cell neighbor = fish_neighbors.get(random);
       neighbor.changeStateAndView(water, stateColors[water]);
-
     }
-
-
-
-
-    }
-    if (state==fish && cell.neighborsWithGivenState())
-
-    if(state == tree && cell.neighborsWithGivenState(burning)>0 && treeBurns()) {
-      cell.changeStateAndView(burning, stateColors[burning]);
-    }
-    if(state == burning){// && cell.numberOfStateChanges()>0){
-      //aka it has been more than one round, change it
-      cell.changeStateAndView(empty, stateColors[empty]);
+    else if (state == shark &&  0<cell.neighborsWithGivenState(water)){
+      List<Cell> water_neighbors = cell.getNeighborOfState(water);
+      int random = (int) (Math.random() * water_neighbors.size());
+      Cell neighbor = water_neighbors.get(random);
+      neighbor.changeStateAndView(shark, stateColors[shark]);
+      cell.changeStateAndView(water, stateColors[water]);
     }
   }
 
