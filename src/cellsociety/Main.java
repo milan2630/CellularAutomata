@@ -37,12 +37,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         u = new UserInterface();
-        config = new Configuration(u.getFileName());
-        sim = new Simulation(config.getInitBoard());
+        /*config = new Configuration(u.getFileName());
+        sim = new Simulation(config.getInitBoard());*/
+        u.createController();
 
         framesPerSec = DEFAULT_FRAMES_PER_SECOND;
         millisecondDelay = 1000.0/framesPerSec;
-
 
         KeyFrame frame = new KeyFrame(Duration.millis(millisecondDelay), e -> step());
         animation = new Timeline();
@@ -56,9 +56,9 @@ public class Main extends Application {
 
     private void step() {
         //sim.nextCycle();
-        if(x == 6) {
-
-
+        if(u.getStepsPerSecond() != framesPerSec){
+            setFramesPerSec(u.getStepsPerSecond());
+            resetKeyFrame();
         }
         Date d = new Date();
         System.out.println(d.getTime());
@@ -72,7 +72,8 @@ public class Main extends Application {
 
     private void resetKeyFrame(){
         KeyFrame newFrame = new KeyFrame(Duration.millis(millisecondDelay), e -> step());
-        animation.getKeyFrames().removeAll();
+        animation.getKeyFrames().remove(0);
+        animation.stop();
         animation.getKeyFrames().add(newFrame);
         animation.play();
     }

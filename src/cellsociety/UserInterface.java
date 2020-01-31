@@ -27,6 +27,7 @@ public class UserInterface {
     public UserInterface(){
         UIroot = new Group();
         UIstage = new Stage();
+        stepsPerSecond = Main.DEFAULT_FRAMES_PER_SECOND;
     }
 
     public String getFileName(){
@@ -37,10 +38,21 @@ public class UserInterface {
     public void createController(){
         HBox controls = new HBox();
         Button stopButton = new Button();
-        Scene controllerScreen = new Scene(UIroot);
+        stopButton.setOnAction(e -> setStepsPerSecond(2));
+        controls.getChildren().add(stopButton);
+        UIroot.getChildren().add(controls);
+        Scene controllerScreen = new Scene(UIroot, 500, 500);
+        UIstage.setScene(controllerScreen);
+        UIstage.show();
     }
 
+    private void setStepsPerSecond(int sps){
+        stepsPerSecond = sps;
+    }
 
+    public int getStepsPerSecond(){
+        return stepsPerSecond;
+    }
 
 
 
