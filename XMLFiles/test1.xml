@@ -24,7 +24,7 @@
             <Cell>
                 <Row>0</Row>
                 <Column>1</Column>
-                <State>0</State>
+                <State>1</State>
             </Cell>
             <Cell>
                 <Row>0</Row>
@@ -39,27 +39,27 @@
             <Cell>
                 <Row>1</Row>
                 <Column>1</Column>
-                <State>2</State>
+                <State>1</State>
             </Cell>
             <Cell>
                 <Row>1</Row>
                 <Column>2</Column>
-                <State>0</State>
+                <State>1</State>
             </Cell>
             <Cell>
                 <Row>2</Row>
                 <Column>0</Column>
-                <State>2</State>
+                <State>1</State>
             </Cell>
             <Cell>
                 <Row>2</Row>
                 <Column>1</Column>
-                <State>0</State>
+                <State>1</State>
             </Cell>
             <Cell>
                 <Row>2</Row>
                 <Column>2</Column>
-                <State>0</State>
+                <State>1</State>
             </Cell>
         </Cells>
     </Grid_Config>
