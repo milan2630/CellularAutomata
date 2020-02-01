@@ -1,42 +1,44 @@
 package cellsociety;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import javafx.css.Rule;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
 public class Board implements Cloneable{
-
   private Cell[][] myCells;
-  private int num_rows;
-  private int num_cols;
+  private int myRows;
+  private int myCols;
   private double cellHeight;
   private double cellWidth;
   private Group root;
-
   private Rules myRules;
 
-
-  public Board(int num_Cells_Width, int num_Cells_Height, Rules rules) {
+  /**
+   * constructor to create a board
+   * takes in the number of columns, rows, and the rules
+   * @param numCols number of columns on the board
+   * @param numRows number of rows on the board
+   * @param rules rules of the simulation
+   **/
+  public Board(int numCols, int numRows, Rules rules) {
     root = new Group();
     myRules=rules;
-    myCells = new Cell[num_Cells_Height][num_Cells_Width];
-    num_rows = num_Cells_Height;
-    num_cols= num_Cells_Width;
-    cellWidth = getIndividualWidth(num_Cells_Width);
-    cellHeight = getIndividualHeight(num_Cells_Height);
+    myCells = new Cell[numRows][numCols];
+    myRows = numRows;
+    myCols = numCols;
+    cellWidth = getIndividualWidth(numCols);
+    cellHeight = getIndividualHeight(numRows);
 
-    for (int i = 0; i < num_Cells_Height; i++) {
-      for (int j = 0; j < num_Cells_Width; j++) {
+    for (int row = 0; row < myRows; row++) {
+      for (int col = 0; col < myCols; col++) {
         Cell myCell = new Cell(0, Color.BLUE, cellWidth, cellHeight);
-        myCells[i][j] = myCell;
-        setCellPosition(myCell, i, j);
+        myCells[row][col] = myCell;
+        setCellPosition(myCell, row, col);
       }
     }
     addNeighborstoCells();
     addCellsToRoot();
   }
+
   public Object clone() throws CloneNotSupportedException{return super.clone();}
 
   private double getIndividualHeight(int numCellsInCol) {
@@ -55,20 +57,20 @@ public class Board implements Cloneable{
   }
 
   private void addNeighborstoCells() {
-    for (int i = 0; i < num_cols; i++) {
-      for (int j = 0; j < num_rows; j++) {
-        Cell cell = myCells[i][j];
-        if (j + 1 < num_rows) {
-          cell.addNeighbor(myCells[i][j + 1]);
+    for (int col = 0; col < myCols; col++) {
+      for (int row = 0; row < myRows; row++) {
+        Cell cell = myCells[row][col];
+        if (row + 1 < myRows) {
+          cell.addNeighbor(myCells[row+1][col]);
         }
-        if (j > 0) {
-          cell.addNeighbor(myCells[i][j - 1]);
+        if (row > 0) {
+          cell.addNeighbor(myCells[row-1][col]);
         }
-        if (i + 1 < num_cols) {
-          cell.addNeighbor(myCells[i + 1][j]);
+        if (col + 1 < myCols) {
+          cell.addNeighbor(myCells[row][col+1]);
         }
-        if (i > 0) {
-          cell.addNeighbor(myCells[i - 1][j]);
+        if (col> 0) {
+          cell.addNeighbor(myCells[row][col-1]);
         }
       }
     }
@@ -91,8 +93,8 @@ public class Board implements Cloneable{
       this.updateCell(2,0,0);
       System.out.println("Copy: "+copy.myCells[0][0].getState());
       System.out.println("This: "+this.myCells[0][0].getState());
-      for(int row = 0; row<this.num_rows; row++){
-        for(int col = 0; col < this.num_cols; col++){
+      for(int row = 0; row<this.myRows; row++){
+        for(int col = 0; col < this.myCols; col++){
           System.out.println("row: "+row+" col: "+col);
           myRules.changeState(this.myCells[row][col], copy.myCells[row][col]);
         }
@@ -103,7 +105,9 @@ public class Board implements Cloneable{
     }
 
   }
-
+  /**
+   * @return group to set the scene/ stage
+   */
   public Group boardView() {
     return root;
   }
@@ -115,7 +119,12 @@ public class Board implements Cloneable{
       }
     }
   }
-
+  /**
+   * fills the cells with the appropriate colors and sets the state of the cell
+   * @param state state of cell
+   * @param row row position of cell
+   * @param col column position of cell
+   */
   public void updateCell(int state, int row, int col){
     myCells[col][row].setFill(myRules.getStateColor(state));
     myCells[col][row].setState(state);
