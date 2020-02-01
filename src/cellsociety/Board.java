@@ -5,12 +5,14 @@ import javafx.scene.paint.Color;
 
 public class Board implements Cloneable{
   private Cell[][] myCells;
+  private Cell[][] cloneCells;
   private int myRows;
   private int myCols;
   private double cellHeight;
   private double cellWidth;
   private Group root;
   private Rules myRules;
+  private boolean buildingInitialBoard;
 
   /**
    * constructor to create a board
@@ -23,23 +25,35 @@ public class Board implements Cloneable{
     root = new Group();
     myRules=rules;
     myCells = new Cell[numRows][numCols];
+    cloneCells = new Cell[numRows][numCols];
     myRows = numRows;
     myCols = numCols;
     cellWidth = getIndividualWidth(numCols);
     cellHeight = getIndividualHeight(numRows);
-
-    for (int row = 0; row < myRows; row++) {
-      for (int col = 0; col < myCols; col++) {
-        Cell myCell = new Cell(0, Color.BLUE, cellWidth, cellHeight);
-        myCells[row][col] = myCell;
-        setCellPosition(myCell, row, col);
-      }
-    }
-    addNeighborstoCells();
+    buildingInitialBoard = true;
+    buildBoard(myCells);
+    buildingInitialBoard = false;
     addCellsToRoot();
   }
 
   public Object clone() throws CloneNotSupportedException{return super.clone();}
+
+  private void buildBoard(Cell[][] cells){
+    for (int row = 0; row < myRows; row++) {
+      for (int col = 0; col < myCols; col++) {
+        Cell myCell;
+        if(buildingInitialBoard){
+          myCell = new Cell(0, Color.BLUE, cellWidth, cellHeight);
+        } else{
+          Cell cellToCopyFrom = myCells[row][col];
+          myCell = new Cell(cellToCopyFrom.getState());
+        }
+        cells[row][col] = myCell;
+        setCellPosition(myCell, row, col);
+      }
+    }
+    addNeighborsToCells(cells);
+  }
 
   private double getIndividualHeight(int numCellsInCol) {
     return (1.0 * Visualizer.CA_HEIGHT) / numCellsInCol;
@@ -56,55 +70,50 @@ public class Board implements Cloneable{
     cell.setStroke(Color.WHITE);
   }
 
-  private void addNeighborstoCells() {
+  private void addNeighborsToCells(Cell[][] cells) {
     for (int col = 0; col < myCols; col++) {
       for (int row = 0; row < myRows; row++) {
-        Cell cell = myCells[row][col];
+        Cell cell = cells[row][col];
         if (row + 1 < myRows) {
-          cell.addNeighbor(myCells[row+1][col]);
+          cell.addNeighbor(cells[row+1][col]);
         }
         if (row > 0) {
-          cell.addNeighbor(myCells[row-1][col]);
+          cell.addNeighbor(cells[row-1][col]);
         }
         if (col + 1 < myCols) {
-          cell.addNeighbor(myCells[row][col+1]);
+          cell.addNeighbor(cells[row][col+1]);
         }
         if (col> 0) {
-          cell.addNeighbor(myCells[row][col-1]);
+          cell.addNeighbor(cells[row][col-1]);
         }
       }
     }
   }
-
-
 
   public void insertCell(Cell cell, int row, int col) {
     myCells[row][col] = cell;
   }
 
+  /**
+   * make a copy of the board, with a copy of all of the neighbors of each cell
+   */
+  public void cloneNeighbors(){
+    buildBoard(cloneCells);
+    addNeighborsToCells(cloneCells);
+  }
 
   /**
-   * cycles through each cell in board and updates it
+   * cycles through each cell in board and updates it based on a 'clone' of the board
+   * so that it has an accurate representation of neighbors
    */
-  public void updateBoard() {
-    Board copy = null;
-    try {
-      copy = (Board) this.clone();
-      this.updateCell(2,0,0);
-      System.out.println("Copy: "+copy.myCells[0][0].getState());
-      System.out.println("This: "+this.myCells[0][0].getState());
-      for(int row = 0; row<this.myRows; row++){
-        for(int col = 0; col < this.myCols; col++){
-          System.out.println("row: "+row+" col: "+col);
-          myRules.changeState(this.myCells[row][col], copy.myCells[row][col]);
-        }
+  public void updateBoard(){
+    for(int row = 0; row < myRows; row++){
+      for(int col = 0; col < myCols; col++){
+        myRules.changeState(myCells[row][col], cloneCells[row][col]);
       }
-
-    } catch (CloneNotSupportedException e) {
-      e.printStackTrace();
     }
-
   }
+
   /**
    * @return group to set the scene/ stage
    */
@@ -119,6 +128,7 @@ public class Board implements Cloneable{
       }
     }
   }
+
   /**
    * fills the cells with the appropriate colors and sets the state of the cell
    * @param state state of cell

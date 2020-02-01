@@ -28,6 +28,15 @@ public class Cell extends Rectangle {
   }
 
   /**
+   * constuctor to create a cell where state information is important, but nothing else
+   * used specifically for clone cells
+   * @param initState state to set the cell to
+   */
+  public Cell(int initState){
+    this(initState, null, 0, 0); //TODO CHANGE THESE LATER?
+  }
+
+  /**
    * changes the state and color of the cell
    * increments or resets turnsSinceStateChange
    * takes in the number of columns, rows, and the rules
@@ -55,6 +64,10 @@ public class Cell extends Rectangle {
     return myState;
   }
 
+  /**
+   * Add a neighbor to a cell
+   * @param neighbor cell to be added as a neighbor
+   */
   public void addNeighbor(Cell neighbor) {
     myNeighbors.add(neighbor);
   }
