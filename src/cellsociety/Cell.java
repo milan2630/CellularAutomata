@@ -7,33 +7,50 @@ import javafx.scene.shape.Rectangle;
 public class Cell extends Rectangle {
 
   private int myState;
-  private int turns_since_state_change;
+  private int turnsSinceStateChange;
   private List<Cell> myNeighbors;
   private int myMoves;
 
-
-  public Cell(int init_state, Color disp_color, double cellWidth, double cellHeight) {
+  /**
+   * constructor to create a cell
+   * takes in the number of columns, rows, and the rules
+   * @param initState initial state of the cell
+   * @param disp_color color displayed for the associated state
+   * @param cellWidth width of the cell
+   * @param cellHeight height of the cell
+   **/
+  public Cell(int initState, Color disp_color, double cellWidth, double cellHeight) {
     super(cellWidth, cellHeight);
-    myState = init_state;
+    myState = initState;
     setFill(disp_color);
     myNeighbors = new ArrayList<Cell>();
     myMoves=0;
   }
 
+  /**
+   * changes the state and color of the cell
+   * increments or resets turnsSinceStateChange
+   * takes in the number of columns, rows, and the rules
+   * @param state state that the cell is changing to
+   * @param viewColor color that the cell is changing to
+   **/
   public void changeStateAndView(int state, Color viewColor) {
     if (state == myState) {
-      turns_since_state_change++;
+      turnsSinceStateChange++;
     } else {
-      turns_since_state_change = 0;
+      turnsSinceStateChange = 0;
       myState = state;
       this.setFill(viewColor);
     }
   }
 
   public int numberOfStateChanges() {
-    return turns_since_state_change;
+    return turnsSinceStateChange;
   }
 
+  /**
+   * @return the state of the cell
+   **/
   public int getState() {
     return myState;
   }
@@ -42,20 +59,31 @@ public class Cell extends Rectangle {
     myNeighbors.add(neighbor);
   }
 
+  /**
+   * @return a list of the neighbors of the cell
+   **/
   public List<Cell> getNeighbors(){
     return myNeighbors;
   }
 
+  /**
+   * creates a list of neighbor cells that have a given state
+   * @param state the state that is wanted in the neighbors
+   * @return the list of neighbors with the desired state
+   **/
   public List<Cell> getNeighborsWithState(int state){
-      List<Cell> state_neighbors = new ArrayList<Cell>();
+      List<Cell> stateNeighbors = new ArrayList<Cell>();
       for(Cell neighbor : myNeighbors){
-        if (neighbor.getState() == myState) {
-          state_neighbors.add(neighbor);
+        if (neighbor.getState() == state) {
+          stateNeighbors.add(neighbor);
         }
       }
-    return state_neighbors;
+    return stateNeighbors;
   }
 
+  /**
+   * @return the number of neighbors that have the same state as the cell
+   **/
   public int numNeighborsOfSameState() {
     int counter = 0;
     for (Cell neighbor : myNeighbors) {
@@ -66,6 +94,11 @@ public class Cell extends Rectangle {
     return counter;
   }
 
+  /**
+   * creates a counter to keep track of the number of neighbors that have a given state
+   * @param state the state that is wanted in the neighbors
+   * @return the number of neighbors with the desired state
+   **/
   public int numNeighborsWithGivenState(int state) {
     int counter = 0;
     for (Cell neighbor : myNeighbors) {
@@ -76,16 +109,26 @@ public class Cell extends Rectangle {
     return counter;
   }
 
+  /**
+   * sets the state of the cell to a given state
+   * @param state state that the cell is being set to
+   **/
   public void setState(int state){
     myState = state;
   }
 
+  /**
+   * @return the number of moves that the cell has gone through
+   **/
   public int getMoves(){
     return myMoves;
   }
 
+  /**
+   * sets the number of moves completed to a given integer
+   * @param moves the number of moves that the cell has gone through
+   **/
   public void setMoves(int moves){
     myMoves = moves;
-
   }
 }

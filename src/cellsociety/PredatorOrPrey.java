@@ -13,9 +13,9 @@ public class PredatorOrPrey extends Rules {
   private int water;
   private int fish;
   private int shark;
-  private float fish_breed;
-  private float shark_breed;
-  private float shark_die;
+  private float fishBreed;
+  private float sharkBreed;
+  private float sharkDie;
 
   /**
    * Initialize variables, get probability of a tree catching fire from setupParameters
@@ -29,9 +29,9 @@ public class PredatorOrPrey extends Rules {
     stateColors[shark] = SHARK_COLOR;
     stateColors[fish] = FISH_COLOR;
     stateColors[water] = WATER_COLOR;
-    fish_breed = Float.parseFloat(setupParameters.get("fish_breed"));
-    shark_breed = Float.parseFloat(setupParameters.get("shark_breed"));
-    shark_die = Float.parseFloat(setupParameters.get("shark_die"));
+    fishBreed = Float.parseFloat(setupParameters.get("fishBreed"));
+    sharkBreed = Float.parseFloat(setupParameters.get("sharkBreed"));
+    sharkDie = Float.parseFloat(setupParameters.get("sharkDie"));
   }
 //change the state and put that cell in the previous cells spot
 

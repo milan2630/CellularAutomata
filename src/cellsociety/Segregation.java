@@ -59,7 +59,7 @@ public class  Segregation extends Rules {
    * gets the color for a cell that is created with a certain state
    * so that the board can be created
    * @param state
-   * @return color of the state, or if it's not a valid state white
+   * @return color of the state, or if it's not a valid state black
    */
   public Color getStateColor(int state){
     if(state >=0 && state <=3)
