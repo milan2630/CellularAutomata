@@ -131,8 +131,8 @@ public class Board implements Cloneable{
    * @param col column position of cell
    */
   public void updateCell(int state, int row, int col){
-    myCells[col][row].setFill(myRules.getStateColor(state));
-    myCells[col][row].setState(state);
+    myCells[row][col].setFill(myRules.getStateColor(state));
+    myCells[row][col].setState(state);
   }
 }
 
