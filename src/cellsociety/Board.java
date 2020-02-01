@@ -79,7 +79,7 @@ public class Board implements Cloneable{
 
 
   public void insertCell(Cell cell, int row, int col) {
-    myCells[col][row] = cell;
+    myCells[row][col] = cell;
   }
 
 
