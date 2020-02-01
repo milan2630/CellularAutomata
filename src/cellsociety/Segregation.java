@@ -1,6 +1,8 @@
 package cellsociety;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javafx.scene.paint.Color;
 
 public class  Segregation extends Rules {
@@ -37,19 +39,23 @@ public class  Segregation extends Rules {
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    if(cell.numNeighborsOfSameState() < (percentSatisfied*cell.getNeighbors().size())) {
+    if(cloneCell.numNeighborsOfSameState() < (percentSatisfied*cell.getNeighbors().size())) {
       cell.changeStateAndView(empty, stateColors[empty]);
-      findAndMoveToEmptyCell(cell);
+      findAndMoveToEmptyCell(cell, cloneCell);
     }
   }
 
-  private void findAndMoveToEmptyCell(Cell cell) {
-    for (Cell neighbor : cell.getNeighbors()) {
-      if (neighbor.getState() == empty) {
-        neighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-        return;
-      } else {
-        findAndMoveToEmptyCell(neighbor);
+  private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell) {
+    for (int i=0; i< cell.getNeighbors().size(); i++){
+      List<Cell> cloneNeighborsList = cloneCell.getNeighbors();
+      List<Cell> cellNeighborsList = cell.getNeighbors();
+      Cell cloneNeighbor = cloneNeighborsList.get(i);
+      Cell cellNeighbor = cellNeighborsList.get(i);
+      if (cloneNeighbor.getState()==empty){
+        cellNeighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
+      }
+      else {
+      findAndMoveToEmptyCell(cellNeighbor, cloneNeighbor);
       }
     }
   }
