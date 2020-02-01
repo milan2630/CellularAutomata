@@ -31,8 +31,7 @@ public class Simulation {
       myBoard = b;
       cycleNumber = 0;
       myVisualizer = new Visualizer();
-      myVisualizer.sendRoot(b.boardView());
-      myVisualizer.start(new Stage());
+      myVisualizer.begin(b.boardView(), new Stage());
       setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
       animation = new Timeline();
       KeyFrame newFrame = new KeyFrame(Duration.millis(millisecondDelay), e -> step());
@@ -57,7 +56,6 @@ public class Simulation {
 
   public void step() {
       nextCycle();
-
       Date d = new Date();
       System.out.println(d.getTime());
   }
@@ -69,6 +67,7 @@ public class Simulation {
    */
   private void nextCycle(){
       myBoard.updateBoard();
+      myVisualizer.updateDisplay(myBoard.boardView());
       cycleNumber++;
       //display();
   }

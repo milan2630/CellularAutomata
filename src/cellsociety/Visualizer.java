@@ -1,17 +1,10 @@
 package cellsociety;
 
-import java.util.HashMap;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
@@ -22,6 +15,7 @@ public class Visualizer extends Application {
     public static final Color BACKGROUND = Color.LAVENDERBLUSH; //TODO THIS CAN BE CHANGED LATER
     public static final double GAP = 190;
     private Group root;
+    private Group board;
     private Scene myScene;
     private GridPane grid;
 
@@ -66,8 +60,15 @@ public class Visualizer extends Application {
      */
 
     public void begin(Group boardRoot, Stage stage){
-        root = boardRoot;
+        root.getChildren().add(boardRoot);
+        board = boardRoot;
         start(stage);
+    }
+
+    public void updateDisplay(Group boardRoot){
+        root.getChildren().remove(board);
+        root.getChildren().add(boardRoot);
+        board = boardRoot;
     }
 
     public static void main(String[] args) {
