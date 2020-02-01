@@ -35,7 +35,7 @@ public class  Segregation extends Rules {
    * Given a cell, change its state and color based on its current status & neighbor status
    * @param cell cell to be updated
    */
-  public void changeState(Cell cell) {
+  public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
     if(cell.numNeighborsOfSameState() < (percentSatisfied*cell.getNeighbors().size())) {
       cell.changeStateAndView(empty, stateColors[empty]);

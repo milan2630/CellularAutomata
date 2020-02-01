@@ -46,7 +46,7 @@ public class Visualizer extends Application {
         //test.updateBoard();
         //root.getChildren().add(test.boardView());
         grid.getChildren().addAll(root);
-
+        //grid.setOnMouseMoved((MouseEvent));
 
 
         primaryStage.setScene(myScene);

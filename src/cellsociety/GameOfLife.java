@@ -28,7 +28,7 @@ public class GameOfLife extends Rules {
    * Given a cell, change its state and color based on its current status & neighbor status
    * @param cell cell to be updated
    */
-  public void changeState(Cell cell) {
+  public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
     if (state==dead && cell.numNeighborsWithGivenState(alive)==3){
       cell.changeStateAndView(alive, stateColors[alive]);

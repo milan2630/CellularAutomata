@@ -66,8 +66,10 @@ public class Simulation {
    * updates the visualizer
    */
   private void nextCycle(){
-      myBoard.updateBoard();
-      myVisualizer.updateDisplay(myBoard.boardView());
+    System.out.println(" ");
+    System.out.println(' ');
+    myBoard.updateBoard();
+      //myVisualizer.updateDisplay(myBoard.boardView());
       cycleNumber++;
       //display();
   }
