@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -15,10 +16,10 @@ import javafx.stage.Stage;
 
 public class Visualizer extends Application {
 
-    public static final int CA_WIDTH = 400; //TODO THIS CAN BE CHANGED LATER
-    public static final int CA_HEIGHT = 400;
-    public static final Color BACKGROUND = Color.RED; //TODO THIS CAN BE CHANGED LATER
-    public static final double GAP = 8;
+    public static final int CA_WIDTH = 1000; //TODO THIS CAN BE CHANGED LATER
+    public static final int CA_HEIGHT = 1000;
+    public static final Color BACKGROUND = Color.LAVENDERBLUSH; //TODO THIS CAN BE CHANGED LATER
+    public static final double GAP = 190;
     private Group root;
     private Scene myScene;
     private GridPane grid;
@@ -43,6 +44,9 @@ public class Visualizer extends Application {
     @Override
     public void start(Stage primaryStage){
         // set intro text
+        Percolation perc = new Percolation();
+        Board test = new Board(5,5, perc);
+        root.getChildren().add(test.boardView());
         grid.getChildren().addAll(root);
         primaryStage.setScene(myScene);
         primaryStage.show();
@@ -63,13 +67,14 @@ public class Visualizer extends Application {
 
     public static void main(String[] args) {
 
-        Group t = new Group();
-        Percolation perc = new Percolation();
-        Board b = new Board(20,20, perc);
-        t.getChildren().add(b.boardView());
+        //Group t = new Group();
+        //Percolation perc = new Percolation();
+       // Board b = new Board(20,20, perc);
+        //.setConstrants
+        //t.getChildren().add(b.boardView());
 
-        Visualizer v = new Visualizer();
-        v.sendRoot(t);
+        //Visualizer v = new Visualizer();
+       // v.sendRoot(t);
 
         launch(args);
     }
