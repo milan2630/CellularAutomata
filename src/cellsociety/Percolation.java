@@ -34,14 +34,17 @@ public class Percolation extends Rules {
    *  empty -> filled if filled neighbors
    *  blocked -> blocked/open depending on response to piazza post
    * @param cell
+   * @param cloneCell
    */
   @Override
-  void changeState(Cell cell) {
+  void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    //
-    if(state == empty && cell.numNeighborsWithGivenState(filled)>0){
+    System.out.println("Current state: "+state);
+    System.out.println("num neighbors filled: "+cloneCell.numNeighborsWithGivenState(filled));
+    if(state == empty && cloneCell.numNeighborsWithGivenState(filled)>0){
       cell.changeStateAndView(filled, stateColors[filled]);
     }
+    System.out.println("New state: " + cell.getState());
   }
 
   /**
