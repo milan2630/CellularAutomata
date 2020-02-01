@@ -36,8 +36,6 @@ public class Board implements Cloneable{
     addCellsToRoot();
   }
 
-  public Object clone() throws CloneNotSupportedException{return super.clone();}
-
   private void buildBoard(Cell[][] cells){
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
@@ -88,10 +86,6 @@ public class Board implements Cloneable{
         }
       }
     }
-  }
-
-  public void insertCell(Cell cell, int row, int col) {
-    myCells[row][col] = cell;
   }
 
   /**
