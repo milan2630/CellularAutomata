@@ -1,8 +1,6 @@
 package cellsociety;
 
-
-
-
+import java.io.File;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +24,7 @@ public class UserInterface extends Application {
     public void start(Stage primaryStage) {
         UIroot = new Group();
         UIstage = new Stage();
-
+        
         Configuration config = new Configuration(getFileName());
         mySim = config.getInitSim();
         createController();
@@ -77,7 +75,7 @@ public class UserInterface extends Application {
             submitButton.setDefaultButton(true);
             submitButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent t) {
-                    if(isValidFile()) {
+                    if(isValidFile(textField.getText())) {
                         dialog.close();
                     }
                     else{
@@ -105,8 +103,10 @@ public class UserInterface extends Application {
             return;
         }
 
-        private boolean isValidFile() {
-            return true;
+        private boolean isValidFile(String filename) {
+            File caFile = new File(filename);
+            System.out.println("Ask for a valid file!");
+            return caFile.exists();
         }
 
         private String getResult() {
