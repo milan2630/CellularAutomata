@@ -16,6 +16,7 @@ public class PredatorOrPrey extends Rules {
   private float fishBreed;
   private float sharkBreed;
   private float sharkDie;
+  private static int eatAndSwimMoves = 11;
 
   /**
    * Initialize variables, get probability of a tree catching fire from setupParameters
@@ -53,7 +54,7 @@ public class PredatorOrPrey extends Rules {
       mover(cell, cloneCell);
     }
     if (state == shark && numMovesSinceEaten(cell)>=sharkDie){
-      cell.changeStateAndView(water, stateColors[water]);
+      organismGone(cell);
     }
     if ((state == fish && numMoves(cell)%fishBreed==0)){
       findWaterCellAndCreateOrganism(cell, cloneCell);
@@ -64,20 +65,32 @@ public class PredatorOrPrey extends Rules {
     }
   }
 
-  private void sharkEatsFish(Cell cell, Cell cloneCell) {
-    List<Cell> fish_neighbors = cloneCell.getNeighborsWithState(fish);
-    int random = getRandomIndex(fish_neighbors);
-    Cell fishEaten = cell.getNeighbors().get(random);
-    fishEaten.changeStateAndView(water, stateColors[water]);
-    //cell.setMoves(cell.getMoves() +10);
-    cell.setMoves(numMoves(cell));
-    moveOtherFish(cell, cloneCell, fishEaten);
+  private void organismGone(Cell cell) {
+    cell.changeStateAndView(water, stateColors[water]);
   }
 
-  private int getRandomIndex(List<Cell> given_state_neighbors) {
+  private void sharkEatsFish(Cell cell, Cell cloneCell) {
+    List<Cell> cloneFishNeighbors = cloneCell.getNeighborsWithState(fish);
+    List<Cell> fishNeighbors = cloneCell.getNeighbors();
+    int random = getRandomIndex(cloneFishNeighbors);
+    Cell cloneNeighbor = cloneFishNeighbors.get(random);
+    Cell fishEaten = null;
+    for (int wantedNeighbor=0; wantedNeighbor< fishNeighbors.size(); wantedNeighbor++) {
+      if (fishNeighbors.get(wantedNeighbor).equals(cloneNeighbor)) {
+        fishEaten = fishNeighbors.get(wantedNeighbor);
+      }
+    }
+    if(fishEaten!=null){
+      organismGone(fishEaten);
+      cell.setMoves(numMoves(cell));
+      moveOtherFish(cell, cloneCell, fishEaten);
+    }
+  }
+
+  private int getRandomIndex(List<Cell> givenStateNeighbors) {
     int random =1;
-    if(given_state_neighbors.size()!=1) {
-      random = (int) (Math.random() * given_state_neighbors.size());
+    if(givenStateNeighbors.size()!=1) {
+      random = (int) (Math.random() * givenStateNeighbors.size());
     }
     return random;
   }
@@ -88,24 +101,33 @@ public class PredatorOrPrey extends Rules {
     for (int movingFish = 0; movingFish < fishNeighbors.size(); movingFish++) {
       Cell fishNotEaten = fishNeighbors.get(movingFish);
       Cell cloneFishNotEaten = null;
-      for (int wantFish=0; wantFish< cloneFishNeighbors.size(); wantFish++){
-        if (cloneFishNeighbors.get(wantFish).equals(fishNotEaten)){
-          cloneFishNotEaten = cloneFishNeighbors.get(wantFish);
+      for (int wantedFish=0; wantedFish< cloneFishNeighbors.size(); wantedFish++){
+        if (cloneFishNeighbors.get(wantedFish).equals(fishNotEaten)){
+          cloneFishNotEaten = cloneFishNeighbors.get(wantedFish);
         }
       }
-      if (!fishNotEaten.equals(fishEaten)) {
+      if (cloneFishNotEaten!= null && !fishNotEaten.equals(fishEaten)) {
         mover(fishNotEaten, cloneFishNotEaten);
       }
     }
   }
 
   private void mover(Cell cell, Cell cloneCell) {
-    List<Cell> water_neighbors = cloneCell.getNeighborsWithState(water);
-    int random = getRandomIndex(water_neighbors);
-    Cell neighbor = cell.getNeighbors().get(random);
-    neighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-    neighbor.setMoves(neighbor.getMoves()+11);
-    cell.changeStateAndView(water, stateColors[water]);
+    List<Cell> cloneWaterNeighbors = cloneCell.getNeighborsWithState(water);
+    List<Cell> neighbors = cell.getNeighbors();
+    int random = getRandomIndex(cloneWaterNeighbors);
+    Cell cloneNeighbor = cloneWaterNeighbors.get(random);
+    Cell neighbor = null;
+    for (int wantedNeighbor=0; wantedNeighbor< neighbors.size(); wantedNeighbor++) {
+      if (neighbors.get(wantedNeighbor).equals(cloneNeighbor)) {
+        neighbor = neighbors.get(wantedNeighbor);
+      }
+    }
+    if(neighbor!= null) {
+      neighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
+      neighbor.setMoves(neighbor.getMoves() + eatAndSwimMoves);
+      organismGone(cell);
+    }
   }
 
   private int numMovesSinceEaten(Cell cell){
@@ -117,9 +139,9 @@ public class PredatorOrPrey extends Rules {
 
 
   private void findWaterCellAndCreateOrganism(Cell cell, Cell cloneCell) {
-    for (int i=0; i< cell.getNeighbors().size(); i++){
-      List<Cell> cloneNeighborsList = cloneCell.getNeighbors();
-      List<Cell> cellNeighborsList = cell.getNeighbors();
+    List<Cell> cloneNeighborsList = cloneCell.getNeighbors();
+    List<Cell> cellNeighborsList = cell.getNeighbors();
+    for (int i=0; i< cellNeighborsList.size(); i++){
       Cell cloneNeighbor = cloneNeighborsList.get(i);
       Cell cellNeighbor = cellNeighborsList.get(i);
       if (cloneNeighbor.getState()==water) {
