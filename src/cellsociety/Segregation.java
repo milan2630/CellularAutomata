@@ -37,7 +37,6 @@ public class  Segregation extends Rules {
    */
   public void changeState(Cell cell) {
     int state = cell.getState();
-
     if(cell.numNeighborsOfSameState() < (percentSatisfied*cell.getNeighbors().size())) {
       cell.changeStateAndView(empty, stateColors[empty]);
       findAndMoveToEmptyCell(cell);

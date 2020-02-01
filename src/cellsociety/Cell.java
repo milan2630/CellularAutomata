@@ -10,6 +10,7 @@ public class Cell extends Rectangle {
   private int turns_since_state_change;
   private List<Cell> myNeighbors;
   private Color myColor;
+  private int myMoves;
 
 
   public Cell(int init_state, Color disp_color) {
@@ -80,5 +81,9 @@ public class Cell extends Rectangle {
 
   public void setState(int state){
     myState = state;
+  }
+
+  public void setMoves(int moves){
+
   }
 }
