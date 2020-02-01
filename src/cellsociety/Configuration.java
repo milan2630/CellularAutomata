@@ -91,8 +91,11 @@ public class Configuration {
         return parameterSet;
     }
 
+    public Simulation getInitSim(){
+        return new Simulation(getInitBoard());
+    }
 
-    public Board getInitBoard(){
+    private Board getInitBoard(){
         Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules);
         NodeList cellList = myXML.getElementsByTagName("Cell");
         for(int i = 0; i < cellList.getLength(); i++){

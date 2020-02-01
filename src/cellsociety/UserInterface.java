@@ -3,6 +3,7 @@ package cellsociety;
 
 
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -16,29 +17,36 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class UserInterface {
+public class UserInterface extends Application {
+
+    public static final int DEFAULT_FRAMES_PER_SECOND = 1;
 
     private Group UIroot;
     private Stage UIstage;
 
     private int stepsPerSecond;
+    private Simulation mySim;
 
 
-    public UserInterface(){
+    @Override
+    public void start(Stage primaryStage) {
         UIroot = new Group();
         UIstage = new Stage();
-        stepsPerSecond = Main.DEFAULT_FRAMES_PER_SECOND;
+        stepsPerSecond = DEFAULT_FRAMES_PER_SECOND;
+        Configuration config = new Configuration(getFileName());
+        mySim = config.getInitSim();
+        createController();
     }
 
-    public String getFileName(){
+    private String getFileName(){
         FileTextPrompt fileInput = new FileTextPrompt();
         return fileInput.getResult();
     }
 
-    public void createController(){
+    private void createController(){
         HBox controls = new HBox();
         Button stopButton = new Button();
-        stopButton.setOnAction(e -> setStepsPerSecond(0));
+        stopButton.setOnAction(e -> mySim.resetKeyFrame(0));
         stopButton.setText("Stop");
         controls.getChildren().add(stopButton);
         UIroot.getChildren().add(controls);
