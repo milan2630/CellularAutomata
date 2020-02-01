@@ -30,6 +30,7 @@ public class PredatorOrPrey extends Rules {
     //probCatch = Float.parseFloat(setupParameters.get("probCatch"));
   }
 //change the state and put that cell in the previous cells spot
+
   @Override
   /**
    * Given a cell, change its state and color based on its current status & neighbor status
@@ -52,6 +53,7 @@ public class PredatorOrPrey extends Rules {
     List<Cell> fish_neighbors = cell.getNeighborsWithState(fish);
     int random = getRandomIndex(fish_neighbors);
     Cell fishEaten = fish_neighbors.get(random);
+
     fishEaten.changeStateAndView(water, stateColors[water]);
     moveOtherFish(fish_neighbors, fishEaten);
   }
