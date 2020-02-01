@@ -86,10 +86,6 @@ public class PredatorOrPrey extends Rules {
     cell.changeStateAndView(water, stateColors[water]);
   }
 
-/*  private boolean treeBurns(){
-    return Math.random()<=probCatch;
-  }*/
-
   @Override
   /**
    * gets the color for a cell that is created with a certain state
