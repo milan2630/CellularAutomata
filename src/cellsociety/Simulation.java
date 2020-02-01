@@ -9,7 +9,7 @@ import javafx.util.Duration;
 
 import java.util.Date;
 
-public class Simulation extends Application {
+public class Simulation {
   public static final int DEFAULT_FRAMES_PER_SECOND = 1;
   public static final double MILLIS_PER_SECOND = 1000.0;
 
@@ -32,6 +32,7 @@ public class Simulation extends Application {
       cycleNumber = 0;
       myVisualizer = new Visualizer(myBoard.boardView());
       setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
+      animation = new Timeline();
       KeyFrame newFrame = new KeyFrame(Duration.millis(millisecondDelay), e -> step());
       animation.setCycleCount(Animation.INDEFINITE);
       animation.getKeyFrames().add(newFrame);
@@ -77,8 +78,5 @@ public class Simulation extends Application {
     myVisualizer.updateDisplay();
   }
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
 
-  }
 }

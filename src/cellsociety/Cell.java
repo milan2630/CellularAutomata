@@ -19,6 +19,7 @@ public class Cell extends Rectangle {
     myColor = disp_color;
     setFill(myColor);
     myNeighbors = new ArrayList<Cell>();
+    myMoves=0;
     //setX(xPos);
     //setY(yPos);
   }
@@ -83,7 +84,12 @@ public class Cell extends Rectangle {
     myState = state;
   }
 
+  public int getMoves(){
+    return myMoves;
+  }
+
   public void setMoves(int moves){
+    myMoves = moves;
 
   }
 }

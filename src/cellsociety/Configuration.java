@@ -39,6 +39,7 @@ public class Configuration {
         }
 
 
+        assert document != null;
         document.getDocumentElement().normalize();
 
         myXML = document.getDocumentElement();
