@@ -32,8 +32,6 @@ public class PredatorOrPrey extends Rules {
     fish_breed = Float.parseFloat(setupParameters.get("fish_breed"));
     shark_breed = Float.parseFloat(setupParameters.get("shark_breed"));
     shark_die = Float.parseFloat(setupParameters.get("shark_die"));
-
-
   }
 //change the state and put that cell in the previous cells spot
 
@@ -60,6 +58,7 @@ public class PredatorOrPrey extends Rules {
     int random = getRandomIndex(fish_neighbors);
     Cell fishEaten = fish_neighbors.get(random);
     fishEaten.changeStateAndView(water, stateColors[water]);
+    fishEaten.setMoves(fishEaten.getMoves() +1);
     moveOtherFish(fish_neighbors, fishEaten);
   }
 
