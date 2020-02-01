@@ -62,6 +62,15 @@ public class  Segregation extends Rules {
 
   @Override
   /**
+   * Does this CA simulation count the corners as neighbors?
+   * @return true; in Segregation, it does
+   */
+  public boolean areCornersNeighbors(){
+    return true;
+  }
+
+  @Override
+  /**
    * gets the color for a cell that is created with a certain state
    * so that the board can be created
    * @param state
