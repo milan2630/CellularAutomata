@@ -47,16 +47,16 @@ public class Board {
   }
 
   private void addNeighborstoCell(Cell cell, int col, int row) {
-    if (row + 1 <= num_rows) {
+    if (row + 1 < num_rows) {
       cell.addNeighbor(myCells[col][row + 1]);
     }
-    if (row - 1 >= num_rows) {
+    if (row - 1 > num_rows) {
       cell.addNeighbor(myCells[col][row - 1]);
     }
-    if (col + 1 <= num_cols) {
+    if (col + 1 < num_cols) {
       cell.addNeighbor(myCells[col + 1][row]);
     }
-    if (col - 1 >= num_cols) {
+    if (col - 1 > num_cols) {
       cell.addNeighbor(myCells[col - 1][row]);
     }
   }

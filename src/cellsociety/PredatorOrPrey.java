@@ -13,7 +13,9 @@ public class PredatorOrPrey extends Rules {
   private int water;
   private int fish;
   private int shark;
-  private float probCatch;
+  private float fish_breed;
+  private float shark_breed;
+  private float shark_die;
 
   /**
    * Initialize variables, get probability of a tree catching fire from setupParameters
@@ -27,7 +29,11 @@ public class PredatorOrPrey extends Rules {
     stateColors[shark] = SHARK_COLOR;
     stateColors[fish] = FISH_COLOR;
     stateColors[water] = WATER_COLOR;
-    //probCatch = Float.parseFloat(setupParameters.get("probCatch"));
+    fish_breed = Float.parseFloat(setupParameters.get("fish_breed"));
+    shark_breed = Float.parseFloat(setupParameters.get("shark_breed"));
+    shark_die = Float.parseFloat(setupParameters.get("shark_die"));
+
+
   }
 //change the state and put that cell in the previous cells spot
 
@@ -53,7 +59,6 @@ public class PredatorOrPrey extends Rules {
     List<Cell> fish_neighbors = cell.getNeighborsWithState(fish);
     int random = getRandomIndex(fish_neighbors);
     Cell fishEaten = fish_neighbors.get(random);
-
     fishEaten.changeStateAndView(water, stateColors[water]);
     moveOtherFish(fish_neighbors, fishEaten);
   }
