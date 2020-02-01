@@ -73,18 +73,38 @@ public class Board implements Cloneable{
       for (int col = 0; col < myCols; col++) {
         Cell cell = cells[row][col];
         if (row + 1 < myRows) {
-          cell.addNeighbor(cells[row+1][col]);
+          addNeighborCols(cell, col, cells, row+1);
         }
         if (row > 0) {
-          cell.addNeighbor(cells[row-1][col]);
+          addNeighborCols(cell, col, cells, row-1);
         }
         if (col + 1 < myCols) {
-          cell.addNeighbor(cells[row][col+1]);
+          addNeighborRows(cell, row, cells, col+1);
         }
-        if (col> 0) {
-          cell.addNeighbor(cells[row][col-1]);
+        if (col > 0) {
+          addNeighborRows(cell, row, cells, col-1);
         }
       }
+    }
+  }
+
+  private void addNeighborCols(Cell cell, int col, Cell[][] cells, int i) {
+    cell.addNeighbor(cells[i][col]);
+    if (col > 0) {
+      cell.addNeighbor(cells[i][col-1]);
+    }
+    if (col + 1 < myCols) {
+      cell.addNeighbor(cells[i][col+1]);
+    }
+  }
+
+  private void addNeighborRows(Cell cell, int row, Cell[][] cells, int j) {
+    cell.addNeighbor(cells[row][j]);
+    if (row > 0) {
+      cell.addNeighbor(cells[row-1][j]);
+    }
+    if (row + 1 < myRows) {
+      cell.addNeighbor(cells[row+1][j]);
     }
   }
 
