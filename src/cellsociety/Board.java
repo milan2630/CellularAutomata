@@ -19,7 +19,6 @@ public class Board {
   private double xPos = 0;
   private double yPos = 0;
   private Rules myRules;
-
   public Board(int num_Cells_Width, int num_Cells_Height, Rules rules) {
     myRules=rules;
     myCells = new Cell[num_Cells_Height][num_Cells_Width];
