@@ -1,10 +1,11 @@
 package cellsociety;
 
+import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public class Percolation extends Rules {
 
-  public static final Color FILLED_COLOR = Color.AZURE;
+  public static final Color FILLED_COLOR = Color.BLUE;
   public static final Color EMPTY_COLOR = Color.WHITE;
   public static final Color BLOCKED_COLOR = Color.BLACK;
 
@@ -16,7 +17,7 @@ public class Percolation extends Rules {
   /**
    * Initialize variables, set colors to their respective states
    */
-  public Percolation(){
+  public Percolation(HashMap<String, String> parameters){
     empty = 1;
     blocked = 2;
     filled = 0;
