@@ -77,8 +77,15 @@ public class Board {
   }
 
 
-  // did not write yet
+  /**
+   * cycles through each cell in board and updates it
+   */
   public void updateBoard() {
+    for(Cell[] col :myCells){
+      for(Cell cell : col){
+          myRules.changeState(cell);
+      }
+    }
   }
 
   public Group boardView() {
