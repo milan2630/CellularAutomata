@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
-    <Simulation_Type>Fire</Simulation_Type>
+    <Simulation_Type>Percolation</Simulation_Type>
     <Title>Test</Title>
     <Author>Milan</Author>
     <Rules_Info>
@@ -13,12 +13,52 @@
         </Colors>
     </Rules_Info>
     <Grid_Config>
-        <Screen_Height>500</Screen_Height>
-        <Screen_Width>500</Screen_Width>
+        <Screen_Height>3</Screen_Height>
+        <Screen_Width>3</Screen_Width>
         <Cells>
+            <Cell>
+                <Row>0</Row>
+                <Column>0</Column>
+                <State>0</State>
+            </Cell>
+            <Cell>
+                <Row>0</Row>
+                <Column>1</Column>
+                <State>0</State>
+            </Cell>
+            <Cell>
+                <Row>0</Row>
+                <Column>2</Column>
+                <State>1</State>
+            </Cell>
+            <Cell>
+                <Row>1</Row>
+                <Column>0</Column>
+                <State>1</State>
+            </Cell>
             <Cell>
                 <Row>1</Row>
                 <Column>1</Column>
+                <State>2</State>
+            </Cell>
+            <Cell>
+                <Row>1</Row>
+                <Column>2</Column>
+                <State>0</State>
+            </Cell>
+            <Cell>
+                <Row>2</Row>
+                <Column>0</Column>
+                <State>2</State>
+            </Cell>
+            <Cell>
+                <Row>2</Row>
+                <Column>1</Column>
+                <State>0</State>
+            </Cell>
+            <Cell>
+                <Row>2</Row>
+                <Column>2</Column>
                 <State>0</State>
             </Cell>
         </Cells>
