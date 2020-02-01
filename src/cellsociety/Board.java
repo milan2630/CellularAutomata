@@ -52,6 +52,7 @@ public class Board {
   private void setCellPosition(Cell cell, int col, int row) {
     cell.setX(cellWidth*col);
     cell.setY(cellHeight*row);
+    cell.setStroke(Color.WHITE);
   }
 
   private void addNeighborstoCell(Cell cell, int col, int row) {

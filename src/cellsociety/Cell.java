@@ -13,8 +13,8 @@ public class Cell extends Rectangle {
   private int myMoves;
 
 
-  public Cell(int init_state, Color disp_color) {
-    super();
+  public Cell(int init_state, Color disp_color, double cellWidth, double cellHeight) {
+    super(cellWidth, cellHeight);
     myState = init_state;
     myColor = disp_color;
     setFill(myColor);
