@@ -43,24 +43,24 @@ public class PredatorOrPrey extends Rules {
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    if (state == shark && cell.numNeighborsWithGivenState(fish)>0) {
+    if (state == shark && cloneCell.numNeighborsWithGivenState(fish)>0) {
       sharkEatsFish(cell);
     }
-    else if (state == shark && 0<cell.numNeighborsWithGivenState(water)){
+    else if (state == shark && 0<cloneCell.numNeighborsWithGivenState(water)){
       mover(cell, shark);
-
     }
-    else if (state == fish && cell.numNeighborsWithGivenState(shark)==0 && cell.numNeighborsWithGivenState(water)>0){
+    else if (state == fish && cloneCell.numNeighborsWithGivenState(shark)==0 && cloneCell.numNeighborsWithGivenState(water)>0){
       mover(cell, fish);
     }
     if (state == shark && numMovesSinceEaten(cell)>=sharkDie){
-      // shark dies
+      cell.changeStateAndView(water, stateColors[water]);
     }
     if ((state == fish && numMoves(cell)%fishBreed==0)){
-  // new fish born
+      findWaterCellAndCreateOrganism(cell, fish);
+      
     }
     if ((state == shark && numMoves(cell)%sharkBreed==0)){
-      // new fish born
+      findWaterCellAndCreateOrganism(cell, shark);
     }
   }
 
@@ -69,7 +69,8 @@ public class PredatorOrPrey extends Rules {
     int random = getRandomIndex(fish_neighbors);
     Cell fishEaten = fish_neighbors.get(random);
     fishEaten.changeStateAndView(water, stateColors[water]);
-    cell.setMoves(cell.getMoves() +10);
+    //cell.setMoves(cell.getMoves() +10);
+    cell.setMoves(numMoves(cell));
     moveOtherFish(fish_neighbors, fishEaten);
   }
 
@@ -94,7 +95,7 @@ public class PredatorOrPrey extends Rules {
     int random = getRandomIndex(water_neighbors);
     Cell neighbor = water_neighbors.get(random);
     neighbor.changeStateAndView(state, stateColors[state]);
-    neighbor.setMoves(neighbor.getMoves()+1);
+    neighbor.setMoves(neighbor.getMoves()+11);
     cell.changeStateAndView(water, stateColors[water]);
   }
 
@@ -103,6 +104,16 @@ public class PredatorOrPrey extends Rules {
   }
   private int numMoves(Cell cell){
     return cell.getMoves()%10;
+  }
+  private void findWaterCellAndCreateOrganism(Cell cell, int state) {
+    for (Cell neighbor : cell.getNeighbors()) {
+      if (neighbor.getState() == water) {
+        neighbor.changeStateAndView(state, stateColors[state]);
+        return;
+      } else {
+        findWaterCellAndCreateOrganism(neighbor, state);
+      }
+    }
   }
 
   @Override
