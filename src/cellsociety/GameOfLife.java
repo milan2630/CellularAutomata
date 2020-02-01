@@ -30,13 +30,13 @@ public class GameOfLife extends Rules {
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    if (state==dead && cell.numNeighborsWithGivenState(alive)==3){
+    if (state==dead && cloneCell.numNeighborsWithGivenState(alive)==3){
       cell.changeStateAndView(alive, stateColors[alive]);
     }
-    if (state==alive && cell.numNeighborsOfSameState()<2){
+    if (state==alive && cloneCell.numNeighborsOfSameState()<2){
       cell.changeStateAndView(dead, stateColors[dead]);
     }
-    if (state == alive && cell.numNeighborsOfSameState()>3){
+    if (state == alive && cloneCell.numNeighborsOfSameState()>3){
       cell.changeStateAndView(dead, stateColors[dead]);
     }
   }
