@@ -11,8 +11,6 @@ public class Board {
   private Cell[][] myCells;
   private int num_rows;
   private int num_cols;
-  private int dist_between_bricks;
-  private Color cell_color;
   private double cellHeight;
   private double cellWidth;
   private Group root;
@@ -21,6 +19,7 @@ public class Board {
 
 
   public Board(int num_Cells_Width, int num_Cells_Height, Rules rules) {
+    root = new Group();
     myRules=rules;
     myCells = new Cell[num_Cells_Height][num_Cells_Width];
 
@@ -89,7 +88,7 @@ public class Board {
   }
 
   public Group boardView() {
-    root = new Group();
+
     addCellsToRoot();
     return root;
 
@@ -105,8 +104,7 @@ public class Board {
 
   public void updateCell(int state, int row, int col){
     myCells[col][row].setFill(myRules.getStateColor(state));
-    myRules.changeState(myCells[col][row]);
-    //myCells[col][row].setState(state); is this needed?
+    myCells[col][row].setState(state);
   }
 }
 
