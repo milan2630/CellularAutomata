@@ -38,7 +38,7 @@ public class Percolation extends Rules {
   void changeState(Cell cell) {
     int state = cell.getState();
     //
-    if(state == empty && cell.neighborsWithGivenState(filled)>0){
+    if(state == empty && cell.numNeighborsWithGivenState(filled)>0){
       cell.changeStateAndView(filled, stateColors[filled]);
     }
   }
