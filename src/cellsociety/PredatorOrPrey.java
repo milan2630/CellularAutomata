@@ -32,6 +32,7 @@ public class PredatorOrPrey extends Rules {
     fishBreed = Float.parseFloat(setupParameters.get("fishBreed"));
     sharkBreed = Float.parseFloat(setupParameters.get("sharkBreed"));
     sharkDie = Float.parseFloat(setupParameters.get("sharkDie"));
+
   }
 //change the state and put that cell in the previous cells spot
 
@@ -47,9 +48,19 @@ public class PredatorOrPrey extends Rules {
     }
     else if (state == shark && 0<cell.numNeighborsWithGivenState(water)){
       mover(cell, shark);
+
     }
     else if (state == fish && cell.numNeighborsWithGivenState(shark)==0 && cell.numNeighborsWithGivenState(water)>0){
       mover(cell, fish);
+    }
+    if (state == shark && numMovesSinceEaten(cell)>=sharkDie){
+      // shark dies
+    }
+    if ((state == fish && numMoves(cell)%fishBreed==0)){
+  // new fish born
+    }
+    if ((state == shark && numMoves(cell)%sharkBreed==0)){
+      // new fish born
     }
   }
 
@@ -58,7 +69,7 @@ public class PredatorOrPrey extends Rules {
     int random = getRandomIndex(fish_neighbors);
     Cell fishEaten = fish_neighbors.get(random);
     fishEaten.changeStateAndView(water, stateColors[water]);
-    fishEaten.setMoves(fishEaten.getMoves() +1);
+    cell.setMoves(cell.getMoves() +10);
     moveOtherFish(fish_neighbors, fishEaten);
   }
 
@@ -83,7 +94,15 @@ public class PredatorOrPrey extends Rules {
     int random = getRandomIndex(water_neighbors);
     Cell neighbor = water_neighbors.get(random);
     neighbor.changeStateAndView(state, stateColors[state]);
+    neighbor.setMoves(neighbor.getMoves()+1);
     cell.changeStateAndView(water, stateColors[water]);
+  }
+
+  private int numMovesSinceEaten(Cell cell){
+   return cell.getMoves()/10;
+  }
+  private int numMoves(Cell cell){
+    return cell.getMoves()%10;
   }
 
   @Override
