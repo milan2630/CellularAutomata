@@ -32,9 +32,10 @@ public class Board {
 
     for (int i = 0; i < num_Cells_Height; i++) {
       for (int j = 0; j < num_Cells_Width; j++) {
-        Cell myCell = new Cell(0, Color.BLUE);
+        Cell myCell = new Cell(0, Color.BLUE, cellWidth, cellHeight);
         myCells[i][j] = myCell;
-        setCellPositionsandNeighbors(myCell, i, j);
+        setCellPosition(myCell, i, j);
+        addNeighborstoCell(myCell, i, j);
       }
     }
   }
@@ -48,11 +49,9 @@ public class Board {
   }
 
   // has to be changed to take into account the edges
-  private void setCellPositionsandNeighbors(Cell cell, int col, int row) {
+  private void setCellPosition(Cell cell, int col, int row) {
     cell.setX(cellWidth*col);
     cell.setY(cellHeight*row);
-    addNeighborstoCell(cell, col, row);
-
   }
 
   private void addNeighborstoCell(Cell cell, int col, int row) {
