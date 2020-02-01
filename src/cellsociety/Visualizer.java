@@ -45,7 +45,7 @@ public class Visualizer extends Application {
     public void start(Stage primaryStage){
         // set intro text
         Percolation perc = new Percolation();
-        Board test = new Board(5,5, perc);
+        Board test = new Board(8,8, perc);
         root.getChildren().add(test.boardView());
         grid.getChildren().addAll(root);
         primaryStage.setScene(myScene);
