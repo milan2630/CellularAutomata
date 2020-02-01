@@ -44,6 +44,10 @@ public class Cell extends Rectangle {
     myNeighbors.add(neighbor);
   }
 
+  public List<Cell> getNeighbors(){
+    return myNeighbors;
+  }
+
   public List<Cell> getNeighborsWithState(int state){
       List<Cell> state_neighbors = new ArrayList<Cell>();
       for(Cell neighbor : myNeighbors){

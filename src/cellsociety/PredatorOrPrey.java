@@ -29,7 +29,7 @@ public class PredatorOrPrey extends Rules {
     stateColors[water] = WATER_COLOR;
     //probCatch = Float.parseFloat(setupParameters.get("probCatch"));
   }
-
+//change the state and put that cell in the previous cells spot
   @Override
   /**
    * Given a cell, change its state and color based on its current status & neighbor status
