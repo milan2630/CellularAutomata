@@ -18,21 +18,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class UserInterface extends Application {
-
-    public static final int DEFAULT_FRAMES_PER_SECOND = 1;
-
     private Group UIroot;
     private Stage UIstage;
-
-    private int stepsPerSecond;
     private Simulation mySim;
-
 
     @Override
     public void start(Stage primaryStage) {
         UIroot = new Group();
         UIstage = new Stage();
-        stepsPerSecond = DEFAULT_FRAMES_PER_SECOND;
+
         Configuration config = new Configuration(getFileName());
         mySim = config.getInitSim();
         createController();
@@ -65,15 +59,6 @@ public class UserInterface extends Application {
         UIstage.setScene(controllerScreen);
         UIstage.show();
     }
-
-    private void setStepsPerSecond(int sps){
-        stepsPerSecond = sps;
-    }
-
-    public int getStepsPerSecond(){
-        return stepsPerSecond;
-    }
-
 
 
 
