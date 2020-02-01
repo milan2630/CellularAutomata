@@ -13,34 +13,44 @@ public class Board {
   private int num_cols;
   private int dist_between_bricks;
   private Color cell_color;
-  private double height;
-  private double width;
+  private double cellHeight;
+  private double cellWidth;
   private Group root;
-  private double xPos = 0;
-  private double yPos = 0;
+
   private Rules myRules;
+
+
   public Board(int num_Cells_Width, int num_Cells_Height, Rules rules) {
     myRules=rules;
     myCells = new Cell[num_Cells_Height][num_Cells_Width];
+
     num_rows = num_Cells_Height;
     num_cols= num_Cells_Width;
+
+    cellWidth = getIndividualWidth(num_Cells_Width);
+    cellHeight = getIndividualHeight(num_Cells_Height);
+
     for (int i = 0; i < num_Cells_Height; i++) {
       for (int j = 0; j < num_Cells_Width; j++) {
         Cell myCell = new Cell(0, Color.BLUE);
         myCells[i][j] = myCell;
-        height = myCell.getHeight();
-        width = myCell.getWidth();
         setCellPositionsandNeighbors(myCell, i, j);
-        updateYPos();
       }
-      updateXPos();
     }
+  }
+
+  private double getIndividualHeight(int numCellsInCol) {
+    return (1.0 * Visualizer.CA_HEIGHT) / numCellsInCol;
+  }
+
+  private double getIndividualWidth(int numCellsInRow) {
+    return (1.0 * Visualizer.CA_WIDTH) / numCellsInRow;
   }
 
   // has to be changed to take into account the edges
   private void setCellPositionsandNeighbors(Cell cell, int col, int row) {
-    cell.setX(xPos);
-    cell.setY(yPos);
+    cell.setX(cellWidth*col);
+    cell.setY(cellHeight*row);
     addNeighborstoCell(cell, col, row);
 
   }
@@ -60,13 +70,6 @@ public class Board {
     }
   }
 
-  private void updateYPos() {
-    yPos = yPos + width;
-  }
-
-  private void updateXPos() {
-    xPos = xPos + height;
-  }
 
 
   public void insertCell(Cell cell, int row, int col) {
