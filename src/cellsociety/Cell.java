@@ -9,19 +9,15 @@ public class Cell extends Rectangle {
   private int myState;
   private int turns_since_state_change;
   private List<Cell> myNeighbors;
-  private Color myColor;
   private int myMoves;
 
 
   public Cell(int init_state, Color disp_color, double cellWidth, double cellHeight) {
     super(cellWidth, cellHeight);
     myState = init_state;
-    myColor = disp_color;
-    setFill(myColor);
+    setFill(disp_color);
     myNeighbors = new ArrayList<Cell>();
     myMoves=0;
-    //setX(xPos);
-    //setY(yPos);
   }
 
   public void changeStateAndView(int state, Color viewColor) {
@@ -30,7 +26,7 @@ public class Cell extends Rectangle {
     } else {
       turns_since_state_change = 0;
       myState = state;
-      myColor = viewColor;
+      this.setFill(viewColor);
     }
   }
 
