@@ -22,10 +22,8 @@ public class Board implements Cloneable{
     root = new Group();
     myRules=rules;
     myCells = new Cell[num_Cells_Height][num_Cells_Width];
-
     num_rows = num_Cells_Height;
     num_cols= num_Cells_Width;
-
     cellWidth = getIndividualWidth(num_Cells_Width);
     cellHeight = getIndividualHeight(num_Cells_Height);
 
