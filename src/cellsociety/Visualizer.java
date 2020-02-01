@@ -1,5 +1,6 @@
 package cellsociety;
 
+import java.util.HashMap;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -44,22 +45,23 @@ public class Visualizer extends Application {
     @Override
     public void start(Stage primaryStage){
         // set intro text
-        Percolation perc = new Percolation();
-        Board test = new Board(8,8, perc);
-        root.getChildren().add(test.boardView());
+       // Percolation perc = new Percolation(new HashMap<String, String>());
+        //Configuration config = new Configuration();
+        //Board test = config.createDebugBoard();
+        //Board test = new Board(8,8, perc);
+        //test.updateBoard();
+        //root.getChildren().add(test.boardView());
         grid.getChildren().addAll(root);
+
         primaryStage.setScene(myScene);
         primaryStage.show();
+
     }
 
 
     /**
      *  Change the display
      */
-    public void updateDisplay(){//Group currentBoardGroup) { //this root comes from the board
-        myScene = new Scene(root);//currentBoardGroup); //create the new scene
-       // start(myStage);
-    }
 
     public void sendRoot(Group boardRoot){
         root = boardRoot;
