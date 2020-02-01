@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class Configuration {
-
+    public static final String DEBUG_FILE = "XMLFiles/test1.xml";
     private Element myXML;
     private Rules myRules;
 
@@ -45,6 +45,10 @@ public class Configuration {
         myXML = document.getDocumentElement();
 
         myRules = parseRules();
+    }
+
+    public Configuration(){
+        this(DEBUG_FILE);
     }
 
     private Rules parseRules(){
@@ -105,6 +109,17 @@ public class Configuration {
         }
         return myBoard;
 
+    }
+
+    //TODO Delete
+    public Board createDebugBoard(){
+        Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules);
+        NodeList cellList = myXML.getElementsByTagName("Cell");
+        for(int i = 0; i < cellList.getLength(); i++){
+            Element cellNode = (Element) cellList.item(i);
+            myBoard.updateCell(parseState(cellNode), parseRow(cellNode), parseCol(cellNode));
+        }
+        return myBoard;
     }
 
     private int parseCol(Element cell) {
