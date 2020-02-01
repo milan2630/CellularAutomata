@@ -3,7 +3,6 @@ package cellsociety;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -66,20 +65,8 @@ public class Simulation {
    * updates the visualizer
    */
   private void nextCycle(){
-    System.out.println(" ");
-    System.out.println(' ');
+    myBoard.cloneNeighbors();
     myBoard.updateBoard();
-      //myVisualizer.updateDisplay(myBoard.boardView());
-      cycleNumber++;
-      //display();
+    cycleNumber++;
   }
-
-  /**
-   * tell the visualizer to update the display to the new 'image' of the board
-   */
-  public void display(){
-   // myVisualizer.updateDisplay();
-  }
-
-
 }
