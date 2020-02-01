@@ -1,18 +1,62 @@
 package cellsociety;
 
-public class Simulation {
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.util.Date;
+
+public class Simulation extends Application {
+  public static final int DEFAULT_FRAMES_PER_SECOND = 1;
+  public static final double MILLIS_PER_SECOND = 1000.0;
+
   private Board myBoard;
   private Visualizer myVisualizer;
   private int cycleNumber;
+
+  private Timeline animation;
+
+  private int framesPerSec;
+  private double millisecondDelay;
+
 
   /**
    * constructor that takes in a starting board,
    * @param b incoming board
    */
   public Simulation(Board b){
-    myBoard = b;
-    cycleNumber = 0;
-    myVisualizer = new Visualizer(myBoard.boardView());
+      myBoard = b;
+      cycleNumber = 0;
+      myVisualizer = new Visualizer(myBoard.boardView());
+      setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
+      KeyFrame newFrame = new KeyFrame(Duration.millis(millisecondDelay), e -> step());
+      animation.setCycleCount(Animation.INDEFINITE);
+      animation.getKeyFrames().add(newFrame);
+      animation.play();
+  }
+
+  private void setFramesPerSec(int fps){
+      framesPerSec = fps;
+      millisecondDelay = MILLIS_PER_SECOND / framesPerSec;
+  }
+
+  public void resetKeyFrame(int fps){
+      setFramesPerSec(fps);
+      KeyFrame newFrame = new KeyFrame(Duration.millis(millisecondDelay), e -> step());
+      animation.getKeyFrames().remove(0);
+      animation.stop();
+      animation.getKeyFrames().add(newFrame);
+      animation.play();
+  }
+
+  private void step() {
+      //nextCycle();
+
+      Date d = new Date();
+      System.out.println(d.getTime());
   }
 
   /**
@@ -20,10 +64,10 @@ public class Simulation {
    * adds a number to the cycle count TODO THIS IS FOR DEBUGGING,
    * updates the visualizer
    */
-  public void nextCycle(){
-    //myBoard.update
-    cycleNumber++;
-    display();
+  private void nextCycle(){
+      //myBoard.update
+      cycleNumber++;
+      display();
   }
 
   /**
@@ -33,4 +77,8 @@ public class Simulation {
     myVisualizer.updateDisplay();
   }
 
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+
+  }
 }
