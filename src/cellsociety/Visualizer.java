@@ -14,8 +14,7 @@ public class Visualizer extends Application {
     public static final int CA_HEIGHT = 1000;
     public static final Color BACKGROUND = Color.LAVENDERBLUSH; //TODO THIS CAN BE CHANGED LATER
     public static final double GAP = 190;
-    private Group root;
-    private Group board;
+
     private Scene myScene;
     private GridPane grid;
 
@@ -24,12 +23,9 @@ public class Visualizer extends Application {
      * Constructor, creates a scene, a stage, and then set the stage to that scene
      */
     public Visualizer(){
-        root = new Group();
         grid = new GridPane();
         grid.setHgap(GAP);
         grid.setVgap(GAP);
-        myScene = new Scene(root, CA_WIDTH, CA_HEIGHT, BACKGROUND);
-        //super(startRoot, CA_WIDTH, CA_HEIGHT, BACKGROUND);
     }
 
     /**
@@ -38,50 +34,22 @@ public class Visualizer extends Application {
      */
     @Override
     public void start(Stage primaryStage){
-        // set intro text
-       // Percolation perc = new Percolation(new HashMap<String, String>());
-        //Configuration config = new Configuration();
-        //Board test = config.createDebugBoard();
-        //Board test = new Board(8,8, perc);
-        //test.updateBoard();
-        //root.getChildren().add(test.boardView());
-        grid.getChildren().addAll(root);
-        //grid.setOnMouseMoved((MouseEvent));
-
-
         primaryStage.setScene(myScene);
         primaryStage.show();
-
     }
 
 
     /**
      *  Change the display
      */
-
     public void begin(Group boardRoot, Stage stage){
-        root.getChildren().add(boardRoot);
-        board = boardRoot;
+        grid.getChildren().addAll(boardRoot);
+        myScene = new Scene(grid, CA_WIDTH, CA_HEIGHT, BACKGROUND);
         start(stage);
     }
 
-    public void updateDisplay(Group boardRoot){
-        root.getChildren().remove(board);
-        root.getChildren().add(boardRoot);
-        board = boardRoot;
-    }
 
     public static void main(String[] args) {
-
-        //Group t = new Group();
-        //Percolation perc = new Percolation();
-       // Board b = new Board(20,20, perc);
-        //.setConstrants
-        //t.getChildren().add(b.boardView());
-
-        //Visualizer v = new Visualizer();
-       // v.sendRoot(t);
-
         launch(args);
     }
 }
