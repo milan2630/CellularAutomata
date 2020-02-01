@@ -53,6 +53,8 @@ public class Visualizer extends Application {
         //root.getChildren().add(test.boardView());
         grid.getChildren().addAll(root);
 
+
+
         primaryStage.setScene(myScene);
         primaryStage.show();
 
@@ -63,8 +65,9 @@ public class Visualizer extends Application {
      *  Change the display
      */
 
-    public void sendRoot(Group boardRoot){
+    public void begin(Group boardRoot, Stage stage){
         root = boardRoot;
+        start(stage);
     }
 
     public static void main(String[] args) {
