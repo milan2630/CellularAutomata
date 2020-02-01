@@ -16,7 +16,7 @@ Hours Spent:
 ### Primary Roles
 
 
-### Resources Used
+### resources Used
 
 
 ### Running the Program
