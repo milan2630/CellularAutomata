@@ -40,7 +40,6 @@ public class Cell extends Rectangle {
 
   public void addNeighbor(Cell neighbor) {
     myNeighbors.add(neighbor);
-    System.out.println("we added a cell!");
   }
 
   public List<Cell> getNeighbors(){
