@@ -11,14 +11,10 @@ public class Cell extends Rectangle {
   private List<Cell> myNeighbors;
   private Color myColor;
   private int myMoves;
-  private double cell_width;
-  private double cell_height;
 
 
-  public Cell(int init_state, Color disp_color, double width, double cell) {
+  public Cell(int init_state, Color disp_color) {
     super();
-    cell_width= width;
-    cell_height = height;
     myState = init_state;
     myColor = disp_color;
     setFill(myColor);
