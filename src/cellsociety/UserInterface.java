@@ -49,6 +49,17 @@ public class UserInterface extends Application {
         stopButton.setOnAction(e -> mySim.resetKeyFrame(0));
         stopButton.setText("Stop");
         controls.getChildren().add(stopButton);
+
+        Button stepButton = new Button();
+        stepButton.setOnAction(e -> mySim.step());
+        stepButton.setText("Step");
+        controls.getChildren().add(stepButton);
+
+        Button continueButton = new Button();
+        continueButton.setOnAction(e -> mySim.resetKeyFrame(1));
+        continueButton.setText("Continue");
+        controls.getChildren().add(continueButton);
+
         UIroot.getChildren().add(controls);
         Scene controllerScreen = new Scene(UIroot, 500, 500);
         UIstage.setScene(controllerScreen);

@@ -30,7 +30,7 @@ public class Simulation {
   public Simulation(Board b){
       myBoard = b;
       cycleNumber = 0;
-      myVisualizer = new Visualizer();//myBoard.boardView());
+      myVisualizer = new Visualizer();
       setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
       animation = new Timeline();
       KeyFrame newFrame = new KeyFrame(Duration.millis(millisecondDelay), e -> step());
@@ -53,7 +53,7 @@ public class Simulation {
       animation.play();
   }
 
-  private void step() {
+  public void step() {
       //nextCycle();
 
       Date d = new Date();
