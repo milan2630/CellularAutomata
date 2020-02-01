@@ -30,16 +30,16 @@ public class GameOfLife extends Rules {
    */
   public void changeState(Cell cell) {
     int state = cell.getState();
-
-    if(state == tree && cell.numNeighborsWithGivenState(burning)>0 && treeBurns()) {
-      cell.changeStateAndView(burning, stateColors[burning]);
+    if (state==dead && cell.numNeighborsWithGivenState(alive)==3){
+      cell.changeStateAndView(alive, stateColors[alive]);
     }
-    if(state == burning){// && cell.numberOfStateChanges()>0){
-      //aka it has been more than one round, change it
-      cell.changeStateAndView(empty, stateColors[empty]);
+    if (state==alive && cell.numNeighborsOfSameState()<2){
+      cell.changeStateAndView(dead, stateColors[dead]);
+    }
+    if (state == alive && cell.numNeighborsOfSameState()>3){
+      cell.changeStateAndView(dead, stateColors[dead]);
     }
   }
-
   @Override
   /**
    * gets the color for a cell that is created with a certain state
