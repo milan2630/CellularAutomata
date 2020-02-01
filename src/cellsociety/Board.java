@@ -34,9 +34,9 @@ public class Board {
         Cell myCell = new Cell(0, Color.BLUE, cellWidth, cellHeight);
         myCells[i][j] = myCell;
         setCellPosition(myCell, i, j);
-        addNeighborstoCell(myCell, i, j);
       }
     }
+    addNeighborstoCells(num_Cells_Height, num_Cells_Width);
   }
 
   private double getIndividualHeight(int numCellsInCol) {
@@ -54,18 +54,23 @@ public class Board {
     cell.setStroke(Color.WHITE);
   }
 
-  private void addNeighborstoCell(Cell cell, int col, int row) {
-    if (row + 1 < num_rows) {
-      cell.addNeighbor(myCells[col][row + 1]);
-    }
-    if (row - 1 > num_rows) {
-      cell.addNeighbor(myCells[col][row - 1]);
-    }
-    if (col + 1 < num_cols) {
-      cell.addNeighbor(myCells[col + 1][row]);
-    }
-    if (col - 1 > num_cols) {
-      cell.addNeighbor(myCells[col - 1][row]);
+  private void addNeighborstoCells(int col, int row) {
+    for (int i = 0; i < col; i++) {
+      for (int j = 0; j < row; j++) {
+        Cell cell = myCells[i][j];
+        if (row + 1 < num_rows) {
+          cell.addNeighbor(myCells[col][row + 1]);
+        }
+        if (row - 1 > num_rows) {
+          cell.addNeighbor(myCells[col][row - 1]);
+        }
+        if (col + 1 < num_cols) {
+          cell.addNeighbor(myCells[col + 1][row]);
+        }
+        if (col - 1 > num_cols) {
+          cell.addNeighbor(myCells[col - 1][row]);
+        }
+      }
     }
   }
 
