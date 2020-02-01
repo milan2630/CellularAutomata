@@ -147,7 +147,6 @@ public class UserInterface extends Application {
 
         private boolean isValidFile(String filename) {
             File caFile = new File(filename);
-            System.out.println("Ask for a valid file!");
             return caFile.exists();
         }
 
