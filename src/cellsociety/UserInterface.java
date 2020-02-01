@@ -24,7 +24,7 @@ public class UserInterface extends Application {
     public void start(Stage primaryStage) {
         UIroot = new Group();
         UIstage = new Stage();
-        
+
         Configuration config = new Configuration(getFileName());
         mySim = config.getInitSim();
         createController();
@@ -105,7 +105,6 @@ public class UserInterface extends Application {
 
         private boolean isValidFile(String filename) {
             File caFile = new File(filename);
-            System.out.println("Ask for a valid file!");
             return caFile.exists();
         }
 
