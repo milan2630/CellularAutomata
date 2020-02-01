@@ -19,6 +19,7 @@ public class UserInterface extends Application {
     private Group UIroot;
     private Stage UIstage;
     private Simulation mySim;
+    private TextField speedSetter;
 
     @Override
     public void start(Stage primaryStage) {
@@ -51,6 +52,17 @@ public class UserInterface extends Application {
         continueButton.setOnAction(e -> mySim.resetKeyFrame(1));
         continueButton.setText("Continue");
         controls.getChildren().add(continueButton);
+
+        speedSetter = new TextField();
+        speedSetter.setMaxWidth(50);
+        speedSetter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
+        controls.getChildren().add(speedSetter);
+
+        Button changeSpeedButton = new Button();
+        changeSpeedButton.setOnAction(e -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())));
+        changeSpeedButton.setText("Set Speed");
+        controls.getChildren().add(changeSpeedButton);
+
 
         UIroot.getChildren().add(controls);
         Scene controllerScreen = new Scene(UIroot, 500, 500);
