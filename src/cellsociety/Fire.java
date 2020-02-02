@@ -52,6 +52,15 @@ public class Fire extends Rules {
 
   @Override
   /**
+   * Does this CA simulation count the corners as neighbors?
+   * @return false; in Fire, it does not
+   */
+  public boolean areCornersNeighbors(){
+    return false;
+  }
+
+  @Override
+  /**
    * gets the color for a cell that is created with a certain state
    * so that the board can be created
    * @param state

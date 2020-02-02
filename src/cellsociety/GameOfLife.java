@@ -51,6 +51,16 @@ public class GameOfLife extends Rules {
       cell.changeStateAndView(dead, stateColors[dead]);
     }
   }
+
+  @Override
+  /**
+   * Does this CA simulation count the corners as neighbors?
+   * @return in Game of Life, it does
+   */
+  public boolean areCornersNeighbors(){
+    return true;
+  }
+
   @Override
   /**
    * gets the color for a cell that is created with a certain state

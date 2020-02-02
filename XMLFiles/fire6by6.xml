@@ -5,7 +5,7 @@
   <Author>Dana Mulligan</Author>
   <Rules_Info>
     <Rules_Parameters>
-      <probCatch>.5</probCatch>
+      <probCatch>.66</probCatch>
     </Rules_Parameters>
   </Rules_Info>
   <Grid_Config>
