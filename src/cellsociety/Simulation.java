@@ -65,8 +65,7 @@ public class Simulation {
    * updates the visualizer
    */
   private void nextCycle(){
-    myBoard.cloneNeighbors();
-    myBoard.updateBoard();
-    cycleNumber++;
+        myBoard.updateBoard();
+        cycleNumber++;
   }
 }

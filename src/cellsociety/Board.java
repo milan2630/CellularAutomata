@@ -103,7 +103,7 @@ public class Board implements Cloneable{
   /**
    * make a copy of the board, with a copy of all of the neighbors of each cell
    */
-  public void cloneNeighbors(){
+  private void cloneNeighbors(){
     buildBoard(cloneCells);
   }
 
@@ -112,11 +112,12 @@ public class Board implements Cloneable{
    * so that it has an accurate representation of neighbors
    */
   public void updateBoard(){
-    for(int row = 0; row < myRows; row++){
-      for(int col = 0; col < myCols; col++){
-        myRules.changeState(myCells[row][col], cloneCells[row][col]);
-      }
-    }
+        cloneNeighbors();
+        for(int row = 0; row < myRows; row++){
+          for(int col = 0; col < myCols; col++){
+            myRules.changeState(myCells[row][col], cloneCells[row][col]);
+          }
+        }
   }
 
   /**
