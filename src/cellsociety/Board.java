@@ -62,28 +62,40 @@ public class Board implements Cloneable{
   }
 
   // has to be changed to take into account the edges
-  private void setCellPosition(Cell cell, int col, int row) {
+  private void setCellPosition(Cell cell, int row, int col) {
     cell.setX(cellWidth*col);
     cell.setY(cellHeight*row);
     cell.setStroke(Color.WHITE);
   }
 
   private void addNeighborsToCells(Cell[][] cells) {
-    for (int col = 0; col < myCols; col++) {
-      for (int row = 0; row < myRows; row++) {
+    for (int row = 0; row < myRows; row++) {
+      for (int col = 0; col < myCols; col++) {
         Cell cell = cells[row][col];
         if (row + 1 < myRows) {
-          cell.addNeighbor(cells[row+1][col]);
+          addNeighborCols(cell, col, cells, row+1, myRules.areCornersNeighbors());
         }
         if (row > 0) {
-          cell.addNeighbor(cells[row-1][col]);
+          addNeighborCols(cell, col, cells, row-1, myRules.areCornersNeighbors());
         }
         if (col + 1 < myCols) {
           cell.addNeighbor(cells[row][col+1]);
         }
-        if (col> 0) {
+        if (col > 0) {
           cell.addNeighbor(cells[row][col-1]);
         }
+      }
+    }
+  }
+
+  private void addNeighborCols(Cell cell, int col, Cell[][] cells, int neighborRow, boolean corners) {
+    cell.addNeighbor(cells[neighborRow][col]);
+    if(corners) {
+      if (col > 0) {
+        cell.addNeighbor(cells[neighborRow][col - 1]);
+      }
+      if (col + 1 < myCols) {
+        cell.addNeighbor(cells[neighborRow][col + 1]);
       }
     }
   }
@@ -93,7 +105,6 @@ public class Board implements Cloneable{
    */
   private void cloneNeighbors(){
     buildBoard(cloneCells);
-    addNeighborsToCells(cloneCells);
   }
 
   /**
@@ -131,8 +142,8 @@ public class Board implements Cloneable{
    * @param col column position of cell
    */
   public void updateCell(int state, int row, int col){
-    myCells[col][row].setFill(myRules.getStateColor(state));
-    myCells[col][row].setState(state);
+    myCells[row][col].setFill(myRules.getStateColor(state));
+    myCells[row][col].setState(state);
   }
 }
 

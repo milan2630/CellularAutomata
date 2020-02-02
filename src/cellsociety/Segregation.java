@@ -39,25 +39,43 @@ public class  Segregation extends Rules {
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    if(cloneCell.numNeighborsOfSameState() < (percentSatisfied*cell.getNeighbors().size())) {
-      cell.changeStateAndView(empty, stateColors[empty]);
+    if(cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size())) {
       findAndMoveToEmptyCell(cell, cloneCell);
+      cell.changeStateAndView(empty, stateColors[empty]);
     }
   }
 
   private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell) {
-    for (int i=0; i< cell.getNeighbors().size(); i++){
+    //for (int i=0; i< cell.getNeighbors().size(); i++){
       List<Cell> cloneNeighborsList = cloneCell.getNeighbors();
       List<Cell> cellNeighborsList = cell.getNeighbors();
-      Cell cloneNeighbor = cloneNeighborsList.get(i);
-      Cell cellNeighbor = cellNeighborsList.get(i);
+      Cell cloneNeighbor = cloneNeighborsList.get(1);
+      Cell cellNeighbor = cellNeighborsList.get(1);
       if (cloneNeighbor.getState()==empty){
         cellNeighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
+        return;
       }
-      else {
       findAndMoveToEmptyCell(cellNeighbor, cloneNeighbor);
+    }
+  //}
+
+  private List<Cell> getNotEmptyNeighbors(Cell cell) {
+    List<Cell> notEmptyNeighbors = new ArrayList<>();
+    for (Cell neighbor : cell.getNeighbors()) {
+      if (neighbor.getState() != empty) {
+        notEmptyNeighbors.add(neighbor);
       }
     }
+    return notEmptyNeighbors;
+  }
+
+  @Override
+  /**
+   * Does this CA simulation count the corners as neighbors?
+   * @return true; in Segregation, it does
+   */
+  public boolean areCornersNeighbors(){
+    return true;
   }
 
   @Override

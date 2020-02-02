@@ -20,9 +20,9 @@ public class Fire extends Rules {
    * @param setupParameters
    */
   public Fire(HashMap<String, String> setupParameters){
-    burning = 2;
+    burning = 0;
     tree = 1;
-    empty = 0;
+    empty = 2;
     stateColors = new Color[3];
     stateColors[burning] = BURNING_COLOR;
     stateColors[tree] = TREE_COLOR;
@@ -37,7 +37,7 @@ public class Fire extends Rules {
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
 
-    if(state == tree && cell.numNeighborsWithGivenState(burning)>0 && treeBurns()) {
+    if(state == tree && cloneCell.numNeighborsWithGivenState(burning)>0 && treeBurns()) {
       cell.changeStateAndView(burning, stateColors[burning]);
     }
     if(state == burning){// && cell.numberOfStateChanges()>0){
@@ -48,6 +48,15 @@ public class Fire extends Rules {
 
   private boolean treeBurns(){
     return Math.random()<=probCatch;
+  }
+
+  @Override
+  /**
+   * Does this CA simulation count the corners as neighbors?
+   * @return false; in Fire, it does not
+   */
+  public boolean areCornersNeighbors(){
+    return false;
   }
 
   @Override

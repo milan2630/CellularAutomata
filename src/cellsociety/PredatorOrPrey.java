@@ -155,6 +155,15 @@ public class PredatorOrPrey extends Rules {
 
   @Override
   /**
+   * returns whether or not a corner of a cell is a neighbor
+   * @return true; in predator or prey, they are
+   */
+  public  boolean areCornersNeighbors(){
+    return true;
+  }
+
+  @Override
+  /**
    * gets the color for a cell that is created with a certain state
    * so that the board can be created
    * @param state

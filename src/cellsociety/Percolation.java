@@ -44,6 +44,15 @@ public class Percolation extends Rules {
     }
   }
 
+  @Override
+  /**
+   * Does this CA simulation count the corners as neighbors?
+   * @return in Percolation, it does not
+   */
+  public boolean areCornersNeighbors(){
+    return false;
+  }
+
   /**
    * Return a color given a certain state, used for setting up the initial board
    * @param state state to get the color of
