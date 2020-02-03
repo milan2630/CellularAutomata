@@ -39,25 +39,46 @@ public class  Segregation extends Rules {
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    if(cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size())) {
-      findAndMoveToEmptyCell(cell, cloneCell);
+    //System.out.println(cell.getNeighbors());
+    if(cell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cell).size())) {
+      findAndMoveToEmptyCell(cell, cloneCell, cell.getState());
       cell.changeStateAndView(empty, stateColors[empty]);
     }
   }
 
-  private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell) {
-    //for (int i=0; i< cell.getNeighbors().size(); i++){
-      List<Cell> cloneNeighborsList = cloneCell.getNeighbors();
-      List<Cell> cellNeighborsList = cell.getNeighbors();
-      Cell cloneNeighbor = cloneNeighborsList.get(1);
-      Cell cellNeighbor = cellNeighborsList.get(1);
-      if (cloneNeighbor.getState()==empty){
-        cellNeighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-        return;
+  private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell, int state) {
+    List<Cell> cellNeighborsList = cell.getNeighbors();
+    List<Cell> cloneNeighborsList = cell.getNeighborsWithState(empty);
+    Cell cloneNeighbor = null;
+    //Cell cellNeighbor = null;
+    if (cloneNeighborsList.size() != 0) {
+      int random = getRandomIndex(cloneNeighborsList);
+      cloneNeighbor = cloneNeighborsList.get(random);
+      for (Cell neighbor : cellNeighborsList) {
+        if (neighbor.equals(cloneNeighbor)) {
+          System.out.println("reached");
+          //cellNeighbor = neighbor;
+          neighbor.changeStateAndView(state, stateColors[state]);
+          return;
+        }
       }
-      findAndMoveToEmptyCell(cellNeighbor, cloneNeighbor);
     }
-  //}
+    if (cloneNeighborsList.size() == 0) {
+      int random2 = getRandomIndex(cellNeighborsList);
+      Cell cellNeighbor = cellNeighborsList.get(random2);
+      List<Cell> cloneNeighbors = cell.getNeighbors();
+      Cell cloneNeigh = cloneNeighbors.get(random2);
+      findAndMoveToEmptyCell(cellNeighbor, cloneNeigh, state);
+    }
+  }
+
+  private int getRandomIndex(List<Cell> givenStateNeighbors) {
+    int random =0;
+    if(givenStateNeighbors.size()!=1) {
+      random = (int) (Math.random() * givenStateNeighbors.size());
+    }
+    return random;
+  }
 
   private List<Cell> getNotEmptyNeighbors(Cell cell) {
     List<Cell> notEmptyNeighbors = new ArrayList<>();
