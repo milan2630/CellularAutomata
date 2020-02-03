@@ -4,6 +4,7 @@ import cellsociety.Configuration;
 import cellsociety.Simulation;
 import java.io.File;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -41,7 +43,7 @@ public class UserInterface extends Application {
     @Override
     public void start(Stage primaryStage) {
         UIroot = new Group();
-        UIstage = new Stage();
+        UIstage = primaryStage;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
         Configuration config;
         if(DEBUG){
