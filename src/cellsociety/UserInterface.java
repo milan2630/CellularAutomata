@@ -1,6 +1,8 @@
 package cellsociety;
 
 import java.io.File;
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,13 +11,26 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.imageio.ImageIO;
+
 public class UserInterface extends Application {
+    private static final String RESOURCES = "resources";
+    public static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
+    public static final String STYLESHEET = "default.css";
+    public static final String DEFAULT_LANGUAGE = "English";
+    public static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
+    public static final boolean DEBUG = true;
+
+    private ResourceBundle myResources;
     private Group UIroot;
     private Stage UIstage;
     private Simulation mySim;
@@ -25,8 +40,14 @@ public class UserInterface extends Application {
     public void start(Stage primaryStage) {
         UIroot = new Group();
         UIstage = new Stage();
-
-        Configuration config = new Configuration(getFileName());
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
+        Configuration config;
+        if(DEBUG){
+            config = new Configuration(DEBUG_FILENAME);
+        }
+        else{
+            config = new Configuration(getFileName());
+        }
         mySim = config.getInitSim();
         createController();
     }
@@ -38,19 +59,13 @@ public class UserInterface extends Application {
 
     private void createController(){
         HBox controls = new HBox();
-        Button stopButton = new Button();
-        stopButton.setOnAction(e -> mySim.resetKeyFrame(0));
-        stopButton.setText("Stop");
+        Button stopButton = makeButton("PauseCommand", event -> mySim.resetKeyFrame(0));
         controls.getChildren().add(stopButton);
 
-        Button stepButton = new Button();
-        stepButton.setOnAction(e -> mySim.step());
-        stepButton.setText("Step");
+        Button stepButton = makeButton("StepCommand", event -> mySim.step());
         controls.getChildren().add(stepButton);
 
-        Button continueButton = new Button();
-        continueButton.setOnAction(e -> mySim.resetKeyFrame(1));
-        continueButton.setText("Continue");
+        Button continueButton = makeButton("ContinueCommand", event -> mySim.resetKeyFrame(1));
         controls.getChildren().add(continueButton);
 
         speedSetter = new TextField();
@@ -58,16 +73,31 @@ public class UserInterface extends Application {
         speedSetter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
         controls.getChildren().add(speedSetter);
 
-        Button changeSpeedButton = new Button();
-        changeSpeedButton.setOnAction(e -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())));
-        changeSpeedButton.setText("Set Speed");
+        Button changeSpeedButton = makeButton("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())));
         controls.getChildren().add(changeSpeedButton);
 
 
         UIroot.getChildren().add(controls);
         Scene controllerScreen = new Scene(UIroot, 500, 500);
+        controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
+    }
+
+    // makes a button using either an image or a label
+    private Button makeButton (String property, EventHandler<ActionEvent> handler) {
+        // represent all supported image suffixes
+        final String IMAGEFILE_SUFFIXES = String.format(".*\\.(%s)", String.join("|", ImageIO.getReaderFileSuffixes()));
+        Button result = new Button();
+        String label = myResources.getString(property);
+        if (label.matches(IMAGEFILE_SUFFIXES)) {
+            result.setGraphic(new ImageView(new Image(getClass().getResourceAsStream(DEFAULT_RESOURCE_FOLDER + label))));
+        }
+        else {
+            result.setText(label);
+        }
+        result.setOnAction(handler);
+        return result;
     }
 
 
