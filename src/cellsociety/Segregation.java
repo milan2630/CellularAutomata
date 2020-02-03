@@ -39,7 +39,7 @@ public class  Segregation extends Rules {
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    System.out.println(getNotEmptyNeighbors(cloneCell));
+    System.out.println(cell.getNeighbors());
     if(cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size())) {
       findAndMoveToEmptyCell(cell, cloneCell);
       cell.changeStateAndView(empty, stateColors[empty]);
@@ -71,7 +71,9 @@ public class  Segregation extends Rules {
         if (neighbor.equals(cloneNeighbor)) {
           //cellNeighbor = neighbor;
           neighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-        } else {
+        }
+      }
+    if (cloneNeighborsList.size() == 0) {{
           int random2 = getRandomIndex(cellNeighborsList);
           Cell cellNeighbor = cellNeighborsList.get(random2);
           findAndMoveToEmptyCell(cellNeighbor, cloneNeighbor);
