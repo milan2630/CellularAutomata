@@ -91,6 +91,7 @@ public class UserInterface extends Application {
 
     private void onRestart(){
         UIstage.close();
+        mySim.endSim();
         this.start(new Stage());
     }
 

@@ -17,6 +17,7 @@ public class Visualizer extends Application {
 
     private Scene myScene;
     private GridPane grid;
+    private Stage myStage;
 
 
     /**
@@ -34,8 +35,13 @@ public class Visualizer extends Application {
      */
     @Override
     public void start(Stage primaryStage){
+        myStage = primaryStage;
         primaryStage.setScene(myScene);
         primaryStage.show();
+    }
+
+    public void closeWindow(){
+        myStage.close();
     }
 
 
