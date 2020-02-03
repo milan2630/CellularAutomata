@@ -60,6 +60,10 @@ public class Simulation {
       System.out.println(d.getTime());
   }
 
+  public void endSim(){
+      myVisualizer.closeWindow();
+  }
+
   /**
    * changes the state of the board depending on the rules,
    * adds a number to the cycle count TODO THIS IS FOR DEBUGGING,
