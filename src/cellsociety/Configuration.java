@@ -17,6 +17,8 @@ import java.util.HashMap;
 
 public class Configuration {
     public static final String RULES_PACKAGE = "cellsociety";
+    public static final String RULES_XML_TAG = "Simulation_Type";
+    public static final String RULES_PARAMETERS_XML_TAG = "Rules_Parameters";
     private Element myXML;
     private Rules myRules;
 
@@ -47,8 +49,8 @@ public class Configuration {
     }
 
     private Rules parseRules(){
-        String simType = myXML.getElementsByTagName("Simulation_Type").item(0).getTextContent();
-        NodeList parametersNode = myXML.getElementsByTagName("Rules_Parameters").item(0).getChildNodes();
+        String simType = myXML.getElementsByTagName(RULES_XML_TAG).item(0).getTextContent();
+        NodeList parametersNode = myXML.getElementsByTagName(RULES_PARAMETERS_XML_TAG).item(0).getChildNodes();
         HashMap<String, String> parameters = getParameterVals(parametersNode);
 
         Object ret = new Object();
