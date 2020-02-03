@@ -1,5 +1,7 @@
-package cellsociety;
+package display;
 
+import cellsociety.Configuration;
+import cellsociety.Simulation;
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -48,7 +50,6 @@ public class UserInterface extends Application {
         else{
             config = new Configuration(getFileName());
         }
-
         mySim = config.getInitSim();
         createController();
     }
