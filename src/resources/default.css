@@ -34,6 +34,12 @@
     -fx-opacity: 0.6;
 }
 
+.vbox {
+    -fx-background-color: azure;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
 .text-field {
     -fx-font-size: 14pt;
     -fx-font-family: "Segoe UI Semibold";
