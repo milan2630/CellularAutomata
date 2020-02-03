@@ -63,25 +63,18 @@ public class UserInterface extends Application {
 
     private void createController(){
         HBox controls = new HBox();
-        Button stopButton = makeButton("PauseCommand", event -> mySim.resetKeyFrame(0));
-        controls.getChildren().add(stopButton);
+        addButtonToHBox("PauseCommand", event -> mySim.resetKeyFrame(0), controls);
 
-        Button stepButton = makeButton("StepCommand", event -> mySim.step());
-        controls.getChildren().add(stepButton);
+        addButtonToHBox("StepCommand", event -> mySim.step(), controls);
 
-        Button continueButton = makeButton("ContinueCommand", event -> mySim.resetKeyFrame(1));
-        controls.getChildren().add(continueButton);
+        addButtonToHBox("ContinueCommand", event -> mySim.resetKeyFrame(1), controls);
 
-        Button restartButton = makeButton("RestartCommand", event -> onRestart());
-        controls.getChildren().add(restartButton);
+        addButtonToHBox("RestartCommand", event -> onRestart(), controls);
 
-        speedSetter = new TextField();
-        speedSetter.setMaxWidth(50);
-        speedSetter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
+        speedSetter = createSpeedSetter();
         controls.getChildren().add(speedSetter);
 
-        Button changeSpeedButton = makeButton("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())));
-        controls.getChildren().add(changeSpeedButton);
+        addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
 
 
         UIroot.getChildren().add(controls);
@@ -89,6 +82,13 @@ public class UserInterface extends Application {
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
+    }
+
+    private TextField createSpeedSetter(){
+        TextField setter = new TextField();
+        setter.setMaxWidth(50);
+        setter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
+        return setter;
     }
 
     private void onRestart(){
@@ -111,6 +111,10 @@ public class UserInterface extends Application {
         }
         result.setOnAction(handler);
         return result;
+    }
+
+    private void addButtonToHBox(String property, EventHandler<ActionEvent> handler, HBox container){
+        container.getChildren().add(makeButton(property, handler));
     }
 
 
