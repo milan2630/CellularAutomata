@@ -1,4 +1,4 @@
-package cellsociety;
+package cellmodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +69,7 @@ public class  Segregation extends Rules {
       cloneNeighbor = cloneNeighborsList.get(random);
       for (Cell neighbor : cellNeighborsList) {
         if (neighbor.equals(cloneNeighbor)) {
-          System.out.println("reached");
+          //System.out.println("reached");
           //cellNeighbor = neighbor;
           neighbor.changeStateAndView(state, stateColors[state]);
           return;
