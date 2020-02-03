@@ -1,5 +1,7 @@
-package cellsociety;
+package display;
 
+import cellsociety.Configuration;
+import cellsociety.Simulation;
 import java.io.File;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
