@@ -1,5 +1,6 @@
 package cellsociety;
 
+import display.Visualizer;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
