@@ -39,9 +39,9 @@ public class  Segregation extends Rules {
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    System.out.println(getNotEmptyNeighbors(cloneCell));
+    System.out.println(cell.getNeighbors());
     if(cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size())) {
-      findAndMoveToEmptyCell(cell, cloneCell);
+      findAndMoveToEmptyCell(cell, cloneCell, cell.getState());
       cell.changeStateAndView(empty, stateColors[empty]);
     }
   }
@@ -59,7 +59,7 @@ public class  Segregation extends Rules {
       findAndMoveToEmptyCell(cellNeighbor, cloneNeighbor);
     }*/
 
-  private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell) {
+  private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell, int state) {
     List<Cell> cellNeighborsList = cell.getNeighbors();
     List<Cell> cloneNeighborsList = cloneCell.getNeighborsWithState(empty);
     Cell cloneNeighbor = null;
@@ -70,13 +70,17 @@ public class  Segregation extends Rules {
       for (Cell neighbor : cellNeighborsList) {
         if (neighbor.equals(cloneNeighbor)) {
           //cellNeighbor = neighbor;
-          neighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-        } else {
-          int random2 = getRandomIndex(cellNeighborsList);
-          Cell cellNeighbor = cellNeighborsList.get(random2);
-          findAndMoveToEmptyCell(cellNeighbor, cloneNeighbor);
+          neighbor.changeStateAndView(state, stateColors[state]);
+          return;
         }
       }
+    }
+    if (cloneNeighborsList.size() == 0) {
+      int random2 = getRandomIndex(cellNeighborsList);
+      Cell cellNeighbor = cellNeighborsList.get(random2);
+      List<Cell> cloneNeighbors = cloneCell.getNeighbors();
+      Cell cloneNeigh = cloneNeighbors.get(random2);
+      findAndMoveToEmptyCell(cellNeighbor, cloneNeigh, state);
     }
   }
 
