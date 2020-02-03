@@ -28,7 +28,7 @@ public class UserInterface extends Application {
     public static final String STYLESHEET = "default.css";
     public static final String DEFAULT_LANGUAGE = "English";
     public static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     private ResourceBundle myResources;
     private Group UIroot;
@@ -69,6 +69,9 @@ public class UserInterface extends Application {
         Button continueButton = makeButton("ContinueCommand", event -> mySim.resetKeyFrame(1));
         controls.getChildren().add(continueButton);
 
+        Button restartButton = makeButton("RestartCommand", event -> onRestart());
+        controls.getChildren().add(restartButton);
+
         speedSetter = new TextField();
         speedSetter.setMaxWidth(50);
         speedSetter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
@@ -83,6 +86,11 @@ public class UserInterface extends Application {
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
+    }
+
+    private void onRestart(){
+        UIstage.close();
+        this.start(new Stage());
     }
 
     // makes a button using either an image or a label
