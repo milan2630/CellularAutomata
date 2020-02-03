@@ -16,7 +16,8 @@ public class PredatorOrPrey extends Rules {
   private float fishBreed;
   private float sharkBreed;
   private float sharkDie;
-  private static int eatAndSwimMoves = 11;
+  private static int swimMoves = 1;
+  private static int noFoodMoves = 10;
 
   /**
    * Initialize variables, get probability of a tree catching fire from setupParameters
@@ -49,6 +50,7 @@ public class PredatorOrPrey extends Rules {
     }
     else if (state == shark && 0<cloneCell.numNeighborsWithGivenState(water)){
       mover(cell, cloneCell);
+      cell.setMoves(cell.getMoves()+10);
     }
     else if (state == fish && cloneCell.numNeighborsWithGivenState(shark)==0 && cloneCell.numNeighborsWithGivenState(water)>0){
       mover(cell, cloneCell);
@@ -56,12 +58,12 @@ public class PredatorOrPrey extends Rules {
     if (state == shark && numMovesSinceEaten(cell)>=sharkDie){
       organismGone(cell);
     }
-    if ((state == fish && numMoves(cell)%fishBreed==0)){
-      findWaterCellAndCreateOrganism(cell, cloneCell);
+    if ((state == fish && numMoves(cell)%fishBreed==0 && numMoves(cell)!=0)){
+      findWaterCellAndCreateOrganism(cell, state);
 
     }
-    if ((state == shark && numMoves(cell)%sharkBreed==0)){
-      findWaterCellAndCreateOrganism(cell, cloneCell);
+    if ((state == shark && numMoves(cell)%sharkBreed==0 && numMoves(cell)!=0)){
+      findWaterCellAndCreateOrganism(cell, state);
     }
   }
 
@@ -70,8 +72,9 @@ public class PredatorOrPrey extends Rules {
   }
 
   private void sharkEatsFish(Cell cell, Cell cloneCell) {
+    System.out.println("hi");
     List<Cell> cloneFishNeighbors = cloneCell.getNeighborsWithState(fish);
-    List<Cell> fishNeighbors = cloneCell.getNeighbors();
+    List<Cell> fishNeighbors = cell.getNeighbors();
     int random = getRandomIndex(cloneFishNeighbors);
     Cell cloneNeighbor = cloneFishNeighbors.get(random);
     Cell fishEaten = null;
@@ -88,7 +91,7 @@ public class PredatorOrPrey extends Rules {
   }
 
   private int getRandomIndex(List<Cell> givenStateNeighbors) {
-    int random =1;
+    int random =0;
     if(givenStateNeighbors.size()!=1) {
       random = (int) (Math.random() * givenStateNeighbors.size());
     }
@@ -125,7 +128,12 @@ public class PredatorOrPrey extends Rules {
     }
     if(neighbor!= null) {
       neighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-      neighbor.setMoves(neighbor.getMoves() + eatAndSwimMoves);
+      //neighbor.setMoves(cell.getMoves());
+      neighbor.setMoves(cell.getMoves() + swimMoves);
+      cell.setMoves(0);
+      if(cell.getState()==shark){
+        neighbor.setMoves(neighbor.getMoves()+noFoodMoves);
+      }
       organismGone(cell);
     }
   }
@@ -138,7 +146,7 @@ public class PredatorOrPrey extends Rules {
   }
 
 
-  private void findWaterCellAndCreateOrganism(Cell cell, Cell cloneCell) {
+/*  private void findWaterCellAndCreateOrganism(Cell cell, Cell cloneCell) {
     List<Cell> cloneNeighborsList = cloneCell.getNeighbors();
     List<Cell> cellNeighborsList = cell.getNeighbors();
     for (int i=0; i< cellNeighborsList.size(); i++){
@@ -151,8 +159,29 @@ public class PredatorOrPrey extends Rules {
         findWaterCellAndCreateOrganism(cellNeighbor, cloneNeighbor);
       }
     }
+  }*/
+private void findWaterCellAndCreateOrganism(Cell cell, int state) {
+  List<Cell> cellNeighborsList = cell.getNeighbors();
+  List<Cell> waterNeighborsList = cell.getNeighborsWithState(water);
+  Cell waterNeighbor = null;
+  if (waterNeighborsList.size() != 0) {
+    int random = getRandomIndex(waterNeighborsList);
+    waterNeighbor = waterNeighborsList.get(random);
+    for (Cell neighbor : cellNeighborsList) {
+      if (neighbor.equals(waterNeighbor)) {
+        System.out.println("reached");
+        //cellNeighbor = neighbor;
+        neighbor.changeStateAndView(state, stateColors[state]);
+        return;
+      }
+    }
   }
-
+  if (waterNeighborsList.size() == 0) {
+    int random2 = getRandomIndex(cellNeighborsList);
+    Cell cellNeighbor = cellNeighborsList.get(random2);
+    findWaterCellAndCreateOrganism(cellNeighbor, state);
+  }
+}
   @Override
   /**
    * returns whether or not a corner of a cell is a neighbor
