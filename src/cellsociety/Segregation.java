@@ -40,28 +40,15 @@ public class  Segregation extends Rules {
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
     //System.out.println(cell.getNeighbors());
-    if(cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size())) {
+    if(cell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cell).size())) {
       findAndMoveToEmptyCell(cell, cloneCell, cell.getState());
       cell.changeStateAndView(empty, stateColors[empty]);
     }
   }
 
-/*  private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell) {
-    //for (int i=0; i< cell.getNeighbors().size(); i++){
-      List<Cell> cloneNeighborsList = cloneCell.getNeighbors();
-      List<Cell> cellNeighborsList = cell.getNeighbors();
-      Cell cloneNeighbor = cloneNeighborsList.get(1);
-      Cell cellNeighbor = cellNeighborsList.get(1);
-      if (cloneNeighbor.getState() == empty){
-        cellNeighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-        return;
-      }
-      findAndMoveToEmptyCell(cellNeighbor, cloneNeighbor);
-    }*/
-
   private void findAndMoveToEmptyCell(Cell cell, Cell cloneCell, int state) {
     List<Cell> cellNeighborsList = cell.getNeighbors();
-    List<Cell> cloneNeighborsList = cloneCell.getNeighborsWithState(empty);
+    List<Cell> cloneNeighborsList = cell.getNeighborsWithState(empty);
     Cell cloneNeighbor = null;
     //Cell cellNeighbor = null;
     if (cloneNeighborsList.size() != 0) {
@@ -79,7 +66,7 @@ public class  Segregation extends Rules {
     if (cloneNeighborsList.size() == 0) {
       int random2 = getRandomIndex(cellNeighborsList);
       Cell cellNeighbor = cellNeighborsList.get(random2);
-      List<Cell> cloneNeighbors = cloneCell.getNeighbors();
+      List<Cell> cloneNeighbors = cell.getNeighbors();
       Cell cloneNeigh = cloneNeighbors.get(random2);
       findAndMoveToEmptyCell(cellNeighbor, cloneNeigh, state);
     }
