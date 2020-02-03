@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class Configuration {
+    public static final String RULES_PACKAGE = "cellsociety";
     private Element myXML;
     private Rules myRules;
 
@@ -64,7 +65,7 @@ public class Configuration {
     private Constructor getRulesConstructor(String simulationType){
         Class simClass = null;
         try {
-            simClass = Class.forName("cellsociety."+simulationType);
+            simClass = Class.forName(RULES_PACKAGE+"."+simulationType);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
