@@ -120,7 +120,7 @@ public class UserInterface extends Application {
         FileTextPrompt() {
             final Stage dialog = new Stage();
 
-            dialog.setTitle("Enter Missing Text");
+            dialog.setTitle("Enter File Path");
             dialog.initStyle(StageStyle.UTILITY);
             dialog.initModality(Modality.WINDOW_MODAL);
 
@@ -140,15 +140,12 @@ public class UserInterface extends Application {
             });
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
-            final VBox layout = new VBox(10);
+            final VBox layout = new VBox();
             layout.setAlignment(Pos.CENTER_RIGHT);
-            layout.setStyle("-fx-background-color: azure; -fx-padding: 10;");
-            layout.getChildren().setAll(
-                    textField,
-                    submitButton
-            );
-
-            dialog.setScene(new Scene(layout));
+            layout.getChildren().setAll(textField, submitButton);
+            Scene fileScreen = new Scene(layout);
+            fileScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+            dialog.setScene(fileScreen);
             dialog.showAndWait();
 
             result = textField.getText();
