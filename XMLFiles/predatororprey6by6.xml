@@ -117,22 +117,22 @@
       <Cell>
         <Row>3</Row>
         <Column>2</Column>
-        <State>0</State>
+        <State>1</State>
       </Cell>
       <Cell>
         <Row>3</Row>
         <Column>3</Column>
-        <State>1</State>
+        <State>2</State>
       </Cell>
       <Cell>
         <Row>3</Row>
         <Column>4</Column>
-        <State>0</State>
+        <State>1</State>
       </Cell>
       <Cell>
         <Row>3</Row>
         <Column>5</Column>
-        <State>1</State>
+        <State>0</State>
       </Cell>
       <Cell>
         <Row>4</Row>
