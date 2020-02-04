@@ -1,4 +1,4 @@
-package cellsociety;
+package cellmodel;
 
 import display.Visualizer;
 import javafx.scene.Group;

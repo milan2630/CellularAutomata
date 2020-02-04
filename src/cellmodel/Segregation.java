@@ -1,8 +1,9 @@
-package cellsociety;
+package cellmodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javafx.scene.paint.Color;
 
 public class  Segregation extends Rules {
@@ -59,7 +60,7 @@ public class  Segregation extends Rules {
       int random = getRandomIndex(emptyNeighborsList);
       emptyNeighbor = emptyNeighborsList.get(random);
       for (Cell neighbor : cellNeighborsList) {
-        if (neighbor.equals(emptyNeighbor)) {
+          if (neighbor.equals(emptyNeighbor)) {
           neighbor.changeStateAndView(state, stateColors[state]);
           return;
         }

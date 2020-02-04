@@ -1,30 +1,22 @@
-package cellsociety;
+package cellmodel;
 
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public class Percolation extends Rules {
 
-  public static final Color FILLED_COLOR = Color.BLUE;
-  public static final Color EMPTY_COLOR = Color.WHITE;
-  public static final Color BLOCKED_COLOR = Color.BLACK;
-
-  private Color[] stateColors;
-  private int empty;
-  private int blocked;
-  private int filled;
+  private static final Color FILLED_COLOR = Color.BLUE;
+  private static final Color EMPTY_COLOR = Color.WHITE;
+  private static final Color BLOCKED_COLOR = Color.BLACK;
+  private static final int EMPTY = 1;
+  private static final int BLOCKED = 2;
+  private static final int FILLED = 0;
+  private static final Color[] STATE_COLORS = {FILLED_COLOR, EMPTY_COLOR, BLOCKED_COLOR};
 
   /**
    * Initialize variables, set colors to their respective states
    */
   public Percolation(HashMap<String, String> parameters){
-    empty = 1;
-    blocked = 2;
-    filled = 0;
-    stateColors = new Color[3];
-    stateColors[empty] = EMPTY_COLOR;
-    stateColors[blocked] = BLOCKED_COLOR;
-    stateColors[filled] = FILLED_COLOR;
   }
 
   /**
@@ -39,8 +31,8 @@ public class Percolation extends Rules {
   @Override
   void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    if(state == empty && cloneCell.numNeighborsWithGivenState(filled)>0){
-      cell.changeStateAndView(filled, stateColors[filled]);
+    if(state == EMPTY && cloneCell.numNeighborsWithGivenState(FILLED)>0){
+      cell.changeStateAndView(FILLED, STATE_COLORS[FILLED]);
     }
   }
 
@@ -60,7 +52,7 @@ public class Percolation extends Rules {
    */
   @Override
   public Color getStateColor(int state) {
-    return stateColors[state];
+    return STATE_COLORS[state];
   }
 
 }

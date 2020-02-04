@@ -1,4 +1,4 @@
-package cellsociety;
+package cellmodel;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,13 +15,22 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+
+/**
+ * Class to handle setting up the Board and Simulation from an xml file
+ */
 public class Configuration {
-    public static final String RULES_PACKAGE = "cellsociety";
+    public static final String RULES_PACKAGE = "cellmodel"; //Package containing the java files for the different simulation types
+    public static final String RULES_XML_TAG = "Simulation_Type"; //Tag in the XML file that has the simulation type
+    public static final String RULES_PARAMETERS_XML_TAG = "Rules_Parameters"; //Tag in the xml file that has the setup parameters
     private Element myXML;
     private Rules myRules;
 
+    /**
+     * Constructor to create a Configuration object based on a filename
+     * @param inputfileName xml file name to parse
+     */
     public Configuration(String inputfileName){
-
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
         try {
@@ -37,18 +46,20 @@ public class Configuration {
             e.printStackTrace();
         }
 
-
         assert document != null;
         document.getDocumentElement().normalize();
 
         myXML = document.getDocumentElement();
-
         myRules = parseRules();
     }
 
+    /**
+     * Parses the information to create a sublcass of Rules based on the xml file
+     * @return an object of the specified Rules subclass
+     */
     private Rules parseRules(){
-        String simType = myXML.getElementsByTagName("Simulation_Type").item(0).getTextContent();
-        NodeList parametersNode = myXML.getElementsByTagName("Rules_Parameters").item(0).getChildNodes();
+        String simType = myXML.getElementsByTagName(RULES_XML_TAG).item(0).getTextContent();
+        NodeList parametersNode = myXML.getElementsByTagName(RULES_PARAMETERS_XML_TAG).item(0).getChildNodes();
         HashMap<String, String> parameters = getParameterVals(parametersNode);
 
         Object ret = new Object();
@@ -62,6 +73,10 @@ public class Configuration {
         return (Rules)ret;
     }
 
+    /**
+     * @param simulationType is the type of Rules that the xml file specified
+     * @return a constructor for the specific Rules
+     */
     private Constructor getRulesConstructor(String simulationType){
         Class simClass = null;
         try {
@@ -80,6 +95,10 @@ public class Configuration {
         return constructor;
     }
 
+    /**
+     * @param pNode is the node in the XML file that contains the parameters for the simulation
+     * @return a hashmap with keys of input variable names and are linked to their values specified in the xml file
+     */
     private HashMap<String, String> getParameterVals(NodeList pNode){
         HashMap<String, String> parameterSet = new HashMap<>();
         for(int i = 0; i < pNode.getLength(); i++){
@@ -91,10 +110,16 @@ public class Configuration {
         return parameterSet;
     }
 
+    /**
+     * @return a Simulation object based on the xml file
+     */
     public Simulation getInitSim(){
         return new Simulation(getInitBoard());
     }
 
+    /**
+     * @return a Board object based on the initial configuration from the xml file
+     */
     private Board getInitBoard(){
         Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules);
         NodeList cellList = myXML.getElementsByTagName("Cell");
@@ -106,22 +131,40 @@ public class Configuration {
 
     }
 
+    /**
+     * @param cell
+     * @return the column of the given cell
+     */
     private int parseCol(Element cell) {
         return Integer.parseInt(cell.getElementsByTagName("Column").item(0).getTextContent());
     }
 
+    /**
+     * @param cell
+     * @return the row of the given cell
+     */
     private int parseRow(Element cell) {
         return Integer.parseInt(cell.getElementsByTagName("Row").item(0).getTextContent());
     }
 
+    /**
+     * @param cell
+     * @return the state of the given cell
+     */
     private int parseState(Element cell) {
         return Integer.parseInt(cell.getElementsByTagName("State").item(0).getTextContent());
     }
 
+    /**
+     * @return the height of the board specified in the xml file
+     */
     private int parseBoardHeight() {
         return Integer.parseInt(myXML.getElementsByTagName("Screen_Height").item(0).getTextContent());
     }
 
+    /**
+     * @return the width of the board specified in the xml file
+     */
     private int parseBoardWidth() {
         return Integer.parseInt(myXML.getElementsByTagName("Screen_Width").item(0).getTextContent());
     }

@@ -1,4 +1,4 @@
-package cellsociety;
+package cellmodel;
 
 import javafx.scene.paint.Color;
 
