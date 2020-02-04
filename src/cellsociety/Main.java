@@ -1,20 +1,11 @@
 package cellsociety;
 
-
 import display.UserInterface;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.awt.*;
-import java.util.Date;
 
 /**
- * Feel free to completely change this code or delete it entirely.
+ * Main class which is run to start the program by launching the user interface
  */
 public class Main {
     public static void main (String[] args) {
