@@ -91,7 +91,7 @@ public class PredatorOrPrey extends Rules {
     }*/
     if(fishEaten!=null){
       organismGone(fishEaten);
-      cell.setMoves(numMoves(cell));
+      //cell.setMoves(numMoves(cell));
       moveOtherFish(cell, cloneCell, fishEaten);
     }
 
@@ -142,6 +142,7 @@ public class PredatorOrPrey extends Rules {
       organismGone(cell);
       System.out.println(waterNeighbor.numberOfStateChanges());
 
+      System.out.println(waterNeighbor.getMoves());
       if (waterNeighbor.getState() == shark && waterNeighbor.getMoves() >= sharkDie) {
         System.out.println("die");
         organismGone(waterNeighbor);
