@@ -11,11 +11,11 @@ public class  Segregation extends Rules {
   public static final Color RED_COLOR = Color.RED;
   public static final Color BlUE_COLOR = Color.BLUE;
   public static final Color EMPTY_COLOR = Color.WHITE;
+  private static final int RED = 2;
+  private static final int BLUE = 1;
+  private static final int EMPTY = 0;
+  private static final Color[] stateColors = {EMPTY_COLOR, BlUE_COLOR, RED_COLOR};
 
-  private Color[] stateColors;
-  private int red;
-  private int blue;
-  private  int empty;
   private float percentSatisfied;
 
   /**
@@ -23,13 +23,6 @@ public class  Segregation extends Rules {
    * @param setupParameters
    */
   public Segregation(HashMap<String, String> setupParameters){
-    red = 2;
-    blue = 1;
-    empty = 0;
-    stateColors = new Color[3];
-    stateColors[red] = RED_COLOR;
-    stateColors[blue] = BlUE_COLOR;
-    stateColors[empty] = EMPTY_COLOR;
     percentSatisfied = Float.parseFloat(setupParameters.get("percentSatisfied"));
   }
 
@@ -41,11 +34,11 @@ public class  Segregation extends Rules {
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
     System.out.println(cell);
-    if(cloneCell.getState()!= empty && (cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size()))) {
+    if(cloneCell.getState()!= EMPTY && (cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size()))) {
       System.out.println("yo");
       System.out.println(cell.getState());
       findAndMoveToEmptyCell(cell, cell.getState());
-      cell.changeStateAndView(empty, stateColors[empty]);
+      cell.changeStateAndView(EMPTY, stateColors[EMPTY]);
       System.out.println(cell.getState());
       System.out.println(stateColors[cell.getState()]);
     }
@@ -53,7 +46,7 @@ public class  Segregation extends Rules {
 
   private void findAndMoveToEmptyCell(Cell cell, int state) {
     List<Cell> cellNeighborsList = cell.getNeighbors();
-    List<Cell> emptyNeighborsList = cell.getNeighborsWithState(empty);
+    List<Cell> emptyNeighborsList = cell.getNeighborsWithState(EMPTY);
     System.out.println(emptyNeighborsList.size());
     Cell emptyNeighbor = null;
     if (emptyNeighborsList.size() != 0) {
@@ -87,7 +80,7 @@ public class  Segregation extends Rules {
   private List<Cell> getNotEmptyNeighbors(Cell cell) {
     List<Cell> notEmptyNeighbors = new ArrayList<>();
     for (Cell neighbor : cell.getNeighbors()) {
-      if (neighbor.getState() != empty) {
+      if (neighbor.getState() != EMPTY) {
         notEmptyNeighbors.add(neighbor);
       }
     }
