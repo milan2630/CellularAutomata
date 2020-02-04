@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
   <Simulation_Type>GameOfLife</Simulation_Type>
-  <Title>gameoflife6by6</Title>
+  <Title>test</Title>
   <Author>Dana Mulligan</Author>
   <Rules_Info>
     <Rules_Parameters>
