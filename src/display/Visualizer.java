@@ -1,10 +1,12 @@
 package display;
 
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
@@ -36,6 +38,8 @@ public class Visualizer extends Application {
     @Override
     public void start(Stage primaryStage){
         myStage = primaryStage;
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        myStage.setX(0);
         primaryStage.setScene(myScene);
         primaryStage.show();
     }
