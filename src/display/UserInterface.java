@@ -32,8 +32,6 @@ public class UserInterface extends Application {
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
     private static final String STYLESHEET = "default.css";
     private static final String DEFAULT_LANGUAGE = "English";
-    private static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
-    private static final boolean DEBUG = true;
 
     private ResourceBundle myResources;
     private Group UIroot;
@@ -53,13 +51,7 @@ public class UserInterface extends Application {
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
         UIstage.setX(screen.getWidth());
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
-        Configuration config;
-        if(DEBUG){
-            config = new Configuration(DEBUG_FILENAME);
-        }
-        else{
-            config = new Configuration(getFileName());
-        }
+        Configuration config = new Configuration(getFileName());
         mySim = config.getInitSim();
         createController();
     }
