@@ -2,6 +2,9 @@ package cellmodel;
 
 import javafx.scene.paint.Color;
 
+/**
+ * abstract class; easy to add another CA simulation from this class
+ */
 abstract class Rules {
 
   /**

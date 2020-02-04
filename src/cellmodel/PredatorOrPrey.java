@@ -5,6 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import javafx.scene.paint.Color;
 
+/**
+ * Rules class containing logic for PredatorOrPrey CA;
+ * shark eats one fish if it's next to it;
+ * fish and shark populate after a certain number of cycles
+ * sharks die after a certain number of turns
+ */
 public class PredatorOrPrey extends Rules {
   public static final Color WATER_COLOR = Color.BLUE;
   public static final Color FISH_COLOR = Color.GREEN;
