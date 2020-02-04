@@ -53,9 +53,6 @@ public class Cell extends Rectangle {
       this.setFill(viewColor);
     }
   }
-  public void incrementNumberOfStateChanges(int value){
-    turnsSinceStateChange+=value;
-  }
 
   public int numberOfStateChanges() {
     return turnsSinceStateChange;
