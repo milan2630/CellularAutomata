@@ -27,12 +27,12 @@ import javax.imageio.ImageIO;
  */
 public class UserInterface extends Application {
     private static final String RESOURCES = "resources";
-    public static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-    public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
-    public static final String STYLESHEET = "default.css";
-    public static final String DEFAULT_LANGUAGE = "English";
-    public static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
-    public static final boolean DEBUG = false;
+    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
+    private static final String STYLESHEET = "default.css";
+    private static final String DEFAULT_LANGUAGE = "English";
+    private static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
+    private static final boolean DEBUG = false;
 
     private ResourceBundle myResources;
     private Group UIroot;
@@ -181,6 +181,19 @@ public class UserInterface extends Application {
             dialog.showAndWait();
 
             result = textField.getText();
+        }
+
+        /**
+         * @param filename is the text in the textfield when the submit button is clicked
+         * @param stage is the stage holding the textfield
+         */
+        private void handleFileSubmit(String filename, Stage stage){
+            if(isValidFile(filename)) {
+                stage.close();
+            }
+            else{
+                displayErrorMessage();
+            }
         }
 
         /**
