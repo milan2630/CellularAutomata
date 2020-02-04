@@ -1,11 +1,10 @@
 package display;
 
-import cellsociety.Configuration;
-import cellsociety.Simulation;
+import cellmodel.Configuration;
+import cellmodel.Simulation;
 import java.io.File;
 import java.util.ResourceBundle;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
