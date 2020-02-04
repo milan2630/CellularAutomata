@@ -1,4 +1,4 @@
-package cellsociety;
+package cellmodel;
 
 import java.util.HashMap;
 import javafx.scene.paint.Color;
