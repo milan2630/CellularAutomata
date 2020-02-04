@@ -3,6 +3,11 @@ package cellmodel;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
+/**
+ * Contains logic for Fire CA
+ * Trees burn for 1 turn then turn empty
+ * Adjacent cells to burning trees may catch fire with probability probCatch determined by xml file
+ */
 public class Fire extends Rules {
 
     private static final Color BURNING_COLOR = Color.DARKRED;
