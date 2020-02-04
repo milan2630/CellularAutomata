@@ -4,6 +4,9 @@ import display.Visualizer;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
+/**
+ * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
+ **/
 public class Board implements Cloneable{
   private Cell[][] myCells;
   private Cell[][] cloneCells;

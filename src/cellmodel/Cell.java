@@ -3,7 +3,9 @@ package cellmodel;
 import java.util.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
+/**
+ * creates a cell object that extends rectangle, has an associated state, a list of neighbors, and a number of moves
+ **/
 public class Cell extends Rectangle {
 
   private int myState;
