@@ -77,6 +77,7 @@ public class PredatorOrPrey extends Rules {
 
   private void sharkEatsFish(Cell cell, Cell cloneCell) {
     System.out.println("hi");
+    cell.setMoves(0);
     List<Cell> fishNeighborsList = cell.getNeighborsWithState(fish);
     List<Cell> cellNeighborsList = cell.getNeighbors();
     int random = getRandomIndex(fishNeighborsList);
@@ -135,28 +136,24 @@ public class PredatorOrPrey extends Rules {
     }*/
     if (waterNeighbor != null) {
       waterNeighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
-      //neighbor.setMoves(cell.getMoves());
-      waterNeighbor.setMoves(cell.getMoves() + swimMoves);
-      cell.setMoves(0);
-      if (cell.getState() == shark) {
-        waterNeighbor.setMoves(waterNeighbor.getMoves() + noFoodMoves);
-      }
       organismGone(cell);
       System.out.println(numMovesSinceEaten(waterNeighbor));
 
-      if (waterNeighbor.getState() == shark && numMovesSinceEaten(waterNeighbor) >= sharkDie) {
+      if (waterNeighbor.getState() == shark && waterNeighbor.getMoves() >= sharkDie) {
         System.out.println("die");
         organismGone(waterNeighbor);
-        waterNeighbor.setMoves(0);
+        //waterNeighbor.setMoves(0);
       }
-      if ((waterNeighbor.getState() == fish && numMoves(waterNeighbor) % fishBreed == 0
-          && numMoves(waterNeighbor) != 0)) {
+      //if ((waterNeighbor.getState() == fish && numMoves(waterNeighbor) % fishBreed == 0
+          //&& numMoves(waterNeighbor) != 0))
+      if ((waterNeighbor.getState()== fish && waterNeighbor.numberOfStateChanges()%fishBreed==0)){
         findWaterCellAndCreateOrganism(waterNeighbor, waterNeighbor.getState());
         System.out.println("fish");
         //System.out.println(waterNeighbor.getMoves());
       }
-      if ((waterNeighbor.getState() == shark && numMoves(waterNeighbor) % sharkBreed == 0
-          && numMoves(waterNeighbor) != 0)) {
+      //if ((waterNeighbor.getState() == shark && numMoves(waterNeighbor) % sharkBreed == 0
+          //&& numMoves(waterNeighbor) != 0)) {
+      if((waterNeighbor.getState()== shark && waterNeighbor.numberOfStateChanges()%sharkBreed==0)){
         System.out.println("shark");
         findWaterCellAndCreateOrganism(waterNeighbor, waterNeighbor.getState());
       }
