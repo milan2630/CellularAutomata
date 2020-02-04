@@ -51,6 +51,7 @@ public class PredatorOrPrey extends Rules {
       sharkEatsFish(cell, cloneCell);
     }
     else if (state == shark && 0<cell.numNeighborsWithGivenState(water)){
+      cell.setMoves(cell.getMoves()+1);
       mover(cell);
     }
     else if (state == fish && cell.numNeighborsWithGivenState(shark)==0 && cell.numNeighborsWithGivenState(water)>0){
@@ -135,9 +136,11 @@ public class PredatorOrPrey extends Rules {
       }
     }*/
     if (waterNeighbor != null) {
+      int turnsAsState = cell.numberOfStateChanges();
       waterNeighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
+      waterNeighbor.incrementNumberOfStateChanges(turnsAsState+1);
       organismGone(cell);
-      System.out.println(numMovesSinceEaten(waterNeighbor));
+      System.out.println(waterNeighbor.numberOfStateChanges());
 
       if (waterNeighbor.getState() == shark && waterNeighbor.getMoves() >= sharkDie) {
         System.out.println("die");
@@ -146,25 +149,25 @@ public class PredatorOrPrey extends Rules {
       }
       //if ((waterNeighbor.getState() == fish && numMoves(waterNeighbor) % fishBreed == 0
           //&& numMoves(waterNeighbor) != 0))
-      if ((waterNeighbor.getState()== fish && waterNeighbor.numberOfStateChanges()%fishBreed==0)){
+      if ((waterNeighbor.getState()== fish && waterNeighbor.numberOfStateChanges()!=0 && waterNeighbor.numberOfStateChanges()%fishBreed==0)){
         findWaterCellAndCreateOrganism(waterNeighbor, waterNeighbor.getState());
         System.out.println("fish");
         //System.out.println(waterNeighbor.getMoves());
       }
       //if ((waterNeighbor.getState() == shark && numMoves(waterNeighbor) % sharkBreed == 0
           //&& numMoves(waterNeighbor) != 0)) {
-      if((waterNeighbor.getState()== shark && waterNeighbor.numberOfStateChanges()%sharkBreed==0)){
+      if((waterNeighbor.getState()== shark && waterNeighbor.numberOfStateChanges()!=0 && waterNeighbor.numberOfStateChanges()%sharkBreed==0)){
         System.out.println("shark");
         findWaterCellAndCreateOrganism(waterNeighbor, waterNeighbor.getState());
       }
     }
   }
 
-  private int numMovesSinceEaten(Cell cell){
-   return cell.getMoves()/10;
-  }
+  /*private int numMovesSinceEaten(Cell cell){
+   return cell.numberOfStateChanges();
+  }*/
   private int numMoves(Cell cell){
-    return cell.getMoves()%10;
+    return cell.getMoves();
   }
 
 

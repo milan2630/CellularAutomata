@@ -48,10 +48,13 @@ public class Cell extends Rectangle {
     if (state == myState) {
       turnsSinceStateChange++;
     } else {
-      turnsSinceStateChange = 0;
+      //turnsSinceStateChange = 0;
       myState = state;
       this.setFill(viewColor);
     }
+  }
+  public void incrementNumberOfStateChanges(int value){
+    turnsSinceStateChange+=value;
   }
 
   public int numberOfStateChanges() {
