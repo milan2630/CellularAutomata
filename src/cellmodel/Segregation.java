@@ -3,6 +3,7 @@ package cellmodel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javafx.scene.paint.Color;
 
 public class  Segregation extends Rules {
