@@ -3,6 +3,10 @@ package cellmodel;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
+/**
+ * Contains the logic for the Percolation CA
+ * Water fills empty adjacent cells
+ */
 public class Percolation extends Rules {
 
   private static final Color FILLED_COLOR = Color.BLUE;
