@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import javafx.scene.paint.Color;
-
-public class  Segregation extends Rules {
+/**
+ * Moves red and blue cells into white cells until the red and blue cells are surrounded by a given percentage of neighbors that are the same color as themselves
+ **/
+public class Segregation extends Rules {
 
   public static final Color RED_COLOR = Color.RED;
   public static final Color BlUE_COLOR = Color.BLUE;
