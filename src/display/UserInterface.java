@@ -156,19 +156,8 @@ public class UserInterface extends Application {
 
 
             final TextField textField = new TextField();
-            final Button submitButton = new Button("Submit");
-            submitButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override public void handle(ActionEvent t) {
-                    if(isValidFile(textField.getText())) {
-                        dialog.close();
-                    }
-                    else{
-                        displayErrorMessage();
-                    }
-                }
-            });
+            final Button submitButton = makeButton("FileChooseCommand", event -> handleFileSubmit(textField.getText(), dialog));
             dialog.setOnCloseRequest(t->stopEverything());
-
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
             final VBox layout = new VBox();
