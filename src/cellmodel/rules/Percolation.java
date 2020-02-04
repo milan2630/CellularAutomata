@@ -1,5 +1,6 @@
-package cellmodel;
+package cellmodel.rules;
 
+import cellmodel.Cell;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
@@ -34,7 +35,7 @@ public class Percolation extends Rules {
    * @param cloneCell
    */
   @Override
-  void changeState(Cell cell, Cell cloneCell) {
+  public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
     if(state == EMPTY && cloneCell.numNeighborsWithGivenState(FILLED)>0){
       cell.changeStateAndView(FILLED, STATE_COLORS[FILLED]);

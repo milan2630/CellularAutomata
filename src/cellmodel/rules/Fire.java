@@ -1,5 +1,6 @@
-package cellmodel;
+package cellmodel.rules;
 
+import cellmodel.Cell;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
