@@ -13,16 +13,13 @@ public class Cell extends Rectangle {
 
   /**
    * constructor to create a cell takes in the number of columns, rows, and the rules
-   *
-   * @param initState  initial state of the cell
-   * @param disp_color color displayed for the associated state
+   *  @param initState  initial state of the cell
    * @param cellWidth  width of the cell
    * @param cellHeight height of the cell
    **/
-  public Cell(int initState, Color disp_color, double cellWidth, double cellHeight) {
+  public Cell(int initState, double cellWidth, double cellHeight) {
     super(cellWidth, cellHeight);
     myState = initState;
-    setFill(disp_color);
     myNeighbors = new ArrayList<Cell>();
     myMoves = 0;
   }
@@ -30,17 +27,15 @@ public class Cell extends Rectangle {
   /**
    * constuctor to create a cell where state information is important, but nothing else used
    * specifically for clone cells
-   *
    * @param initState state to set the cell to
    */
   public Cell(int initState) {
-    this(initState, null, 0, 0); //TODO CHANGE THESE LATER?
+    this(initState, 0, 0);
   }
 
   /**
    * changes the state and color of the cell increments or resets turnsSinceStateChange takes in the
    * number of columns, rows, and the rules
-   *
    * @param state     state that the cell is changing to
    * @param viewColor color that the cell is changing to
    **/
@@ -53,11 +48,16 @@ public class Cell extends Rectangle {
       this.setFill(viewColor);
     }
   }
-
-  public int numberOfStateChanges() {
+  /**
+   * @return the number of times the board has changed since the state of this cell changed
+   **/
+  public int getTurnsSinceStateChanges() {
     return turnsSinceStateChange;
   }
 
+  /**
+   * sets the number of times the board has changed since the state of this cell changed to a given value
+   **/
   public void setTurnsSinceStateChange(int val){
     turnsSinceStateChange =val;
   }
@@ -70,7 +70,6 @@ public class Cell extends Rectangle {
 
   /**
    * Add a neighbor to a cell
-   *
    * @param neighbor cell to be added as a neighbor
    */
   public void addNeighbor(Cell neighbor) {
@@ -86,7 +85,6 @@ public class Cell extends Rectangle {
 
   /**
    * creates a list of neighbor cells that have a given state
-   *
    * @param state the state that is wanted in the neighbors
    * @return the list of neighbors with the desired state
    **/
@@ -115,7 +113,6 @@ public class Cell extends Rectangle {
 
   /**
    * creates a counter to keep track of the number of neighbors that have a given state
-   *
    * @param state the state that is wanted in the neighbors
    * @return the number of neighbors with the desired state
    **/
@@ -131,7 +128,6 @@ public class Cell extends Rectangle {
 
   /**
    * sets the state of the cell to a given state
-   *
    * @param state state that the cell is being set to
    **/
   public void setState(int state) {
@@ -154,6 +150,11 @@ public class Cell extends Rectangle {
     myMoves = moves;
   }
 
+
+  /**
+   * overrides the equals system to set two cells with the same position as equal to each other
+   * @param obj takes in an object to then later make an instance of a Cell
+   **/
   @Override
   public boolean equals (Object obj){
     if (obj instanceof Cell){

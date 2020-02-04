@@ -42,7 +42,7 @@ public class Board implements Cloneable{
       for (int col = 0; col < myCols; col++) {
         Cell myCell;
         if(buildingInitialBoard){
-          myCell = new Cell(0, Color.BLUE, cellWidth, cellHeight);
+          myCell = new Cell(0, cellWidth, cellHeight);
         } else{
           Cell cellToCopyFrom = myCells[row][col];
           myCell = new Cell(cellToCopyFrom.getState());
