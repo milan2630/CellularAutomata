@@ -44,10 +44,10 @@ public class PredatorOrPrey extends Rules {
    * @param cell cell to be updated
    */
   public void changeState(Cell cell, Cell cloneCell) {
-     System.out.println(cell);
-    System.out.println(cell.getMoves());
+    //System.out.println(cell);
+    //System.out.println(cell.getMoves());
     int state = cell.getState();
-    if (state == shark && cloneCell.numNeighborsWithGivenState(fish)>0) {
+    if (state == shark && cell.numNeighborsWithGivenState(fish)>0) {
       sharkEatsFish(cell, cloneCell);
     }
     else if (state == shark && 0<cell.numNeighborsWithGivenState(water)){
@@ -142,8 +142,10 @@ public class PredatorOrPrey extends Rules {
         waterNeighbor.setMoves(waterNeighbor.getMoves() + noFoodMoves);
       }
       organismGone(cell);
+      System.out.println(numMovesSinceEaten(waterNeighbor));
 
       if (waterNeighbor.getState() == shark && numMovesSinceEaten(waterNeighbor) >= sharkDie) {
+        System.out.println("die");
         organismGone(waterNeighbor);
         waterNeighbor.setMoves(0);
       }
@@ -151,7 +153,7 @@ public class PredatorOrPrey extends Rules {
           && numMoves(waterNeighbor) != 0)) {
         findWaterCellAndCreateOrganism(waterNeighbor, waterNeighbor.getState());
         System.out.println("fish");
-        System.out.println(waterNeighbor.getMoves());
+        //System.out.println(waterNeighbor.getMoves());
       }
       if ((waterNeighbor.getState() == shark && numMoves(waterNeighbor) % sharkBreed == 0
           && numMoves(waterNeighbor) != 0)) {

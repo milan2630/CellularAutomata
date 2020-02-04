@@ -10,7 +10,7 @@ import javafx.util.Duration;
 import java.util.Date;
 
 public class Simulation {
-    public static final int DEFAULT_FRAMES_PER_SECOND = 1;
+    public static final int DEFAULT_FRAMES_PER_SECOND = 0;
     public static final double MILLIS_PER_SECOND = 1000.0;
 
     private Board myBoard;
