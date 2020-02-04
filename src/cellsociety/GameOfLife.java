@@ -5,23 +5,19 @@ import javafx.scene.paint.Color;
 
 public class GameOfLife extends Rules {
 
-  public static final Color ALIVE_COLOR = Color.GREY;
-  public static final Color DEAD_COLOR = Color.BLACK;
+  private static final Color ALIVE_COLOR = Color.GREY;
+  private static final Color DEAD_COLOR = Color.BLACK;
+  private static final int ALIVE = 1;
+  private static final int DEAD = 0;
+  private static final Color[] STATE_COLORS = {DEAD_COLOR, ALIVE_COLOR};
 
-  private Color[] stateColors;
-  private int alive;
-  private int dead;
 
   /**
-   * Initialize variables, get probability of a tree catching fire from setupParameters
-   * @param setupParameters
+   * Construct a GameOfLife object
+   * @param setupParameters has no setup parameters for Game of Life
    */
   public GameOfLife(HashMap<String, String> setupParameters){
-    alive = 1;
-    dead = 0;
-    stateColors = new Color[2];
-    stateColors[alive] = ALIVE_COLOR;
-    stateColors[dead] = DEAD_COLOR;
+
   }
   @Override
   /**
@@ -43,12 +39,12 @@ public class GameOfLife extends Rules {
 
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    int numNeighborsAlive = cloneCell.numNeighborsWithGivenState(alive);
+    int numNeighborsAlive = cloneCell.numNeighborsWithGivenState(ALIVE);
 
-    if (state == dead && numNeighborsAlive == 3){
-      cell.changeStateAndView(alive, stateColors[alive]);
-    } else if (state == alive && (numNeighborsAlive <= 1 || numNeighborsAlive > 3)){
-      cell.changeStateAndView(dead, stateColors[dead]);
+    if (state == DEAD && numNeighborsAlive == 3){
+      cell.changeStateAndView(ALIVE, STATE_COLORS[ALIVE]);
+    } else if (state == ALIVE && (numNeighborsAlive <= 1 || numNeighborsAlive > 3)){
+      cell.changeStateAndView(DEAD, STATE_COLORS[DEAD]);
     }
   }
 
@@ -70,7 +66,7 @@ public class GameOfLife extends Rules {
    */
   public Color getStateColor(int state){
     if(state == 0 || state == 1)
-      return stateColors[state];
+      return STATE_COLORS[state];
     else return Color.WHITE;
   }
 }
