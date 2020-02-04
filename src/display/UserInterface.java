@@ -54,13 +54,7 @@ public class UserInterface extends Application {
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
         UIstage.setX(screen.getWidth());
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
-        Configuration config;
-        if(DEBUG){
-            config = new Configuration(DEBUG_FILENAME);
-        }
-        else{
-            config = new Configuration(getFileName());
-        }
+        Configuration config = new Configuration(getFileName());
         mySim = config.getInitSim();
         createController();
     }
