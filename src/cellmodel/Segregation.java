@@ -19,7 +19,7 @@ public class  Segregation extends Rules {
   private float percentSatisfied;
 
   /**
-   * Initialize variables, get probability of a tree catching fire from setupParameters
+   * Initialize variables, get the percent of neighbors of the same state needed to satisfy a cell
    * @param setupParameters
    */
   public Segregation(HashMap<String, String> setupParameters){
@@ -32,22 +32,25 @@ public class  Segregation extends Rules {
    * @param cell cell to be updated
    */
   public void changeState(Cell cell, Cell cloneCell) {
-    int state = cell.getState();
-    System.out.println(cell);
     if(cloneCell.getState()!= EMPTY && (cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size()))) {
-      System.out.println("yo");
-      System.out.println(cell.getState());
       findAndMoveToEmptyCell(cell, cell.getState());
       cell.changeStateAndView(EMPTY, stateColors[EMPTY]);
-      System.out.println(cell.getState());
-      System.out.println(stateColors[cell.getState()]);
     }
+  }
+
+  private List<Cell> getNotEmptyNeighbors(Cell cell) {
+    List<Cell> notEmptyNeighbors = new ArrayList<>();
+    for (Cell neighbor : cell.getNeighbors()) {
+      if (neighbor.getState() != EMPTY) {
+        notEmptyNeighbors.add(neighbor);
+      }
+    }
+    return notEmptyNeighbors;
   }
 
   private void findAndMoveToEmptyCell(Cell cell, int state) {
     List<Cell> cellNeighborsList = cell.getNeighbors();
     List<Cell> emptyNeighborsList = cell.getNeighborsWithState(EMPTY);
-    System.out.println(emptyNeighborsList.size());
     Cell emptyNeighbor = null;
     if (emptyNeighborsList.size() != 0) {
       int random = getRandomIndex(emptyNeighborsList);
@@ -62,9 +65,6 @@ public class  Segregation extends Rules {
     if (emptyNeighborsList.size() == 0) {
       int random2 = getRandomIndex(cellNeighborsList);
       Cell cellNeighbor = cellNeighborsList.get(random2);
-      //List<Cell> cloneNeighbors = cell.getNeighbors();
-      //Cell cloneNeigh = cloneNeighbors.get(random2);
-      //Cell emptyneigh = cellNeighborsList.get(random2);
       findAndMoveToEmptyCell(cellNeighbor,  state);
     }
   }
@@ -75,16 +75,6 @@ public class  Segregation extends Rules {
       random = (int) (Math.random() * givenStateNeighbors.size());
     }
     return random;
-  }
-
-  private List<Cell> getNotEmptyNeighbors(Cell cell) {
-    List<Cell> notEmptyNeighbors = new ArrayList<>();
-    for (Cell neighbor : cell.getNeighbors()) {
-      if (neighbor.getState() != EMPTY) {
-        notEmptyNeighbors.add(neighbor);
-      }
-    }
-    return notEmptyNeighbors;
   }
 
   @Override
