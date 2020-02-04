@@ -1,6 +1,6 @@
-package cellview;
+package display;
 
-import cellmodel.Configuration;
+import cellsociety.Configuration;
 import cellsociety.Simulation;
 import java.io.File;
 import javafx.application.Application;
