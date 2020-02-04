@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.imageio.ImageIO;
@@ -31,7 +33,7 @@ public class UserInterface extends Application {
     private static final String STYLESHEET = "default.css";
     private static final String DEFAULT_LANGUAGE = "English";
     private static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private ResourceBundle myResources;
     private Group UIroot;
@@ -48,6 +50,8 @@ public class UserInterface extends Application {
     public void start(Stage primaryStage) {
         UIroot = new Group();
         UIstage = primaryStage;
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        UIstage.setX(screen.getWidth());
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
         Configuration config;
         if(DEBUG){
@@ -83,7 +87,7 @@ public class UserInterface extends Application {
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
 
         UIroot.getChildren().add(controls);
-        Scene controllerScreen = new Scene(UIroot, 500, 500);
+        Scene controllerScreen = new Scene(UIroot, 500, 80);
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
@@ -156,19 +160,8 @@ public class UserInterface extends Application {
 
 
             final TextField textField = new TextField();
-            final Button submitButton = new Button("Submit");
-            submitButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override public void handle(ActionEvent t) {
-                    if(isValidFile(textField.getText())) {
-                        dialog.close();
-                    }
-                    else{
-                        displayErrorMessage();
-                    }
-                }
-            });
+            final Button submitButton = makeButton("FileChooseCommand", event -> handleFileSubmit(textField.getText(), dialog));
             dialog.setOnCloseRequest(t->stopEverything());
-
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
             final VBox layout = new VBox();
