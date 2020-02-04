@@ -34,6 +34,7 @@ public class UserInterface extends Application {
     private static final String DEFAULT_LANGUAGE = "English";
     private static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
     private static final boolean DEBUG = false;
+    private static final String XMLFOLDER = "XMLFiles/";
 
     private ResourceBundle myResources;
     private Group UIroot;
@@ -53,13 +54,7 @@ public class UserInterface extends Application {
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
         UIstage.setX(screen.getWidth());
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
-        Configuration config;
-        if(DEBUG){
-            config = new Configuration(DEBUG_FILENAME);
-        }
-        else{
-            config = new Configuration(getFileName());
-        }
+        Configuration config = new Configuration(getFileName());
         mySim = config.getInitSim();
         createController();
     }
@@ -70,7 +65,7 @@ public class UserInterface extends Application {
      */
     private String getFileName(){
         FileTextPrompt fileInput = new FileTextPrompt();
-        return fileInput.getResult();
+        return addXMLFileFolder(fileInput.getResult());
     }
 
     /**
@@ -142,6 +137,10 @@ public class UserInterface extends Application {
         container.getChildren().add(makeButton(property, handler));
     }
 
+    private String addXMLFileFolder(String filename){
+        return XMLFOLDER + filename + ".xml";
+    }
+
     /**
      * Class for file input
      */
@@ -201,7 +200,7 @@ public class UserInterface extends Application {
          * @return whether the filename is valid
          */
         private boolean isValidFile(String filename) {
-            File caFile = new File(filename);
+            File caFile = new File(addXMLFileFolder(filename));
             return caFile.exists();
         }
 

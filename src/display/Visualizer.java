@@ -42,6 +42,7 @@ public class Visualizer extends Application {
         myStage.setX(0);
         primaryStage.setScene(myScene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(t->stopEverything());
     }
 
     public void closeWindow(){
@@ -57,7 +58,9 @@ public class Visualizer extends Application {
         myScene = new Scene(grid, CA_WIDTH, CA_HEIGHT, BACKGROUND);
         start(stage);
     }
-
+    private void stopEverything(){
+        System.exit(1);
+    }
 
     public static void main(String[] args) {
         launch(args);
