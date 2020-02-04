@@ -90,7 +90,7 @@ public class PredatorOrPrey extends Rules {
     }*/
     if(fishEaten!=null){
       organismGone(fishEaten);
-      cell.setMoves(numMoves(cell));
+      //cell.setMoves(numMoves(cell));
       moveOtherFish(cell, cloneCell, fishEaten);
     }
 
@@ -137,8 +137,9 @@ public class PredatorOrPrey extends Rules {
     if (waterNeighbor != null) {
       waterNeighbor.changeStateAndView(cell.getState(), stateColors[cell.getState()]);
       organismGone(cell);
-      System.out.println(numMovesSinceEaten(waterNeighbor));
+      //System.out.println(numMovesSinceEaten(waterNeighbor));
 
+      System.out.println(waterNeighbor.getMoves());
       if (waterNeighbor.getState() == shark && waterNeighbor.getMoves() >= sharkDie) {
         System.out.println("die");
         organismGone(waterNeighbor);
@@ -146,14 +147,14 @@ public class PredatorOrPrey extends Rules {
       }
       //if ((waterNeighbor.getState() == fish && numMoves(waterNeighbor) % fishBreed == 0
           //&& numMoves(waterNeighbor) != 0))
-      if ((waterNeighbor.getState()== fish && waterNeighbor.numberOfStateChanges()%fishBreed==0)){
+      if ((waterNeighbor.getState()== fish && waterNeighbor.numberOfStateChanges()%fishBreed==0 && waterNeighbor.numberOfStateChanges()!=0)){
         findWaterCellAndCreateOrganism(waterNeighbor, waterNeighbor.getState());
         System.out.println("fish");
         //System.out.println(waterNeighbor.getMoves());
       }
       //if ((waterNeighbor.getState() == shark && numMoves(waterNeighbor) % sharkBreed == 0
           //&& numMoves(waterNeighbor) != 0)) {
-      if((waterNeighbor.getState()== shark && waterNeighbor.numberOfStateChanges()%sharkBreed==0)){
+      if((waterNeighbor.getState()== shark && waterNeighbor.numberOfStateChanges()%sharkBreed==0 && waterNeighbor.numberOfStateChanges()!=0)){
         System.out.println("shark");
         findWaterCellAndCreateOrganism(waterNeighbor, waterNeighbor.getState());
       }
