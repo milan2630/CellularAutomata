@@ -12,8 +12,8 @@ import javafx.stage.Stage;
 
 public class Visualizer extends Application {
 
-    public static final int CA_WIDTH = 1000; //TODO THIS CAN BE CHANGED LATER
-    public static final int CA_HEIGHT = 1000;
+    public static final int CA_WIDTH = 500; //TODO THIS CAN BE CHANGED LATER
+    public static final int CA_HEIGHT = 500;
     public static final Color BACKGROUND = Color.LAVENDERBLUSH; //TODO THIS CAN BE CHANGED LATER
     public static final double GAP = 190;
 
