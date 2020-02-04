@@ -117,7 +117,7 @@
       <Cell>
         <Row>3</Row>
         <Column>2</Column>
-        <State>1</State>
+        <State></State>
       </Cell>
       <Cell>
         <Row>3</Row>
@@ -127,7 +127,7 @@
       <Cell>
         <Row>3</Row>
         <Column>4</Column>
-        <State>1</State>
+        <State>0</State>
       </Cell>
       <Cell>
         <Row>3</Row>

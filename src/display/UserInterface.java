@@ -33,7 +33,7 @@ public class UserInterface extends Application {
     private static final String STYLESHEET = "default.css";
     private static final String DEFAULT_LANGUAGE = "English";
     private static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private ResourceBundle myResources;
     private Group UIroot;
