@@ -21,7 +21,7 @@ public class PredatorOrPrey extends Rules {
 
 
   /**
-   * Initialize variables, get probability of a tree catching fire from setupParameters
+   * Initialize variables, get probability of various global parameters
    * @param setupParameters
    */
   public PredatorOrPrey(HashMap<String, String> setupParameters){
@@ -39,15 +39,12 @@ public class PredatorOrPrey extends Rules {
    * @param cell cell to be updated
    */
   public void changeState(Cell cell, Cell cloneCell) {
-    //System.out.println(cell);
-    //System.out.println(cell.getMoves());
     if(blacklist.contains(cell)){
       blacklist.remove(cell);
     }
     else{
       int state = cell.getState();
       if(state == SHARK){
-        System.out.println(cell.getX());
         sharkAct(cell);
       }
       else if(state == FISH){
@@ -109,7 +106,6 @@ public class PredatorOrPrey extends Rules {
 
   private void checkFishBirth(Cell fish) {
     if(fish.getState() == FISH && fish.numberOfStateChanges() == fishBreed){
-      System.out.println("ahh");
       createFish(fish);
       fish.setTurnsSinceStateChange(0);
     }
@@ -117,6 +113,8 @@ public class PredatorOrPrey extends Rules {
 
   private void createFish(Cell fish) {
     Cell newfish = new Cell(FISH);
+    newfish.setX(fish.getX());
+    newfish.setY(fish.getY());
     newfish.setTurnsSinceStateChange(-1);
     if(fish.numNeighborsWithGivenState(WATER)>0) {
       determineMove(newfish, fish.getNeighborsWithState(WATER));
@@ -132,6 +130,9 @@ public class PredatorOrPrey extends Rules {
 
   private void createShark(Cell shark) {
     Cell newShark = new Cell(SHARK);
+    newShark.setX(shark.getX());
+    newShark.setY(shark.getY());
+    newShark.setMoves(-1);
     newShark.setTurnsSinceStateChange(-1);
     if(shark.numNeighborsWithGivenState(WATER)>0) {
       determineMove(newShark, shark.getNeighborsWithState(WATER));
