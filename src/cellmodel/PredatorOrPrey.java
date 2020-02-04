@@ -87,7 +87,7 @@ public class PredatorOrPrey extends Rules {
     }
     target.changeStateAndView(source.getState(), STATE_COLORS[source.getState()]);
     target.setMoves(source.getMoves());
-    target.setTurnsSinceStateChange(source.numberOfStateChanges()+1);
+    target.setTurnsSinceStateChange(source.getTurnsSinceStateChanges()+1);
     source.changeStateAndView(WATER, STATE_COLORS[WATER]);
     source.setMoves(0);
 
@@ -97,7 +97,7 @@ public class PredatorOrPrey extends Rules {
 
   //following two methods are
   private void checkBirth(Cell cell) {
-    if((cell.getState() == SHARK && cell.numberOfStateChanges() > sharkBreed) || (cell.getState() == FISH && cell.numberOfStateChanges() > fishBreed)){
+    if((cell.getState() == SHARK && cell.getTurnsSinceStateChanges() > sharkBreed) || (cell.getState() == FISH && cell.getTurnsSinceStateChanges() > fishBreed)){
       createSwimmer(cell);
     }
   }
