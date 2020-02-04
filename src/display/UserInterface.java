@@ -5,6 +5,7 @@ import cellsociety.Simulation;
 import java.io.File;
 import java.util.ResourceBundle;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -156,7 +157,19 @@ public class UserInterface extends Application {
 
 
             final TextField textField = new TextField();
-            final Button submitButton = makeButton("FileChooseCommand", event -> handleFileSubmit(textField.getText(), dialog));
+            final Button submitButton = new Button("Submit");
+            submitButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent t) {
+                    if(isValidFile(textField.getText())) {
+                        dialog.close();
+                    }
+                    else{
+                        displayErrorMessage();
+                    }
+                }
+            });
+            dialog.setOnCloseRequest(t->stopEverything());
+
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
             final VBox layout = new VBox();
@@ -198,6 +211,10 @@ public class UserInterface extends Application {
         private boolean isValidFile(String filename) {
             File caFile = new File(filename);
             return caFile.exists();
+        }
+
+        private void stopEverything(){
+            System.exit(1);
         }
 
         /**

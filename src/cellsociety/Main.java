@@ -1,8 +1,8 @@
 package cellsociety;
 
+
 import display.UserInterface;
 import javafx.application.Application;
-
 
 /**
  * Main class which is run to start the program by launching the user interface
