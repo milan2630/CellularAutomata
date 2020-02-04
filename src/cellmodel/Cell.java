@@ -48,7 +48,7 @@ public class Cell extends Rectangle {
     if (state == myState) {
       turnsSinceStateChange++;
     } else {
-      //turnsSinceStateChange = 0;
+      turnsSinceStateChange = 0;
       myState = state;
       this.setFill(viewColor);
     }
@@ -61,6 +61,9 @@ public class Cell extends Rectangle {
     return turnsSinceStateChange;
   }
 
+  public void setTurnsSinceStateChange(int val){
+    turnsSinceStateChange =val;
+  }
   /**
    * @return the state of the cell
    **/
