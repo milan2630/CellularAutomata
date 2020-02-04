@@ -1,5 +1,6 @@
 package cellmodel;
 
+import cellmodel.rules.Rules;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,7 +21,7 @@ import java.util.HashMap;
  * Class to handle setting up the Board and Simulation from an xml file
  */
 public class Configuration {
-    public static final String RULES_PACKAGE = "cellmodel"; //Package containing the java files for the different simulation types
+    public static final String RULES_PACKAGE = "cellmodel.rules"; //Package containing the java files for the different simulation types
     public static final String RULES_XML_TAG = "Simulation_Type"; //Tag in the XML file that has the simulation type
     public static final String RULES_PARAMETERS_XML_TAG = "Rules_Parameters"; //Tag in the xml file that has the setup parameters
     private Element myXML;

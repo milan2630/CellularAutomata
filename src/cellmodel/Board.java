@@ -1,5 +1,6 @@
 package cellmodel;
 
+import cellmodel.rules.Rules;
 import display.Visualizer;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
