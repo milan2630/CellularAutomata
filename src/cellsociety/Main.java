@@ -5,7 +5,7 @@ import display.UserInterface;
 import javafx.application.Application;
 
 /**
- * Feel free to completely change this code or delete it entirely.
+ * Main class which is run to start the program by launching the user interface
  */
 public class Main {
     public static void main (String[] args) {
