@@ -1,6 +1,5 @@
 package cellmodel;
 
-import java.awt.font.ShapeGraphicAttribute;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +21,8 @@ public class PredatorOrPrey extends Rules {
 
   /**
    * Initialize variables, get probability of various global parameters
+   * get how many cycles it takes for a shark to die, for a shark to be born,
+   * and for a fish to be born
    * @param setupParameters
    */
   public PredatorOrPrey(HashMap<String, String> setupParameters){
@@ -29,9 +30,7 @@ public class PredatorOrPrey extends Rules {
     sharkBreed = Float.parseFloat(setupParameters.get("sharkBreed"));
     sharkDie = Float.parseFloat(setupParameters.get("sharkDie"));
     blacklist = new HashSet<>();
-
   }
-//change the state and put that cell in the previous cells spot
 
   @Override
   /**
@@ -46,27 +45,23 @@ public class PredatorOrPrey extends Rules {
       int state = cell.getState();
       if(state == SHARK){
         sharkAct(cell);
-      }
-      else if(state == FISH){
-        fishAct(cell);
+      } else if(state == FISH){
+        peacefulSwimmerAct(cell);
       }
     }
-
-
   }
 
-  private void fishAct(Cell fish) {
-    if(fish.numNeighborsWithGivenState(WATER) > 0){
-      determineMove(fish, fish.getNeighborsWithState(WATER));
+  private void peacefulSwimmerAct(Cell herbivore) {
+    if(herbivore.numNeighborsWithGivenState(WATER) > 0){
+      determineMove(herbivore, herbivore.getNeighborsWithState(WATER));
     }
   }
 
   private void sharkAct(Cell shark){
     if(shark.numNeighborsWithGivenState(FISH) > 0){
       determineMove(shark, shark.getNeighborsWithState(FISH));
-    }
-    else if(shark.numNeighborsWithGivenState(WATER)>0){
-      determineMove(shark, shark.getNeighborsWithState(WATER));
+    } else {
+      peacefulSwimmerAct(shark);
     }
   }
 
@@ -75,68 +70,47 @@ public class PredatorOrPrey extends Rules {
     moveIntoCell(mover, potentialCells.get(random));
   }
 
-
   private void moveIntoCell(Cell source, Cell target){
-      if(source.getState() == SHARK){
-        if(target.getState() == FISH){
-          source.setMoves(0);
-        }
-        else{
-          source.setMoves(source.getMoves()+1);
-        }
+    if(source.getState() == SHARK){
+      if(target.getState() == FISH){
+        source.setMoves(0);
+      } else {
+        source.setMoves(source.getMoves()+1);
       }
-      if(target.getY() > source.getY()){
+    }
+    if(target.getY() > source.getY()){
+      blacklist.add(target);
+    } else if(target.getY() == source.getY()){
+      if(target.getX() > source.getX()){
         blacklist.add(target);
       }
-      else if(target.getY() == source.getY()){
-        if(target.getX() > source.getX()){
-          blacklist.add(target);
-        }
-      }
-      target.changeStateAndView(source.getState(), STATE_COLORS[source.getState()]);
-      target.setMoves(source.getMoves());
-      target.setTurnsSinceStateChange(source.numberOfStateChanges()+1);
-      source.changeStateAndView(WATER, STATE_COLORS[WATER]);
-      source.setMoves(0);
+    }
+    target.changeStateAndView(source.getState(), STATE_COLORS[source.getState()]);
+    target.setMoves(source.getMoves());
+    target.setTurnsSinceStateChange(source.numberOfStateChanges()+1);
+    source.changeStateAndView(WATER, STATE_COLORS[WATER]);
+    source.setMoves(0);
 
-      checkSharkDeath(target);
-      checkSharkBirth(target);
-      checkFishBirth(target);
+    checkSharkDeath(target);
+    checkBirth(target);
   }
 
-  private void checkFishBirth(Cell fish) {
-    if(fish.getState() == FISH && fish.numberOfStateChanges() == fishBreed){
-      createFish(fish);
-      fish.setTurnsSinceStateChange(0);
+  //following two methods are
+  private void checkBirth(Cell cell) {
+    if((cell.getState() == SHARK && cell.numberOfStateChanges() > sharkBreed) || (cell.getState() == FISH && cell.numberOfStateChanges() > fishBreed)){
+      createSwimmer(cell);
     }
   }
 
-  private void createFish(Cell fish) {
-    Cell newfish = new Cell(FISH);
-    newfish.setX(fish.getX());
-    newfish.setY(fish.getY());
-    newfish.setTurnsSinceStateChange(-1);
-    if(fish.numNeighborsWithGivenState(WATER)>0) {
-      determineMove(newfish, fish.getNeighborsWithState(WATER));
+  private void createSwimmer(Cell swimmer) {
+    Cell newSwimmer = new Cell(swimmer.getState());
+    newSwimmer.setX(swimmer.getX());
+    newSwimmer.setY(swimmer.getY());
+    newSwimmer.setTurnsSinceStateChange(-1);
+    if(swimmer.numNeighborsWithGivenState(WATER)>0) {
+      determineMove(newSwimmer, swimmer.getNeighborsWithState(WATER));
     }
-  }
-
-  private void checkSharkBirth(Cell shark) {
-    if(shark.getState() == SHARK && shark.numberOfStateChanges() > sharkBreed){
-      createShark(shark);
-      shark.setTurnsSinceStateChange(0);
-    }
-  }
-
-  private void createShark(Cell shark) {
-    Cell newShark = new Cell(SHARK);
-    newShark.setX(shark.getX());
-    newShark.setY(shark.getY());
-    newShark.setMoves(-1);
-    newShark.setTurnsSinceStateChange(-1);
-    if(shark.numNeighborsWithGivenState(WATER)>0) {
-      determineMove(newShark, shark.getNeighborsWithState(WATER));
-    }
+    swimmer.setTurnsSinceStateChange(0);
   }
 
   private void checkSharkDeath(Cell shark) {
@@ -149,7 +123,6 @@ public class PredatorOrPrey extends Rules {
     cell.changeStateAndView(WATER, STATE_COLORS[WATER]);
   }
 
-
   private int getRandomIndex(List<Cell> givenStateNeighbors) {
     int random = 0;
     if(givenStateNeighbors.size()!=1) {
@@ -157,8 +130,6 @@ public class PredatorOrPrey extends Rules {
     }
     return random;
   }
-
-
 
   @Override
   /**
