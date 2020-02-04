@@ -15,8 +15,9 @@ public class Percolation extends Rules {
 
   /**
    * Initialize variables, set colors to their respective states
+   * @param setupParameters has no set up parameters
    */
-  public Percolation(HashMap<String, String> parameters){
+  public Percolation(HashMap<String, String> setupParameters){
   }
 
   /**
