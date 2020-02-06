@@ -5,12 +5,12 @@ import java.util.HashMap;
 
 /**
  * Contains the logic for the Percolation CA
- * Water fills empty adjacent cells
+ * Water fills open adjacent cells
  */
 public class Percolation extends Rules {
 
   private static final int NUMBER_OF_POSSIBLE_STATES = 3;
-  private static final int EMPTY = 1;
+  private static final int OPEN = 1;
   private static final int BLOCKED = 2;
   private static final int FILLED = 0;
 
@@ -25,8 +25,8 @@ public class Percolation extends Rules {
   /**
    * given a certain cell, change its state based on percolation rules
    *  filled -> filled
-   *  empty -> empty if no filled neighbors
-   *  empty -> filled if filled neighbors
+   *  open -> open if no filled neighbors
+   *  eopn -> filled if filled neighbors
    *  blocked -> blocked/open depending on response to piazza post
    * @param cell
    * @param cloneCell
@@ -34,7 +34,7 @@ public class Percolation extends Rules {
   @Override
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
-    if(state == EMPTY && cloneCell.numNeighborsWithGivenState(FILLED)>0){
+    if(state == OPEN && cloneCell.numNeighborsWithGivenState(FILLED)>0){
       cell.changeStateAndView(FILLED);
     }
   }

@@ -12,7 +12,7 @@ public class Segregation extends Rules {
 
   private static final int RED = 2;
   private static final int BLUE = 1;
-  private static final int EMPTY = 0;
+  private static final int OPEN = 0;
   private static final int NUMBER_OF_POSSIBLE_STATES = 3;
 
   private float percentSatisfied;
@@ -32,40 +32,40 @@ public class Segregation extends Rules {
    * @param cell cell to be updated
    */
   public void changeState(Cell cell, Cell cloneCell) {
-    if(cloneCell.getState()!= EMPTY && (cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size()))) {
-      findAndMoveToEmptyCell(cell, cell.getState());
-      cell.changeStateAndView(EMPTY);
+    if(cloneCell.getState()!= OPEN && (cloneCell.numNeighborsOfSameState() < (percentSatisfied* getNotOpenNeighbors(cloneCell).size()))) {
+      findAndMoveToOpenCell(cell, cell.getState());
+      cell.changeStateAndView(OPEN);
     }
   }
 
-  private List<Cell> getNotEmptyNeighbors(Cell cell) {
-    List<Cell> notEmptyNeighbors = new ArrayList<>();
+  private List<Cell> getNotOpenNeighbors(Cell cell) {
+    List<Cell> notOpenNeighbors = new ArrayList<>();
     for (Cell neighbor : cell.getNeighbors()) {
-      if (neighbor.getState() != EMPTY) {
-        notEmptyNeighbors.add(neighbor);
+      if (neighbor.getState() != OPEN) {
+        notOpenNeighbors.add(neighbor);
       }
     }
-    return notEmptyNeighbors;
+    return notOpenNeighbors;
   }
 
-  private void findAndMoveToEmptyCell(Cell cell, int state) {
+  private void findAndMoveToOpenCell(Cell cell, int state) {
     List<Cell> cellNeighborsList = cell.getNeighbors();
-    List<Cell> emptyNeighborsList = cell.getNeighborsWithState(EMPTY);
-    Cell emptyNeighbor;
-    if (emptyNeighborsList.size() != 0) {
-      int random = getRandomIndex(emptyNeighborsList);
-      emptyNeighbor = emptyNeighborsList.get(random);
+    List<Cell> openNeighborsList = cell.getNeighborsWithState(OPEN);
+    Cell openNeighbor;
+    if (openNeighborsList.size() != 0) {
+      int random = getRandomIndex(openNeighborsList);
+      openNeighbor = openNeighborsList.get(random);
       for (Cell neighbor : cellNeighborsList) {
-          if (neighbor.equals(emptyNeighbor)) {
+          if (neighbor.equals(openNeighbor)) {
           neighbor.changeStateAndView(state);
           return;
         }
       }
     }
-    if (emptyNeighborsList.size() == 0) {
+    if (openNeighborsList.size() == 0) {
       int random2 = getRandomIndex(cellNeighborsList);
       Cell cellNeighbor = cellNeighborsList.get(random2);
-      findAndMoveToEmptyCell(cellNeighbor,  state);
+      findAndMoveToOpenCell(cellNeighbor,  state);
     }
   }
 

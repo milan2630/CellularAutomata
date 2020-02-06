@@ -12,7 +12,7 @@ public class Fire extends Rules {
 
   private static final int BURNING = 0;
   private static final int TREE = 1;
-  private static final int EMPTY = 2;
+  private static final int GROUND = 2;
   private static final int NUMBER_OF_POSSIBLE_STATES = 3;
 
   private float probCatch;
@@ -38,7 +38,7 @@ public class Fire extends Rules {
       }
       if(state == BURNING){
         //aka it has been more than one round, change it
-        cell.changeStateAndView(EMPTY);
+        cell.changeStateAndView(GROUND);
       }
     }
 
