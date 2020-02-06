@@ -32,9 +32,10 @@ public class UserInterface extends Application {
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
     private static final String STYLESHEET = "default.css";
     private static final String DEFAULT_LANGUAGE = "English";
-    private static final String DEBUG_FILENAME = "XMLFiles/percolation6by6.xml";
-    private static final boolean DEBUG = false;
     private static final String XMLFOLDER = "XMLFiles/";
+    private static final int UI_SCREEN_WIDTH = 500;
+    private static final int UI_SCREEN_HEIGHT = 80;
+    private static final int SPEED_SETTER_WIDTH_MAX = 500;
 
     private ResourceBundle myResources;
     private Group UIroot;
@@ -82,7 +83,7 @@ public class UserInterface extends Application {
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
 
         UIroot.getChildren().add(controls);
-        Scene controllerScreen = new Scene(UIroot, 500, 80);
+        Scene controllerScreen = new Scene(UIroot, UI_SCREEN_WIDTH, UI_SCREEN_HEIGHT);
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
@@ -93,7 +94,7 @@ public class UserInterface extends Application {
      */
     private TextField createSpeedSetter(){
         TextField setter = new TextField();
-        setter.setMaxWidth(50);
+        setter.setMaxWidth(SPEED_SETTER_WIDTH_MAX);
         setter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
         return setter;
     }
@@ -153,7 +154,7 @@ public class UserInterface extends Application {
         FileTextPrompt() {
             final Stage dialog = new Stage();
 
-            dialog.setTitle("Enter File Path");
+            dialog.setTitle(myResources.getString("FileInputPrompt"));
             dialog.initStyle(StageStyle.UTILITY);
             dialog.initModality(Modality.WINDOW_MODAL);
 
