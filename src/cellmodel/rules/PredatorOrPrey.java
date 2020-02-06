@@ -82,9 +82,7 @@ public class PredatorOrPrey extends Rules {
         source.setMoves(source.getMoves()+1);
       }
     }
-    if(target.getRowNumber() > source.getRowNumber()){
-      blacklist.add(target);
-    } else if(target.getRowNumber() == source.getRowNumber() && target.getColNumber() > source.getColNumber()){
+    if(target.getRowNumber() > source.getRowNumber() || (target.getRowNumber() == source.getRowNumber() && target.getColNumber() > source.getColNumber())){
       blacklist.add(target);
     }
     target.changeStateAndView(source.getState());
@@ -97,7 +95,6 @@ public class PredatorOrPrey extends Rules {
     checkBirth(target);
   }
 
-  //following two methods are
   private void checkBirth(Cell cell) {
     if((cell.getState() == SHARK && cell.getTurnsSinceStateChanges() > sharkBreed) || (cell.getState() == FISH && cell.getTurnsSinceStateChanges() > fishBreed)){
       createSwimmer(cell);
