@@ -13,6 +13,7 @@ public class Fire extends Rules {
   private static final int BURNING = 0;
   private static final int TREE = 1;
   private static final int EMPTY = 2;
+  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
 
   private float probCatch;
 
@@ -22,7 +23,7 @@ public class Fire extends Rules {
      */
     public Fire(HashMap<String, String> setupParameters){
       probCatch = Float.parseFloat(setupParameters.get("probCatch"));
-      super.numberOfPossibleStates = 3;
+      super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
     }
     @Override
     /**

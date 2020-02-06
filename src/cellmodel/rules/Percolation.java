@@ -2,7 +2,6 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
-import javafx.scene.paint.Color;
 
 /**
  * Contains the logic for the Percolation CA
@@ -10,20 +9,17 @@ import javafx.scene.paint.Color;
  */
 public class Percolation extends Rules {
 
-  private static final Color FILLED_COLOR = Color.BLUE;
-  private static final Color EMPTY_COLOR = Color.WHITE;
-  private static final Color BLOCKED_COLOR = Color.BLACK;
+  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
   private static final int EMPTY = 1;
   private static final int BLOCKED = 2;
   private static final int FILLED = 0;
-  private static final Color[] STATE_COLORS = {FILLED_COLOR, EMPTY_COLOR, BLOCKED_COLOR};
 
   /**
    * Initialize variables, set colors to their respective states
    * @param setupParameters has no set up parameters
    */
   public Percolation(HashMap<String, String> setupParameters){
-    super.numberOfPossibleStates = 3;
+    super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
   /**
@@ -39,7 +35,7 @@ public class Percolation extends Rules {
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
     if(state == EMPTY && cloneCell.numNeighborsWithGivenState(FILLED)>0){
-      cell.changeStateAndView(FILLED, STATE_COLORS[FILLED]);
+      cell.changeStateAndView(FILLED);
     }
   }
 
@@ -51,15 +47,4 @@ public class Percolation extends Rules {
   public boolean areCornersNeighbors(){
     return false;
   }
-
-  /**
-   * Return a color given a certain state, used for setting up the initial board
-   * @param state state to get the color of
-   * @return color associated with state
-   */
-  @Override
-  public Color getStateColor(int state) {
-    return STATE_COLORS[state];
-  }
-
 }

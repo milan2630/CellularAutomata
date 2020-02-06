@@ -16,6 +16,7 @@ public class PredatorOrPrey extends Rules {
   private static final int WATER = 0;
   private static final int FISH = 1;
   private static final int SHARK = 2;
+  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
   private float fishBreed;
   private float sharkBreed;
   private float sharkDie;
@@ -28,11 +29,11 @@ public class PredatorOrPrey extends Rules {
    * @param setupParameters
    */
   public PredatorOrPrey(HashMap<String, String> setupParameters){
-    fishBreed = Float.parseFloat(setupParameters.get("fishBreed"));
+    fishBreed = Float.parseFloat(setupParameters.get("fishBreed")); //TODO change these to saved things
     sharkBreed = Float.parseFloat(setupParameters.get("sharkBreed"));
     sharkDie = Float.parseFloat(setupParameters.get("sharkDie"));
     blacklist = new HashSet<>();
-    super.numberOfPossibleStates = 3;
+    super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
   @Override
