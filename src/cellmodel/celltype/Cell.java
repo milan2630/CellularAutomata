@@ -11,6 +11,7 @@ public class Cell extends Rectangle {
   private int myState;
   private int turnsSinceStateChange;
   private List<Cell> myNeighbors;
+ // private Type shape;
   private int myMoves;
 
   /**
@@ -47,7 +48,9 @@ public class Cell extends Rectangle {
     } else {
       turnsSinceStateChange = 0;
       myState = state;
-      this.setFill(viewColor);
+      if(viewColor != null){
+        this.setFill(viewColor);
+      }
     }
   }
   /**
