@@ -4,7 +4,6 @@ import cellmodel.celltype.Cell;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import javafx.scene.paint.Color;
 
 /**
  * Rules class containing logic for PredatorOrPrey CA;
@@ -13,18 +12,15 @@ import javafx.scene.paint.Color;
  * sharks die after a certain number of turns
  */
 public class PredatorOrPrey extends Rules {
-  public static final Color WATER_COLOR = Color.BLUE;
-  public static final Color FISH_COLOR = Color.GREEN;
-  public static final Color SHARK_COLOR = Color.YELLOW;
+
   private static final int WATER = 0;
   private static final int FISH = 1;
   private static final int SHARK = 2;
-  private static final Color[] STATE_COLORS = {WATER_COLOR, FISH_COLOR, SHARK_COLOR};
+  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
   private float fishBreed;
   private float sharkBreed;
   private float sharkDie;
   private HashSet<Cell> blacklist;
-
 
   /**
    * Initialize variables, get probability of various global parameters
@@ -33,10 +29,11 @@ public class PredatorOrPrey extends Rules {
    * @param setupParameters
    */
   public PredatorOrPrey(HashMap<String, String> setupParameters){
-    fishBreed = Float.parseFloat(setupParameters.get("fishBreed"));
+    fishBreed = Float.parseFloat(setupParameters.get("fishBreed")); //TODO change these to saved things
     sharkBreed = Float.parseFloat(setupParameters.get("sharkBreed"));
     sharkDie = Float.parseFloat(setupParameters.get("sharkDie"));
     blacklist = new HashSet<>();
+    super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
   @Override
@@ -85,24 +82,19 @@ public class PredatorOrPrey extends Rules {
         source.setMoves(source.getMoves()+1);
       }
     }
-    if(target.getY() > source.getY()){
+    if(target.getRowNumber() > source.getRowNumber() || (target.getRowNumber() == source.getRowNumber() && target.getColNumber() > source.getColNumber())){
       blacklist.add(target);
-    } else if(target.getY() == source.getY()){
-      if(target.getX() > source.getX()){
-        blacklist.add(target);
-      }
     }
-    target.changeStateAndView(source.getState(), STATE_COLORS[source.getState()]);
+    target.changeStateAndView(source.getState());
     target.setMoves(source.getMoves());
     target.setTurnsSinceStateChange(source.getTurnsSinceStateChanges()+1);
-    source.changeStateAndView(WATER, STATE_COLORS[WATER]);
+    source.changeStateAndView(WATER);
     source.setMoves(0);
 
     checkSharkDeath(target);
     checkBirth(target);
   }
 
-  //following two methods are
   private void checkBirth(Cell cell) {
     if((cell.getState() == SHARK && cell.getTurnsSinceStateChanges() > sharkBreed) || (cell.getState() == FISH && cell.getTurnsSinceStateChanges() > fishBreed)){
       createSwimmer(cell);
@@ -110,9 +102,7 @@ public class PredatorOrPrey extends Rules {
   }
 
   private void createSwimmer(Cell swimmer) {
-    Cell newSwimmer = new Cell(swimmer.getState());
-    newSwimmer.setX(swimmer.getX());
-    newSwimmer.setY(swimmer.getY());
+    Cell newSwimmer = new Cell(swimmer.getState(), swimmer.getRowNumber(), swimmer.getColNumber());
     newSwimmer.setTurnsSinceStateChange(-1);
     if(swimmer.numNeighborsWithGivenState(WATER)>0) {
       determineMove(newSwimmer, swimmer.getNeighborsWithState(WATER));
@@ -127,15 +117,7 @@ public class PredatorOrPrey extends Rules {
   }
 
   private void organismGone(Cell cell) {
-    cell.changeStateAndView(WATER, STATE_COLORS[WATER]);
-  }
-
-  private int getRandomIndex(List<Cell> givenStateNeighbors) {
-    int random = 0;
-    if(givenStateNeighbors.size()!=1) {
-      random = (int) (Math.random() * givenStateNeighbors.size());
-    }
-    return random;
+    cell.changeStateAndView(WATER);
   }
 
   @Override
@@ -143,20 +125,8 @@ public class PredatorOrPrey extends Rules {
    * returns whether or not a corner of a cell is a neighbor
    * @return true; in predator or prey, they are
    */
-  public  boolean areCornersNeighbors(){
+  public boolean areCornersNeighbors(){
     return true;
   }
 
-  @Override
-  /**
-   * gets the color for a cell that is created with a certain state
-   * so that the board can be created
-   * @param state
-   * @return color of the state, or if it's not a valid state white
-   */
-  public Color getStateColor(int state){
-    if(state >=0 && state <=3)
-      return STATE_COLORS[state];
-    else return Color.WHITE;
-  }
 }

@@ -2,7 +2,6 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
-import javafx.scene.paint.Color;
 
 /**
  * Contains logic for Fire CA
@@ -11,14 +10,10 @@ import javafx.scene.paint.Color;
  */
 public class Fire extends Rules {
 
-    private static final Color BURNING_COLOR = Color.DARKRED;
-    private static final Color TREE_COLOR = Color.GREEN;
-    private static final Color EMPTY_COLOR = Color.YELLOW;
-    private static final int BURNING = 0;
-    private static final int TREE = 1;
-    private static final int EMPTY = 2;
-    private static final Color[] STATE_COLORS = {BURNING_COLOR, TREE_COLOR, EMPTY_COLOR};
-
+  private static final int BURNING = 0;
+  private static final int TREE = 1;
+  private static final int GROUND = 2;
+  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
 
   private float probCatch;
 
@@ -28,6 +23,7 @@ public class Fire extends Rules {
      */
     public Fire(HashMap<String, String> setupParameters){
       probCatch = Float.parseFloat(setupParameters.get("probCatch"));
+      super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
     }
     @Override
     /**
@@ -38,11 +34,11 @@ public class Fire extends Rules {
       int state = cell.getState();
 
       if(state == TREE && cloneCell.numNeighborsWithGivenState(BURNING)>0 && treeBurns()) {
-        cell.changeStateAndView(BURNING, STATE_COLORS[BURNING]);
+        cell.changeStateAndView(BURNING);
       }
-      if(state == BURNING){// && cell.numberOfStateChanges()>0){
+      if(state == BURNING){
         //aka it has been more than one round, change it
-        cell.changeStateAndView(EMPTY, STATE_COLORS[EMPTY]);
+        cell.changeStateAndView(GROUND);
       }
     }
 
@@ -59,16 +55,4 @@ public class Fire extends Rules {
       return false;
     }
 
-    @Override
-    /**
-     * gets the color for a cell that is created with a certain state
-     * so that the board can be created
-     * @param state
-     * @return color of the state, or if it's not a valid state white
-     */
-    public Color getStateColor(int state){
-      if(state >=0 && state <=3)
-        return STATE_COLORS[state];
-      else return Color.WHITE;
-    }
 }

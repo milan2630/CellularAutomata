@@ -5,19 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javafx.scene.paint.Color;
 /**
  * Moves red and blue cells into white cells until the red and blue cells are surrounded by a given percentage of neighbors that are the same color as themselves
  **/
 public class Segregation extends Rules {
 
-  public static final Color RED_COLOR = Color.RED;
-  public static final Color BlUE_COLOR = Color.BLUE;
-  public static final Color EMPTY_COLOR = Color.WHITE;
   private static final int RED = 2;
   private static final int BLUE = 1;
-  private static final int EMPTY = 0;
-  private static final Color[] stateColors = {EMPTY_COLOR, BlUE_COLOR, RED_COLOR};
+  private static final int OPEN = 0;
+  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
 
   private float percentSatisfied;
 
@@ -27,6 +23,7 @@ public class Segregation extends Rules {
    */
   public Segregation(HashMap<String, String> setupParameters){
     percentSatisfied = Float.parseFloat(setupParameters.get("percentSatisfied"));
+    super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
   @Override
@@ -35,45 +32,41 @@ public class Segregation extends Rules {
    * @param cell cell to be updated
    */
   public void changeState(Cell cell, Cell cloneCell) {
-    if(cloneCell.getState()!= EMPTY && (cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size()))) {
-      findAndMoveToEmptyCell(cell, cell.getState());
-      cell.changeStateAndView(EMPTY, stateColors[EMPTY]);
+    if(cloneCell.getState()!= OPEN && (cloneCell.numNeighborsOfSameState() < (percentSatisfied* getNotOpenNeighbors(cloneCell).size()))) {
+      findAndMoveToOpenCell(cell, cell.getState());
+      cell.changeStateAndView(OPEN);
     }
   }
 
-  private List<Cell> getNotEmptyNeighbors(Cell cell) {
-    List<Cell> notEmptyNeighbors = new ArrayList<>();
+  private List<Cell> getNotOpenNeighbors(Cell cell) {
+    List<Cell> notOpenNeighbors = new ArrayList<>();
     for (Cell neighbor : cell.getNeighbors()) {
-      if (neighbor.getState() != EMPTY) {
-        notEmptyNeighbors.add(neighbor);
+      if (neighbor.getState() != OPEN) {
+        notOpenNeighbors.add(neighbor);
       }
     }
-    return notEmptyNeighbors;
+    return notOpenNeighbors;
   }
 
-  private void findAndMoveToEmptyCell(Cell cell, int state) {
+  private void findAndMoveToOpenCell(Cell cell, int state) {
     List<Cell> cellNeighborsList = cell.getNeighbors();
-    List<Cell> emptyNeighborsList = cell.getNeighborsWithState(EMPTY);
-    Cell emptyNeighbor = null;
-    if (emptyNeighborsList.size() != 0) {
-      int random = getRandomIndex(emptyNeighborsList);
-      emptyNeighbor = emptyNeighborsList.get(random);
-      emptyNeighbor.changeStateAndView(state, stateColors[state]);
-      return;
+    List<Cell> openNeighborsList = cell.getNeighborsWithState(OPEN);
+    Cell openNeighbor;
+    if (openNeighborsList.size() != 0) {
+      int random = getRandomIndex(openNeighborsList);
+      openNeighbor = openNeighborsList.get(random);
+      for (Cell neighbor : cellNeighborsList) {
+          if (neighbor.equals(openNeighbor)) {
+          neighbor.changeStateAndView(state);
+          return;
+        }
+      }
     }
-    else {
+    if (openNeighborsList.size() == 0) {
       int random2 = getRandomIndex(cellNeighborsList);
       Cell cellNeighbor = cellNeighborsList.get(random2);
-      findAndMoveToEmptyCell(cellNeighbor,  state);
+      findAndMoveToOpenCell(cellNeighbor,  state);
     }
-  }
-
-  private int getRandomIndex(List<Cell> givenStateNeighbors) {
-    int random=0;
-    if(givenStateNeighbors.size()!=1) {
-      random = (int) (Math.random() * givenStateNeighbors.size());
-    }
-    return random;
   }
 
   @Override
@@ -85,16 +78,4 @@ public class Segregation extends Rules {
     return true;
   }
 
-  @Override
-  /**
-   * gets the color for a cell that is created with a certain state
-   * so that the board can be created
-   * @param state
-   * @return color of the state, or if it's not a valid state black
-   */
-  public Color getStateColor(int state){
-    if(state >=0 && state <=3)
-      return stateColors[state];
-    else return Color.BLACK;
-  }
 }

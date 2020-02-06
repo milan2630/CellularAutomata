@@ -1,12 +1,14 @@
 package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
-import javafx.scene.paint.Color;
+import java.util.List;
 
 /**
  * abstract class; easy to add another CA simulation from this class
  */
 abstract public class Rules {
+
+  protected int numberOfPossibleStates;
 
   /**
    * Change the state of a cell to the next one based on its state and the states of its neighbors
@@ -20,9 +22,15 @@ abstract public class Rules {
    */
   abstract public boolean areCornersNeighbors();
 
-  /**
-   * @param state
-   * @return the color associated with a given state for this simulation type
-   */
-  abstract public Color getStateColor(int state);
+  public int getNumberOfPossibleStates(){
+    return numberOfPossibleStates;
+  }
+
+  protected int getRandomIndex(List<Cell> givenStateNeighbors) {
+    int random = 0;
+    if(givenStateNeighbors.size()!=1) {
+      random = (int) (Math.random() * givenStateNeighbors.size());
+    }
+    return random;
+  }
 }
