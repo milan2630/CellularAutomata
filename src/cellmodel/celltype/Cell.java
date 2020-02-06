@@ -1,4 +1,4 @@
-package cellmodel;
+package cellmodel.celltype;
 
 import java.util.*;
 import javafx.scene.paint.Color;

@@ -1,6 +1,6 @@
 package cellmodel.rules;
 
-import cellmodel.Cell;
+import cellmodel.celltype.Cell;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
