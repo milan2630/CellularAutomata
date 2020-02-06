@@ -1,56 +1,44 @@
 package cellmodel.celltype;
 
 import java.util.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
 /**
  * creates a cell object that extends rectangle, has an associated state, a list of neighbors, and a number of moves
  **/
-public class Cell extends Rectangle {
+public class Cell{
 
   private int myState;
   private int turnsSinceStateChange;
   private List<Cell> myNeighbors;
  // private Type shape;
   private int myMoves;
+  private int rowNumber;
+  private int colNumber;
 
   /**
    * constructor to create a cell takes in the number of columns, rows, and the rules
-   *  @param initState  initial state of the cell
-   * @param cellWidth  width of the cell
-   * @param cellHeight height of the cell
+   * @param initState  initial state of the cell
+   *
    **/
-  public Cell(int initState, double cellWidth, double cellHeight) {
-    super(cellWidth, cellHeight);
+  public Cell(int initState, int row, int col) {
     myState = initState;
     myNeighbors = new ArrayList<Cell>();
     myMoves = 0;
-  }
-
-  /**
-   * constuctor to create a cell where state information is important, but nothing else used
-   * specifically for clone cells
-   * @param initState state to set the cell to
-   */
-  public Cell(int initState) {
-    this(initState, 0, 0);
+    rowNumber = row;
+    colNumber = col;
   }
 
   /**
    * changes the state and color of the cell increments or resets turnsSinceStateChange takes in the
    * number of columns, rows, and the rules
    * @param state     state that the cell is changing to
-   * @param viewColor color that the cell is changing to
    **/
-  public void changeStateAndView(int state, Color viewColor) {
+  public void changeStateAndView(int state) {
     if (state == myState) {
       turnsSinceStateChange++;
     } else {
       turnsSinceStateChange = 0;
       myState = state;
-      if(viewColor != null){
-        this.setFill(viewColor);
-      }
     }
   }
   /**
@@ -71,6 +59,22 @@ public class Cell extends Rectangle {
    **/
   public int getState() {
     return myState;
+  }
+
+  /**
+   * get the row the cell is in
+   * @return rowNumber
+   */
+  public int getRowNumber(){
+    return rowNumber;
+  }
+
+  /**
+   * get the column the cell is in
+   * @return colNumber
+   */
+  public int getColNumber(){
+    return colNumber;
   }
 
   /**
@@ -153,21 +157,5 @@ public class Cell extends Rectangle {
    **/
   public void setMoves(int moves) {
     myMoves = moves;
-  }
-
-
-  /**
-   * overrides the equals system to set two cells with the same position as equal to each other
-   * @param obj takes in an object to then later make an instance of a Cell
-   **/
-  @Override
-  public boolean equals (Object obj){
-    if (obj instanceof Cell){
-      Cell cell = (Cell) obj;
-      return cell.getX()==this.getX() && cell.getY()==this.getY();
-    }
-    else{
-      return false;
-    }
   }
 }
