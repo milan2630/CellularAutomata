@@ -84,10 +84,8 @@ public class PredatorOrPrey extends Rules {
     }
     if(target.getRowNumber() > source.getRowNumber()){
       blacklist.add(target);
-    } else if(target.getRowNumber() == source.getRowNumber()){
-      if(target.getColNumber() > source.getColNumber()){
-        blacklist.add(target);
-      }
+    } else if(target.getRowNumber() == source.getRowNumber() && target.getColNumber() > source.getColNumber()){
+      blacklist.add(target);
     }
     target.changeStateAndView(source.getState());
     target.setMoves(source.getMoves());
