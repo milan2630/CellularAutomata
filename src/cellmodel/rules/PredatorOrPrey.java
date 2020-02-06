@@ -20,7 +20,7 @@ public class PredatorOrPrey extends Rules {
   private float sharkBreed;
   private float sharkDie;
   private HashSet<Cell> blacklist;
-  
+
   /**
    * Initialize variables, get probability of various global parameters
    * get how many cycles it takes for a shark to die, for a shark to be born,
