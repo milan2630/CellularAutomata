@@ -23,6 +23,7 @@ public class GameOfLife extends Rules {
    * @param setupParameters has no setup parameters for Game of Life
    */
   public GameOfLife(HashMap<String, String> setupParameters){
+    super.numberOfPossibleStates = 2;
   }
 
   @Override

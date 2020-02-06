@@ -28,6 +28,7 @@ public class Fire extends Rules {
      */
     public Fire(HashMap<String, String> setupParameters){
       probCatch = Float.parseFloat(setupParameters.get("probCatch"));
+      super.numberOfPossibleStates = 3;
     }
     @Override
     /**
@@ -66,9 +67,10 @@ public class Fire extends Rules {
      * @param state
      * @return color of the state, or if it's not a valid state white
      */
-    public Color getStateColor(int state){
-      if(state >=0 && state <=3)
+    public Color getStateColor(int state) {
+      if (state >= 0 && state <= 3)
         return STATE_COLORS[state];
-      else return Color.WHITE;
+      else
+        return Color.WHITE;
     }
 }

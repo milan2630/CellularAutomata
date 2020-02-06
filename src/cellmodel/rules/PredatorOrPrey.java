@@ -37,6 +37,7 @@ public class PredatorOrPrey extends Rules {
     sharkBreed = Float.parseFloat(setupParameters.get("sharkBreed"));
     sharkDie = Float.parseFloat(setupParameters.get("sharkDie"));
     blacklist = new HashSet<>();
+    super.numberOfPossibleStates = 3;
   }
 
   @Override

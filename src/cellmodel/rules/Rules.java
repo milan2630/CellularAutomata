@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
  */
 abstract public class Rules {
 
+  protected int numberOfPossibleStates;
+
   /**
    * Change the state of a cell to the next one based on its state and the states of its neighbors
    * @param cell the cell to change
@@ -25,4 +27,8 @@ abstract public class Rules {
    * @return the color associated with a given state for this simulation type
    */
   abstract public Color getStateColor(int state);
+
+  public int getNumberOfPossibleStates(){
+    return numberOfPossibleStates;
+  }
 }

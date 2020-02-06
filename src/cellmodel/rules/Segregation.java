@@ -27,6 +27,7 @@ public class Segregation extends Rules {
    */
   public Segregation(HashMap<String, String> setupParameters){
     percentSatisfied = Float.parseFloat(setupParameters.get("percentSatisfied"));
+    super.numberOfPossibleStates = 3;
   }
 
   @Override
