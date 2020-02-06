@@ -58,14 +58,10 @@ public class Segregation extends Rules {
     if (emptyNeighborsList.size() != 0) {
       int random = getRandomIndex(emptyNeighborsList);
       emptyNeighbor = emptyNeighborsList.get(random);
-      for (Cell neighbor : cellNeighborsList) {
-          if (neighbor.equals(emptyNeighbor)) {
-          neighbor.changeStateAndView(state, stateColors[state]);
-          return;
-        }
-      }
+      emptyNeighbor.changeStateAndView(state, stateColors[state]);
+      return;
     }
-    if (emptyNeighborsList.size() == 0) {
+    else {
       int random2 = getRandomIndex(cellNeighborsList);
       Cell cellNeighbor = cellNeighborsList.get(random2);
       findAndMoveToEmptyCell(cellNeighbor,  state);
