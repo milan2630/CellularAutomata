@@ -5,19 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javafx.scene.paint.Color;
 /**
  * Moves red and blue cells into white cells until the red and blue cells are surrounded by a given percentage of neighbors that are the same color as themselves
  **/
 public class Segregation extends Rules {
 
-  public static final Color RED_COLOR = Color.RED;
-  public static final Color BlUE_COLOR = Color.BLUE;
-  public static final Color EMPTY_COLOR = Color.WHITE;
   private static final int RED = 2;
   private static final int BLUE = 1;
   private static final int EMPTY = 0;
-  private static final Color[] stateColors = {EMPTY_COLOR, BlUE_COLOR, RED_COLOR};
+  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
 
   private float percentSatisfied;
 
@@ -27,7 +23,7 @@ public class Segregation extends Rules {
    */
   public Segregation(HashMap<String, String> setupParameters){
     percentSatisfied = Float.parseFloat(setupParameters.get("percentSatisfied"));
-    super.numberOfPossibleStates = 3;
+    super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
   @Override
@@ -38,7 +34,7 @@ public class Segregation extends Rules {
   public void changeState(Cell cell, Cell cloneCell) {
     if(cloneCell.getState()!= EMPTY && (cloneCell.numNeighborsOfSameState() < (percentSatisfied*getNotEmptyNeighbors(cloneCell).size()))) {
       findAndMoveToEmptyCell(cell, cell.getState());
-      cell.changeStateAndView(EMPTY, stateColors[EMPTY]);
+      cell.changeStateAndView(EMPTY);
     }
   }
 
@@ -55,13 +51,13 @@ public class Segregation extends Rules {
   private void findAndMoveToEmptyCell(Cell cell, int state) {
     List<Cell> cellNeighborsList = cell.getNeighbors();
     List<Cell> emptyNeighborsList = cell.getNeighborsWithState(EMPTY);
-    Cell emptyNeighbor = null;
+    Cell emptyNeighbor;
     if (emptyNeighborsList.size() != 0) {
       int random = getRandomIndex(emptyNeighborsList);
       emptyNeighbor = emptyNeighborsList.get(random);
       for (Cell neighbor : cellNeighborsList) {
           if (neighbor.equals(emptyNeighbor)) {
-          neighbor.changeStateAndView(state, stateColors[state]);
+          neighbor.changeStateAndView(state);
           return;
         }
       }
@@ -73,14 +69,6 @@ public class Segregation extends Rules {
     }
   }
 
-  private int getRandomIndex(List<Cell> givenStateNeighbors) {
-    int random=0;
-    if(givenStateNeighbors.size()!=1) {
-      random = (int) (Math.random() * givenStateNeighbors.size());
-    }
-    return random;
-  }
-
   @Override
   /**
    * Does this CA simulation count the corners as neighbors?
@@ -90,16 +78,4 @@ public class Segregation extends Rules {
     return true;
   }
 
-  @Override
-  /**
-   * gets the color for a cell that is created with a certain state
-   * so that the board can be created
-   * @param state
-   * @return color of the state, or if it's not a valid state black
-   */
-  public Color getStateColor(int state){
-    if(state >=0 && state <=3)
-      return stateColors[state];
-    else return Color.BLACK;
-  }
 }
