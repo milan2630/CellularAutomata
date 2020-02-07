@@ -33,13 +33,12 @@ public class Visualizer extends Application {
      * Constructor, creates a scene, a stage, and then set the stage to that scene
      */
     public Visualizer(int cellCorners) {
-        grid = new GridPane();
-        grid.setHgap(GAP);
-        grid.setVgap(GAP);
+        makeNewGrid();
         xPos = 0;
         yPos = 0;
         width = 0;
         height = 0;
+        myStage = new Stage();
         cellCornerNumber = cellCorners;
     }
 
@@ -49,11 +48,16 @@ public class Visualizer extends Application {
      */
     @Override
     public void start(Stage primaryStage){
-        myStage = primaryStage;
         myStage.setX(0);
-        primaryStage.setScene(myScene);
-        primaryStage.show();
-        primaryStage.setOnCloseRequest(t->stopEverything());
+        myStage.setScene(myScene);
+        myStage.show();
+        myStage.setOnCloseRequest(t->stopEverything());
+    }
+
+    private void makeNewGrid(){
+        grid = new GridPane();
+        grid.setHgap(GAP);
+        grid.setVgap(GAP);
     }
 
     /**
@@ -66,12 +70,13 @@ public class Visualizer extends Application {
     /**
      *  Change the display
      */
-    public void displayBoard(Board board, Stage stage){
+    public void displayBoard(Board board){
+        makeNewGrid();
         grid.getChildren().addAll(getBoardView(board));
         myScene = new Scene(grid, CA_WIDTH, CA_HEIGHT, BACKGROUND);
         width = getIndividualCellWidth(board);
         height = getIndividualCellHeight(board);
-        start(stage);
+        start(new Stage());
     }
 
     private void stopEverything(){

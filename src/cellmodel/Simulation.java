@@ -4,7 +4,6 @@ import display.Visualizer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -19,13 +18,14 @@ public class Simulation {
   private Timeline animation;
   private double millisecondDelay;
   /**
-   * constructor that takes in a starting board and starts running the simulation
+   * constructor that takes in a starting board, and number or corners in the cell shape
+   * and starts running the simulation
    * @param board incoming board
    */
-  public Simulation(Board board){
+  public Simulation(Board board, int numCornersOnACell){
     myBoard = board;
-    myVisualizer = new Visualizer();
-    myVisualizer.begin(board.boardView(), new Stage());
+    myVisualizer = new Visualizer(numCornersOnACell);
+    myVisualizer.displayBoard(board);
     setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
     animation = new Timeline();
     animation.setCycleCount(Animation.INDEFINITE);
@@ -65,6 +65,7 @@ public class Simulation {
    */
   public void step() {
     myBoard.updateBoard();
+    myVisualizer.displayBoard(myBoard);
   }
 
   /**
