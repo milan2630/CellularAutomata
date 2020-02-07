@@ -18,7 +18,7 @@ public class Visualizer extends Application {
     public static final double CA_HEIGHT = 500;
     public static final Color BACKGROUND = Color.LAVENDERBLUSH;
     public static final double GAP = 190;
-    public static final int TRIANGLE_CORNER_COUNT = 3;
+    public static final int TRIANGLE_CORNER_COUNT = 3; // a triangle has three corners
 
     private Scene myScene;
     private GridPane grid;
