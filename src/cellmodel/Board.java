@@ -151,5 +151,21 @@ public class Board{
     myCells[row][col].setFill(myRules.getStateColor(state));
     myCells[row][col].setState(state);
   }
+
+  /**
+   * Return the number of rows in the board
+   * @return myRows
+   */
+  public int getNumRows(){
+    return myRows;
+  }
+
+  /**
+   * Return the number of columns in the board
+   * @return myCols
+   */
+  public int getNumCols(){
+    return myCols;
+  }
 }
 
