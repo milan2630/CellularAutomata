@@ -2,9 +2,6 @@ package cellmodel;
 
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
-import display.Visualizer;
-import javafx.scene.Group;
-import javafx.scene.paint.Color;
 
 /**
  * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
@@ -14,9 +11,6 @@ public class Board{
   private Cell[][] cloneCells;
   private int myRows;
   private int myCols;
-  private double cellHeight;
-  private double cellWidth;
-  private Group root;
   private Rules myRules;
   private boolean buildingInitialBoard;
 
@@ -28,18 +22,14 @@ public class Board{
    * @param rules rules of the simulation
    **/
   public Board(int numCols, int numRows, Rules rules) {
-    root = new Group();
-    myRules=rules;
+    myRules = rules;
     myCells = new Cell[numRows][numCols];
     cloneCells = new Cell[numRows][numCols];
     myRows = numRows;
     myCols = numCols;
-    cellWidth = getIndividualWidth(numCols);
-    cellHeight = getIndividualHeight(numRows);
     buildingInitialBoard = true;
     buildBoard(myCells);
     buildingInitialBoard = false;
-    addCellsToRoot();
   }
 
   private void buildBoard(Cell[][] cells){
@@ -47,31 +37,17 @@ public class Board{
       for (int col = 0; col < myCols; col++) {
         Cell myCell;
         if(buildingInitialBoard){
-          myCell = new Cell(0, cellWidth, cellHeight);
-        } else{
+          myCell = new Cell(0, row, col);
+        } else {
+          //creating a clone board
           Cell cellToCopyFrom = myCells[row][col];
-          myCell = new Cell(cellToCopyFrom.getState());
+          //we want a copy of the cell, NOT THE SAME OBJECT
+          myCell = new Cell(cellToCopyFrom.getState(), row, col);
         }
         cells[row][col] = myCell;
-        setCellPosition(myCell, row, col);
       }
     }
     addNeighborsToCells(cells);
-  }
-
-  private double getIndividualHeight(int numCellsInCol) {
-    return (1.0 * Visualizer.CA_HEIGHT) / numCellsInCol;
-  }
-
-  private double getIndividualWidth(int numCellsInRow) {
-    return (1.0 * Visualizer.CA_WIDTH) / numCellsInRow;
-  }
-
-  // has to be changed to take into account the edges
-  private void setCellPosition(Cell cell, int row, int col) {
-    cell.setX(cellWidth*col);
-    cell.setY(cellHeight*row);
-    cell.setStroke(Color.WHITE);
   }
 
   private void addNeighborsToCells(Cell[][] cells) {
@@ -127,28 +103,12 @@ public class Board{
   }
 
   /**
-   * @return group to set the scene/ stage
-   */
-  public Group boardView() {
-    return root;
-  }
-
-  private void addCellsToRoot() {
-    for (Cell[] cell_row : myCells) {
-      for (Cell cell : cell_row) {
-        root.getChildren().add(cell);
-      }
-    }
-  }
-
-  /**
    * fills the cells with the appropriate colors and sets the state of the cell
    * @param state state of cell
    * @param row row position of cell
    * @param col column position of cell
    */
   public void updateCell(int state, int row, int col){
-    myCells[row][col].setFill(myRules.getStateColor(state));
     myCells[row][col].setState(state);
   }
 
