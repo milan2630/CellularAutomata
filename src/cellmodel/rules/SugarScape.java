@@ -2,7 +2,6 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
-import javafx.scene.paint.Color;
 
 public class SugarScape extends Rules {
 

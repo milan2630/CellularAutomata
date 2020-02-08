@@ -2,7 +2,6 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
-import javafx.scene.paint.Color;
 
 public class LangtonsLoop extends Rules {
 
@@ -15,5 +14,4 @@ public class LangtonsLoop extends Rules {
   public boolean areCornersNeighbors() {
     return false;
   }
-
 }
