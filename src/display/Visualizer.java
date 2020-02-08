@@ -99,15 +99,29 @@ public class Visualizer extends Application {
         int rowCounter = 0;
         for(Integer i : states){
             //pointy up switches, color comes from css file, xPos and yPos increment by cell width and height respectively
-            if(cellCornerNumber == 3) {xPos+=width/2;}
-            else{xPos+=width;}
-            if(colCounter == board.getNumCols() || colCounter==0){
+            //if(cellCornerNumber == 3) {xPos+=width/2;}
+            //else{xPos+=width;}
+
+            if(colCounter == board.getNumCols()){
                 xPos = 0;
                 rowCounter++;
                 yPos += height;
                 colCounter = 0;
             }
-            pointyUp = !pointyUp;
+            if(colCounter%2==0) {
+                xPos += width;
+            }
+            else{
+                xPos += width/2;
+            }
+            if(colCounter == 0){
+                xPos = 0;
+            }
+            if(colCounter%2==rowCounter%2){
+                pointyUp = true;
+            } else {
+                pointyUp = false;
+            }
             Color color = Color.GREEN;
             if(i == 2) color = Color.BLACK;
             if(i == 1) color = Color.WHITE;
