@@ -29,17 +29,35 @@ public class ForagingAnts extends Rules {
     List<Cell> movableNeighbors = findNeighborOptions(cell, true);
     Cell cellWithMaxPheromone = findMaxPheromone(movableNeighbors);
     if(cellWithMaxPheromone!=null) {
-      cellWithMaxPheromone.changeStateAndView(ANT);
+      cellWithMaxPheromone.changeStateAndView(ANTHASFOOD);
       cell.changeStateAndView(OPEN);
       setPheromone(cell, getPheromone(cell) + pheromoneReturningFromFood);
     }
   }
 
   private void AntFindFoodSource(Cell cell) {
+    if (cell.getNeighborsWithState(FOOD).size()>0){
+      antEatsFood(cell);
+    }
+    else{
+      antMovesTowardFood(cell);
+    }
+  }
+
+  private void antEatsFood(Cell cell){
+    List <Cell> foodNeighbors = cell.getNeighborsWithState(FOOD);
+    int random = getRandomIndex(foodNeighbors);
+    Cell food = foodNeighbors.get(random);
+    food.changeStateAndView(ANTHASFOOD);
+    cell.changeStateAndView(OPEN);
+    setPheromone(cell, getPheromone(cell) + pheromoneLookingForFood);
+  }
+
+  private void antMovesTowardFood(Cell cell) {
     List<Cell> movableNeighbors = findNeighborOptions(cell, false);
     Cell cellWithMaxPheromone = findMaxPheromone(movableNeighbors);
-    if(cellWithMaxPheromone!=null){
-      cellWithMaxPheromone.changeStateAndView(ANTHASFOOD);
+    if (cellWithMaxPheromone != null) {
+      cellWithMaxPheromone.changeStateAndView(ANT);
       cell.changeStateAndView(OPEN);
       setPheromone(cell, getPheromone(cell) + pheromoneLookingForFood);
     }
