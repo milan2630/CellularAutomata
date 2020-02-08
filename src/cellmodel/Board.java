@@ -2,6 +2,8 @@ package cellmodel;
 
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
@@ -9,6 +11,7 @@ import cellmodel.rules.Rules;
 public class Board{
   private Cell[][] myCells;
   private Cell[][] cloneCells;
+  private List<Integer> cellStates;
   private int myRows;
   private int myCols;
   private Rules myRules;
@@ -27,6 +30,7 @@ public class Board{
     cloneCells = new Cell[numRows][numCols];
     myRows = numRows;
     myCols = numCols;
+    cellStates = new ArrayList<Integer>();
     buildingInitialBoard = true;
     buildBoard(myCells);
     buildingInitialBoard = false;
@@ -126,6 +130,19 @@ public class Board{
    */
   public int getNumCols(){
     return myCols;
+  }
+
+  /**
+   * returns a list of all states of each cell in the board
+   * @return
+   */
+  public List getStates(){
+    for(Cell[] row : myCells){
+      for(Cell c : row){
+        cellStates.add(c.getState());
+      }
+    }
+    return cellStates;
   }
 }
 
