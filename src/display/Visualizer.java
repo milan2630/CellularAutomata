@@ -30,6 +30,7 @@ public class Visualizer extends Application {
     private double width;
     private double height;
     private int cellCornerNumber;
+    private int cycleNum;
 
     /**
      * Constructor, creates a scene, a stage, and then set the stage to that scene
@@ -40,6 +41,7 @@ public class Visualizer extends Application {
         yPos = 0;
         width = 0;
         height = 0;
+        cycleNum=0;
         myStage = new Stage();
         cellCornerNumber = cellCorners;
     }
@@ -74,10 +76,12 @@ public class Visualizer extends Application {
      */
     public void displayBoard(Board board){
         makeNewGrid();
-        grid.getChildren().addAll(getBoardView(board));
-        myScene = new Scene(grid, CA_WIDTH, CA_HEIGHT, BACKGROUND);
         width = getIndividualCellWidth(board);
         height = getIndividualCellHeight(board);
+        grid.getChildren().addAll(getBoardView(board));
+        myScene = new Scene(grid, CA_WIDTH, CA_HEIGHT, BACKGROUND);
+        cycleNum++;
+        System.out.println(cycleNum);
         start(new Stage());
     }
 
@@ -93,14 +97,14 @@ public class Visualizer extends Application {
         if(cellCornerNumber == TRIANGLE_CORNER_COUNT){
             triangle = true;
         }
-        //TODO LOOP THROUGH THE BOARD
         List<Integer> states = board.getStates();
         boolean pointyUp = false;
         int colCounter = 0;
         int rowCounter = 0;
         for(Integer i : states){
             //pointy up switches, color comes from css file, xPos and yPos increment by cell width and height respectively
-            xPos+=width/2;
+            if(cellCornerNumber == 3) {xPos+=width/2;}
+            else{xPos+=width;}
             if(colCounter == board.getNumCols() || colCounter==0){
                 xPos = 0;
                 rowCounter++;
@@ -109,7 +113,7 @@ public class Visualizer extends Application {
             }
             pointyUp = !pointyUp;
             Color color = Color.GREEN;
-            if(i  == 2) color = Color.BLACK;
+            if(i == 2) color = Color.BLACK;
             if(i == 1) color = Color.WHITE;
             if(i == 0) color = Color.BLUE;
 
