@@ -16,8 +16,4 @@ public class LangtonsLoop extends Rules {
     return false;
   }
 
-  @Override
-  public Color getStateColor(int state) {
-    return null;
-  }
 }

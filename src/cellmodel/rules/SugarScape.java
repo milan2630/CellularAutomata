@@ -15,9 +15,4 @@ public class SugarScape extends Rules {
   public boolean areCornersNeighbors() {
     return false;
   }
-
-  @Override
-  public Color getStateColor(int state) {
-    return null;
-  }
 }
