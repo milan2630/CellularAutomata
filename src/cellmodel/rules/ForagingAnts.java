@@ -2,9 +2,7 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import javafx.scene.paint.Color;
 
 public class ForagingAnts extends Rules {
   private static final int NUMBER_OF_POSSIBLE_STATES = 4;
@@ -12,7 +10,8 @@ public class ForagingAnts extends Rules {
   private static final int ANT = 1;
   private static final int FOOD = 2;
   private static final int ANTHASFOOD = 3;
-  private int pheromone =0;
+  private static final int pheromoneLookingForFood =1;
+  private static final int pheromoneReturningFromFood =3;
 
 
   @Override
@@ -24,49 +23,72 @@ public class ForagingAnts extends Rules {
     else{
       AntFindFoodSource(cell);
     }
-
   }
 
   private void AntReturnToNest(Cell cell){
-
-
-  }
-
-  private void AntFindFoodSource(Cell cell) {
-    List<Cell> movableNeighbors = findFoodNeighborOptions(cell);
-    if(movableNeighbors.size()!=0){
-      Cell cellWithMaxPhermone = movableNeighbors.get(0);
-      for(int j=0; j< movableNeighbors.size(); j++) {
-        if (getPhermone(movableNeighbors.get(j)) > getPhermone(cellWithMaxPhermone)) {
-          cellWithMaxPhermone = movableNeighbors.get(j);
-        }
-      }
-      cellWithMaxPhermone.changeStateAndView(ANT);
+    List<Cell> movableNeighbors = findNeighborOptions(cell, true);
+    Cell cellWithMaxPheromone = findMaxPheromone(movableNeighbors);
+    if(cellWithMaxPheromone!=null) {
+      cellWithMaxPheromone.changeStateAndView(ANT);
       cell.changeStateAndView(OPEN);
+      setPheromone(cell, getPheromone(cell) + pheromoneReturningFromFood);
     }
   }
 
-  private List<Cell> findFoodNeighborOptions(Cell cell) {
+  private void AntFindFoodSource(Cell cell) {
+    List<Cell> movableNeighbors = findNeighborOptions(cell, false);
+    Cell cellWithMaxPheromone = findMaxPheromone(movableNeighbors);
+    if(cellWithMaxPheromone!=null){
+      cellWithMaxPheromone.changeStateAndView(ANTHASFOOD);
+      cell.changeStateAndView(OPEN);
+      setPheromone(cell, getPheromone(cell) + pheromoneLookingForFood);
+    }
+  }
+
+  private List<Cell> findNeighborOptions(Cell cell, Boolean returning){
     List<Cell> antNeighbors = cell.getNeighbors();
     List<Cell> movableNeighbors = new ArrayList<Cell>();
     for (int i = 0; i < antNeighbors.size(); i++) {
       Cell neighbor = antNeighbors.get(i);
-      if ((neighbor.getRowNumber() > cell.getRowNumber() ^ neighbor.getColNumber() > cell
-          .getColNumber()) && neighbor.getState() == OPEN) {
+      boolean validNeighbor;
+      if(returning){
+        validNeighbor = (neighbor.getRowNumber() < cell.getRowNumber() ^ neighbor.getColNumber() < cell.getColNumber());
+      }
+      else{
+        validNeighbor = (neighbor.getRowNumber() > cell.getRowNumber() ^ neighbor.getColNumber() > cell.getColNumber());
+      }
+      if (validNeighbor && neighbor.getState() == OPEN) {
         movableNeighbors.add(neighbor);
       }
     }
     return movableNeighbors;
   }
 
-  
-  private int getPhermone(Cell cell){
-    return pheromone;
+  private Cell findMaxPheromone(List<Cell> movableNeighbors) {
+    Cell cellWithMaxPheromone= null;
+    if(movableNeighbors.size()!=0){
+      cellWithMaxPheromone = movableNeighbors.get(0);
+      for(int j=0; j< movableNeighbors.size(); j++) {
+        if (getPheromone(movableNeighbors.get(j)) > getPheromone(cellWithMaxPheromone)) {
+          cellWithMaxPheromone = movableNeighbors.get(j);
+        }
+      }
+    }
+    return cellWithMaxPheromone;
+  }
+
+
+  private int getPheromone(Cell cell){
+    return cell.getMoves();
+  }
+
+  private void setPheromone(Cell cell, int newPheromone){
+    cell.setMoves(newPheromone);
   }
 
   @Override
   public boolean areCornersNeighbors() {
     return false;
   }
-
 }
+
