@@ -31,45 +31,56 @@ public class Configuration {
      * Constructor to create a Configuration object based on a filename
      * @param inputfileName xml file name to parse
      */
-    public Configuration(String inputfileName){
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        try {
-            builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+    public Configuration(String inputfileName) throws XMLException{
+        try{
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            File xmlFile = new File(inputfileName);
+            System.out.println(xmlFile.getCanonicalPath());
+            Document document = builder.parse(xmlFile);
+            document.getDocumentElement().normalize();
+            myXML = document.getDocumentElement();
+            myRules = parseRules();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new XMLException("File entered cannot be parsed as an XML file");
         }
-
-        Document document = null;
-        try {
-            document = builder.parse(new File(inputfileName));
-        } catch (SAXException | IOException e) {
-            e.printStackTrace();
+        catch (XMLException e){
+            throw e;
         }
-
-        assert document != null;
-        document.getDocumentElement().normalize();
-
-        myXML = document.getDocumentElement();
-        myRules = parseRules();
     }
 
     /**
      * Parses the information to create a sublcass of Rules based on the xml file
      * @return an object of the specified Rules subclass
      */
-    private Rules parseRules(){
-        String simType = myXML.getElementsByTagName(RULES_XML_TAG).item(0).getTextContent();
-        NodeList parametersNode = myXML.getElementsByTagName(RULES_PARAMETERS_XML_TAG).item(0).getChildNodes();
+    private Rules parseRules() throws XMLException{
+        String simType;
+        NodeList parametersNode;
+        try {
+            simType = myXML.getElementsByTagName(RULES_XML_TAG).item(0).getTextContent();
+        }
+        catch (NullPointerException e){
+            throw new XMLException("Cannot find Sim_Type tag, should be: " + RULES_XML_TAG);
+        }
+        try {
+            parametersNode = myXML.getElementsByTagName(RULES_PARAMETERS_XML_TAG).item(0).getChildNodes();
+        }
+        catch (NullPointerException e){
+            throw new XMLException("Cannot find Rules Parameters tag, should be: " + RULES_PARAMETERS_XML_TAG);
+        }
         HashMap<String, String> parameters = getParameterVals(parametersNode);
 
-        Object ret = new Object();
-        Constructor rulesConstructor = getRulesConstructor(simType);
+        Object ret;
+
         try {
-            assert rulesConstructor != null;
+            Constructor rulesConstructor = getRulesConstructor(simType);
             ret = rulesConstructor.newInstance(parameters);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            throw new XMLException("Simulation Type specified from XML file is not able to be accessed");
+        } catch (InstantiationException e) {
+            throw new XMLException("Simulation Type specified from XML file is not able to be instantiated");
+        } catch (InvocationTargetException e) {
+            throw new XMLException("Error in constructor of Simulation Type specified from XML file");
         }
         return (Rules)ret;
     }
@@ -79,21 +90,17 @@ public class Configuration {
      * @return a constructor for the specific Rules
      */
     private Constructor getRulesConstructor(String simulationType){
-        Class simClass = null;
         try {
-            simClass = Class.forName(RULES_PACKAGE+"."+simulationType);
+            Class simClass = Class.forName(RULES_PACKAGE+"."+simulationType);
+            Class[] parameterTypes = {HashMap.class};
+            Constructor constructor = simClass.getConstructor(parameterTypes);
+            return constructor;
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Class[] parameterTypes = {HashMap.class};
-        Constructor constructor = null;
-        try {
-            assert simClass != null;
-            constructor = simClass.getConstructor(parameterTypes);
+            throw new XMLException("Class does not exist for Simulation Type specified in XML file");
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            throw new XMLException("Constructor does not exist for Simulation Type specified in XML file");
         }
-        return constructor;
+
     }
 
     /**
