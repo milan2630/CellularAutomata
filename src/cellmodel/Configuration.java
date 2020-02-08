@@ -115,7 +115,7 @@ public class Configuration {
      * @return a Simulation object based on the xml file
      */
     public Simulation getInitSim(){
-        return new Simulation(getInitBoard());
+        return new Simulation(getInitBoard(),4);
     }
 
     /**
