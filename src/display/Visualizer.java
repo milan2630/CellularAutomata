@@ -30,7 +30,6 @@ public class Visualizer extends Application {
     private double width;
     private double height;
     private int cellCornerNumber;
-    private int cycleNum;
 
     /**
      * Constructor, creates a scene, a stage, and then set the stage to that scene
@@ -41,7 +40,6 @@ public class Visualizer extends Application {
         yPos = 0;
         width = 0;
         height = 0;
-        cycleNum=0;
         myStage = new Stage();
         cellCornerNumber = cellCorners;
     }
@@ -80,8 +78,6 @@ public class Visualizer extends Application {
         height = getIndividualCellHeight(board);
         grid.getChildren().addAll(getBoardView(board));
         myScene = new Scene(grid, CA_WIDTH, CA_HEIGHT, BACKGROUND);
-        cycleNum++;
-        System.out.println(cycleNum);
         start(new Stage());
     }
 
@@ -131,15 +127,6 @@ public class Visualizer extends Application {
     private double getIndividualCellHeight(Board board){
         return CA_HEIGHT/board.getNumRows();
     }
-
-    /*
-    private Rectangle cellSquareView(double width, double height, Color color, double xPosition, double yPosition){
-        Rectangle square = new Rectangle(width, height, color);
-        square.setX(xPosition);
-        square.setY(yPosition);
-        square.setStroke(Color.WHITE);
-        return square;
-    }*/
 
     private Polygon cellView(double width, double height, Color color, double xPosition, double yPosition, boolean triangle, boolean pointyUp){
         Polygon cellShape = new Polygon();
