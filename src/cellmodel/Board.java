@@ -137,6 +137,7 @@ public class Board{
    * @return
    */
   public List getStates(){
+    cellStates = new ArrayList<Integer>();
     for(Cell[] row : myCells){
       for(Cell c : row){
         cellStates.add(c.getState());
