@@ -11,7 +11,6 @@ import java.util.List;
 public class Board{
   private Cell[][] myCells;
   private Cell[][] cloneCells;
-  private List<Integer> cellStates;
   private int myRows;
   private int myCols;
   private Rules myRules;
@@ -30,7 +29,6 @@ public class Board{
     cloneCells = new Cell[numRows][numCols];
     myRows = numRows;
     myCols = numCols;
-    cellStates = new ArrayList<Integer>();
     buildingInitialBoard = true;
     buildBoard(myCells);
     buildingInitialBoard = false;
@@ -137,7 +135,7 @@ public class Board{
    * @return
    */
   public List getStates(){
-    cellStates = new ArrayList<Integer>();
+    List<Integer> cellStates = new ArrayList<Integer>();
     for(Cell[] row : myCells){
       for(Cell c : row){
         cellStates.add(c.getState());
