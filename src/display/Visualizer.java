@@ -1,6 +1,7 @@
 package display;
 
 import cellmodel.Board;
+import java.util.List;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ public class Visualizer extends Application {
     public static final double CA_WIDTH = 500;
     public static final double CA_HEIGHT = 500;
     public static final Color BACKGROUND = Color.LAVENDERBLUSH;
+    public static final Color BORDER_COLOR = Color.RED;
     public static final double GAP = 190;
     public static final int TRIANGLE_CORNER_COUNT = 3; // a triangle has three corners
 
@@ -92,20 +94,38 @@ public class Visualizer extends Application {
             triangle = true;
         }
         //TODO LOOP THROUGH THE BOARD
-            //pointy up is dependant on the column number, color comes from css file, xPos and yPos increment by cell width and height respectively
-            boolean pointyUp = false;
-            Color color = Color.GREY;
+        List<Integer> states = board.getStates();
+        boolean pointyUp = false;
+        int colCounter = 0;
+        int rowCounter = 0;
+        for(Integer i : states){
+            //pointy up switches, color comes from css file, xPos and yPos increment by cell width and height respectively
+            xPos+=width/2;
+            if(colCounter == board.getNumCols() || colCounter==0){
+                xPos = 0;
+                rowCounter++;
+                yPos += height;
+                colCounter = 0;
+            }
+            pointyUp = !pointyUp;
+            Color color = Color.GREEN;
+            if(i  == 2) color = Color.BLACK;
+            if(i == 1) color = Color.WHITE;
+            if(i == 0) color = Color.BLUE;
+
             Polygon cell = cellView(width, height, color, xPos, yPos, triangle, pointyUp);
             root.getChildren().add(cell);
+            colCounter++;
+        }
         return root;
     }
 
     private double getIndividualCellWidth(Board board){
-        return CA_WIDTH/board.getNumRows();
+        return CA_WIDTH/board.getNumCols();
     }
 
     private double getIndividualCellHeight(Board board){
-        return CA_HEIGHT/board.getNumCols();
+        return CA_HEIGHT/board.getNumRows();
     }
 
     /*
@@ -127,7 +147,7 @@ public class Visualizer extends Application {
                 //rightmost point
                 xPosition+width, yPosition,
                 //middle point
-                3/2 * xPosition, yPosition + height * getThirdTriangleYPoint(pointyUp)
+                xPosition+width/2, yPosition + height * getThirdTriangleYPoint(pointyUp)
             };
         } else {
             corners = new Double[] {
@@ -135,20 +155,20 @@ public class Visualizer extends Application {
                 xPosition, yPosition,
                 //upper right corner
                 xPosition+width, yPosition,
-                //bottom left corner
-                xPosition, yPosition+height,
                 //bottom right corner
-                xPosition+width, yPosition+height
+                xPosition+width, yPosition+height,
+                //bottom left corner
+                xPosition, yPosition+height
             };
         }
         cellShape.getPoints().addAll(corners);
         cellShape.setFill(color);
-        cellShape.setStroke(Color.WHITE);
+        cellShape.setStroke(BORDER_COLOR);
         return cellShape;
     }
 
-    private int getThirdTriangleYPoint(boolean pointyUp){
-        if(pointyUp){
+    private int getThirdTriangleYPoint(boolean up){
+        if(up){
             return -1;
         }
         return 1;
