@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -58,11 +60,7 @@ public class Configuration {
         String simType;
         HashMap<String, String> parameters;
         Object ret;
-        try {
-            simType = myXML.getElementsByTagName(xmlResources.getString("rulesXMLTag")).item(0).getTextContent();
-        } catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("rulesXMLTag"));
-        }
+        simType = parseStringFromXml(("rulesXMLTag"));
         try {
             NodeList parametersNode = myXML.getElementsByTagName(xmlResources.getString("ParametersTag")).item(0).getChildNodes();
             parameters = getParameterVals(parametersNode);
@@ -123,10 +121,22 @@ public class Configuration {
      * @return a Board object based on the initial configuration from the xml file
      */
     private Board getInitBoard() throws XMLException{
+        int boardHeight = parseIntFromXML("boardHeightTag");
+        int boardWidth = parseIntFromXML("boardWidthTag");
+        Board myBoard = new Board(boardHeight, boardWidth, myRules);
+        String setupType = parseStringFromXml("setupTypeTag");
+        if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){
+            setupBoardWProbs(myBoard, boardHeight, boardWidth);
+        }
+        else if(setupType.equals(xmlResources.getString("cellListKeyword"))){
+            setupBoardWCellList(myBoard, boardHeight, boardWidth);
+        }
+        return myBoard;
+
+    }
+
+    private void setupBoardWCellList(Board myBoard, int boardHeight, int boardWidth) {
         try {
-            int boardHeight = parseIntFromXML("boardHeightTag");
-            int boardWidth = parseIntFromXML("boardWidthTag");
-            Board myBoard = new Board(boardHeight, boardWidth, myRules);
             NodeList cellList = myXML.getElementsByTagName(xmlResources.getString("cellTag"));
             if(cellList.getLength() != boardHeight*boardWidth){
                 throw new NullPointerException();
@@ -136,12 +146,40 @@ public class Configuration {
                 myBoard.updateCell(parseIntFromCell(cellNode, "stateTag"), parseIntFromCell(cellNode, "rowTag"),
                         parseIntFromCell(cellNode, "columnTag"));
             }
-            return myBoard;
         }
         catch (NullPointerException e){
             throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("cellTag"));
         }
+    }
 
+    private void setupBoardWProbs(Board myBoard, int boardHeight, int boardWidth) {
+        try {
+            NodeList probList = myXML.getElementsByTagName(xmlResources.getString("probTag"));
+            if(probList.getLength() != myRules.getNumberOfPossibleStates()){
+                throw new NullPointerException();
+            }
+            List<Float> chancesOfStates = new ArrayList<>();
+            for(int k = 0; k < probList.getLength(); k++){
+                Element cellNode = (Element) probList.item(k);
+                chancesOfStates.add(k, Float.parseFloat(cellNode.getAttribute(xmlResources.getString("stateAttribute"))));
+            }
+            for(int i = 0; i < boardHeight; i++){
+                for(int j = 0; j < boardWidth; j++){
+                    double rand = Math.random();
+                    int ind = 0;
+                    float counter = 0;
+                    while(rand > counter){
+                        counter+=chancesOfStates.get(ind);
+                        ind++;
+                    }
+                    myBoard.updateCell(ind,i, j);
+                }
+            }
+
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("probTag"));
+        }
     }
 
     private int parseIntFromCell(Element cell, String property) throws XMLException{
@@ -156,6 +194,15 @@ public class Configuration {
     private int parseIntFromXML(String property){
         try {
             return Integer.parseInt(myXML.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent());
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
+        }
+    }
+
+    private String parseStringFromXml(String property){
+        try {
+            return myXML.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent();
         }
         catch (NullPointerException e){
             throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
