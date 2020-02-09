@@ -1,4 +1,4 @@
-package display;
+package display.visualizer;
 
 import cellmodel.Board;
 import java.util.List;
@@ -13,35 +13,37 @@ import javafx.stage.Stage;
 /**
  * creates a view of the CA simulation, extends application
  */
-public class Visualizer extends Application {
+public abstract class Visualizer extends Application {
 
-    public static final double CA_WIDTH = 500;
-    public static final double CA_HEIGHT = 500;
+    public static final double CA_WIDTH = 600;
+    public static final double CA_HEIGHT = 600;
     public static final Color BACKGROUND = Color.LAVENDERBLUSH;
     public static final Color BORDER_COLOR = Color.RED;
+    public static final int TRIANGLE_CORNER_NUMBER = 3;
     public static final double GAP = 190;
-    public static final int TRIANGLE_CORNER_COUNT = 3; // a triangle has three corners
 
     private Scene myScene;
     private GridPane grid;
     private Stage myStage;
-    private double xPos;
-    private double yPos;
-    private double width;
-    private double height;
-    private int cellCornerNumber;
+    protected double xPos;
+    protected double yPos;
+    protected int col;
+    protected int row;
+    protected double width;
+    protected double height;
 
     /**
      * Constructor, creates a scene, a stage, and then set the stage to that scene
      */
-    public Visualizer(int cellCorners) {
+    public Visualizer() {
         makeNewGrid();
         xPos = 0;
         yPos = 0;
+        row = 0;
+        col = 0;
         width = 0;
         height = 0;
         myStage = new Stage();
-        cellCornerNumber = cellCorners;
     }
 
     /**
@@ -86,40 +88,38 @@ public class Visualizer extends Application {
     }
 
     private Group getBoardView(Board board){
-        //iterate through the board and get all of the states of all of the cells
-        //using cellView, and get the color for the cell from a css file?
         Group root = new Group();
-        boolean triangle = false;
-        if(cellCornerNumber == TRIANGLE_CORNER_COUNT){
-            triangle = true;
-        }
         List<Integer> states = board.getStates();
-        boolean pointyUp = false;
-        int colCounter = 0;
-        int rowCounter = 0;
+        resetVariables();
         for(Integer i : states){
             //pointy up switches, color comes from css file, xPos and yPos increment by cell width and height respectively
-            if(cellCornerNumber == 3) {xPos+=width/2;}
-            else{xPos+=width;}
-            if(colCounter == board.getNumCols() || colCounter==0){
-                xPos = 0;
-                rowCounter++;
-                yPos += height;
-                colCounter = 0;
+
+            if(col == board.getNumCols()) {
+                col %= board.getNumCols();
+                moveToNextRow();
             }
-            pointyUp = !pointyUp;
+
+            //TODO REMOVE HARD CODE
             Color color = Color.GREEN;
-            if(i == 3) color = Color.RED;
             if(i == 2) color = Color.BLUE;
             if(i == 1) color = Color.WHITE;
             if(i == 0) color = Color.BLACK;
-            if(i == 4) color = Color.GOLD;
 
-            Polygon cell = cellView(width, height, color, xPos, yPos, triangle, pointyUp);
+            Polygon cell = cellView(color);
             root.getChildren().add(cell);
-            colCounter++;
+
+            moveOver();
         }
         return root;
+    }
+
+    protected Polygon cellView(Color color){
+        Polygon cellShape = new Polygon();
+        Double[] corners = getCorners();
+        cellShape.getPoints().addAll(corners);
+        cellShape.setFill(color);
+        cellShape.setStroke(BORDER_COLOR);
+        return cellShape;
     }
 
     private double getIndividualCellWidth(Board board){
@@ -130,42 +130,10 @@ public class Visualizer extends Application {
         return CA_HEIGHT/board.getNumRows();
     }
 
-    private Polygon cellView(double width, double height, Color color, double xPosition, double yPosition, boolean triangle, boolean pointyUp){
-        Polygon cellShape = new Polygon();
-        Double[] corners;
-        if(triangle){
-            corners = new Double[] {
-                //leftmost point
-                xPosition, yPosition,
-                //rightmost point
-                xPosition+width, yPosition,
-                //middle point
-                xPosition+width/2, yPosition + height * getThirdTriangleYPoint(pointyUp)
-            };
-        } else {
-            corners = new Double[] {
-                //upper left corner
-                xPosition, yPosition,
-                //upper right corner
-                xPosition+width, yPosition,
-                //bottom right corner
-                xPosition+width, yPosition+height,
-                //bottom left corner
-                xPosition, yPosition+height
-            };
-        }
-        cellShape.getPoints().addAll(corners);
-        cellShape.setFill(color);
-        cellShape.setStroke(BORDER_COLOR);
-        return cellShape;
-    }
-
-    private int getThirdTriangleYPoint(boolean up){
-        if(up){
-            return -1;
-        }
-        return 1;
-    }
+    abstract void moveToNextRow();
+    abstract void moveOver();
+    abstract Double[] getCorners();
+    abstract void resetVariables();
 
     public static void main(String[] args) {
         launch(args);
