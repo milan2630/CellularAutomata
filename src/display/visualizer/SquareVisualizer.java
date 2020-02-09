@@ -14,13 +14,20 @@ public class SquareVisualizer extends Visualizer {
     row++;
     yPos += height;
     xPos = 0;
-    col = 0;
   }
 
   @Override
   void moveOver(){
     xPos += width;
     col++;
+  }
+
+  @Override
+  void resetVariables(){
+    xPos = 0;
+    yPos = 0;
+    col = 0;
+    row = 0;
   }
 
   @Override

@@ -15,10 +15,11 @@ import javafx.stage.Stage;
  */
 public abstract class Visualizer extends Application {
 
-    public static final double CA_WIDTH = 500;
-    public static final double CA_HEIGHT = 500;
+    public static final double CA_WIDTH = 600;
+    public static final double CA_HEIGHT = 600;
     public static final Color BACKGROUND = Color.LAVENDERBLUSH;
     public static final Color BORDER_COLOR = Color.RED;
+    public static final int TRIANGLE_CORNER_NUMBER = 3;
     public static final double GAP = 190;
 
     private Scene myScene;
@@ -89,11 +90,12 @@ public abstract class Visualizer extends Application {
     private Group getBoardView(Board board){
         Group root = new Group();
         List<Integer> states = board.getStates();
+        resetVariables();
         for(Integer i : states){
             //pointy up switches, color comes from css file, xPos and yPos increment by cell width and height respectively
-            //System.out.print("Cell in col "+col+" and row "+row+" has state of "+i);
 
-            if(col == board.getNumCols()){
+            if(col == board.getNumCols()) {
+                col %= board.getNumCols();
                 moveToNextRow();
             }
 
@@ -131,6 +133,7 @@ public abstract class Visualizer extends Application {
     abstract void moveToNextRow();
     abstract void moveOver();
     abstract Double[] getCorners();
+    abstract void resetVariables();
 
     public static void main(String[] args) {
         launch(args);

@@ -8,17 +8,12 @@ public class TriangleVisualizer extends Visualizer {
    */
   public TriangleVisualizer() {
     super();
-    pointyUp = true;
+    pointyUp = false;
+    System.out.println("initializating pointUp to false");
   }
 
   private void setPointDirection() {
-    System.out.println(" and points up: "+pointyUp);
-    if(col%2 != row%2){
-      pointyUp = true;
-    } else {
-      pointyUp = false;
-    }
-
+    pointyUp = col%2 != row%2;
   }
 
   @Override
@@ -28,7 +23,8 @@ public class TriangleVisualizer extends Visualizer {
     if(row%2 == 1){
       yPos=height+height+yPos;
     }
-    col = -1;
+    col = 0;
+    setPointDirection();
   }
 
   @Override
@@ -55,6 +51,14 @@ public class TriangleVisualizer extends Visualizer {
     };
   }
 
+  @Override
+  void resetVariables(){
+    xPos = 0;
+    col = 0;
+    row = 0;
+    pointyUp = false;
+    yPos = 0;
+  }
   private int getThirdTriangleYPoint(boolean up){
     if(up){
       return -1;
