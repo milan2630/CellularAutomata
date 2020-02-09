@@ -122,7 +122,7 @@ public class Configuration {
      * @return a Board object based on the initial configuration from the xml file
      */
     private Board getInitBoard(){
-        Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules);
+        Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules, 1);
         NodeList cellList = myXML.getElementsByTagName("Cell");
         for(int i = 0; i < cellList.getLength(); i++){
             Element cellNode = (Element) cellList.item(i);
