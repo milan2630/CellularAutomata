@@ -161,7 +161,12 @@ public class Configuration {
             List<Float> chancesOfStates = new ArrayList<>();
             for(int k = 0; k < probList.getLength(); k++){
                 Element cellNode = (Element) probList.item(k);
-                chancesOfStates.add(k, Float.parseFloat(cellNode.getAttribute(xmlResources.getString("stateAttribute"))));
+                float chance = Float.parseFloat(cellNode.getTextContent());
+                int stateToAdd = Integer.parseInt(cellNode.getAttribute(xmlResources.getString("stateAttribute")));
+                chancesOfStates.add(stateToAdd, chance);
+            }
+            for(Float f: chancesOfStates){
+                System.out.println(f);
             }
             for(int i = 0; i < boardHeight; i++){
                 for(int j = 0; j < boardWidth; j++){
