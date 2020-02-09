@@ -54,13 +54,19 @@ public class UserInterface extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
+        myConfig = new Configuration(getFileName());
+        try {
+            mySim = myConfig.getInitSim();
+        }
+        catch (XMLException e){
+            createErrorDialog(e);
+            start(primaryStage);
+        }
         UIroot = new Group();
         UIstage = primaryStage;
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
         UIstage.setX(screen.getWidth());
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
-        myConfig = new Configuration(getFileName());
-        mySim = myConfig.getInitSim();
         createController();
     }
 
@@ -146,6 +152,16 @@ public class UserInterface extends Application {
         return XMLFOLDER + filename + ".xml";
     }
 
+    private void createErrorDialog(Exception e){
+        Stage errorStage = new Stage();
+        errorStage.setTitle("Error");
+        Label errorLabel = new Label(e.getMessage());
+        errorLabel.setAlignment(Pos.CENTER);
+        Scene errorScene = new Scene(errorLabel);
+        errorStage.setScene(errorScene);
+        errorStage.showAndWait();
+    }
+
     /**
      * Class for file input
      */
@@ -189,13 +205,7 @@ public class UserInterface extends Application {
                 stage.close();
             }
             catch(XMLException e){
-                Stage errorStage = new Stage();
-                errorStage.setTitle("Error");
-                Label errorLabel = new Label(e.getMessage());
-                errorLabel.setAlignment(Pos.CENTER);
-                Scene errorScene = new Scene(errorLabel);
-                errorStage.setScene(errorScene);
-                errorStage.showAndWait();
+                createErrorDialog(e);
             }
         }
 
