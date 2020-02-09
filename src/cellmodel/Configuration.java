@@ -131,6 +131,9 @@ public class Configuration {
         else if(setupType.equals(xmlResources.getString("cellListKeyword"))){
             setupBoardWCellList(myBoard, boardHeight, boardWidth);
         }
+        else if(setupType.equals(xmlResources.getString("quotasKeyword"))){
+            setupBoardWQuotas(myBoard, boardHeight, boardWidth);
+        }
         return myBoard;
 
     }
@@ -176,6 +179,39 @@ public class Configuration {
                     }
                     myBoard.updateCell(ind,i, j);
                 }
+            }
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("probTag"));
+        }
+    }
+
+    private void setupBoardWQuotas(Board myBoard, int boardHeight, int boardWidth) {
+        try {
+            NodeList quotaList = myXML.getElementsByTagName(xmlResources.getString("quotaTag"));
+
+            if(quotaList.getLength() != myRules.getNumberOfPossibleStates()){
+                throw new NullPointerException();
+            }
+            boolean[][] haveVisited = new boolean[boardHeight][boardWidth];
+            int totalCount = 0;
+            for(int k = 0; k < quotaList.getLength(); k++){
+                Element cellNode = (Element) quotaList.item(k);
+                int total = Integer.parseInt(cellNode.getTextContent());
+                totalCount+=total;
+                int stateToAdd = Integer.parseInt(cellNode.getAttribute(xmlResources.getString("stateAttribute")));
+                while(total > 0) {
+                    int row = (int) (Math.random() * boardHeight);
+                    int col = (int) (Math.random() * boardWidth);
+                    if(!haveVisited[row][col]) {
+                        myBoard.updateCell(stateToAdd, row, col);
+                        haveVisited[row][col] = true;
+                        total--;
+                    }
+                }
+            }
+            if(totalCount < boardHeight*boardWidth){
+                throw new NullPointerException();
             }
         }
         catch (NullPointerException e){
