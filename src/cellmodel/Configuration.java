@@ -41,7 +41,6 @@ public class Configuration {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             File xmlFile = new File(inputfileName);
-            System.out.println(xmlFile.getCanonicalPath());
             Document document = builder.parse(xmlFile);
             document.getDocumentElement().normalize();
             myXML = document.getDocumentElement();
@@ -116,7 +115,7 @@ public class Configuration {
     /**
      * @return a Simulation object based on the xml file
      */
-    public Simulation getInitSim(){
+    public Simulation getInitSim()throws XMLException{
         return new Simulation(getInitBoard(),4);
     }
 
@@ -125,8 +124,13 @@ public class Configuration {
      */
     private Board getInitBoard() throws XMLException{
         try {
-            Board myBoard = new Board(parseIntFromXML("boardHeightTag"), parseIntFromXML("boardWidthTag"), myRules);
+            int boardHeight = parseIntFromXML("boardHeightTag");
+            int boardWidth = parseIntFromXML("boardWidthTag");
+            Board myBoard = new Board(boardHeight, boardWidth, myRules);
             NodeList cellList = myXML.getElementsByTagName(xmlResources.getString("cellTag"));
+            if(cellList.getLength() != boardHeight*boardWidth){
+                throw new NullPointerException();
+            }
             for(int i = 0; i < cellList.getLength(); i++){
                 Element cellNode = (Element) cellList.item(i);
                 myBoard.updateCell(parseIntFromCell(cellNode, "stateTag"), parseIntFromCell(cellNode, "rowTag"),
