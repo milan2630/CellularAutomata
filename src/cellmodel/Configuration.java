@@ -165,22 +165,18 @@ public class Configuration {
                 int stateToAdd = Integer.parseInt(cellNode.getAttribute(xmlResources.getString("stateAttribute")));
                 chancesOfStates.add(stateToAdd, chance);
             }
-            for(Float f: chancesOfStates){
-                System.out.println(f);
-            }
             for(int i = 0; i < boardHeight; i++){
                 for(int j = 0; j < boardWidth; j++){
                     double rand = Math.random();
                     int ind = 0;
-                    float counter = 0;
+                    float counter = chancesOfStates.get(0);
                     while(rand > counter){
-                        counter+=chancesOfStates.get(ind);
                         ind++;
+                        counter+=chancesOfStates.get(ind);
                     }
                     myBoard.updateCell(ind,i, j);
                 }
             }
-
         }
         catch (NullPointerException e){
             throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("probTag"));
