@@ -15,7 +15,7 @@ public class TriangleBoard extends Board {
     super(numCols, numRows, rules, 0);
   }
 
-  //@Override
+ // @Override
   //private void addNeighborsToCells(){
 
   //}

@@ -1,6 +1,8 @@
 package cellmodel;
 
-import display.Visualizer;
+import display.visualizer.SquareVisualizer;
+import display.visualizer.TriangleVisualizer;
+import display.visualizer.Visualizer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -10,7 +12,7 @@ import javafx.util.Duration;
  * Class to run the simulation by repeatedly calling a step function
  */
 public class Simulation {
-  public static final int DEFAULT_FRAMES_PER_SECOND = 1;
+  public static final int DEFAULT_FRAMES_PER_SECOND = 0;
   public static final double MILLIS_PER_SECOND = 1000.0;
 
   private Board myBoard;
@@ -24,7 +26,11 @@ public class Simulation {
    */
   public Simulation(Board board, int numCornersOnACell){
     myBoard = board;
-    myVisualizer = new Visualizer(numCornersOnACell);
+    if(numCornersOnACell == Visualizer.TRIANGLE_CORNER_NUMBER) {
+      myVisualizer = new TriangleVisualizer();
+    } else {
+      myVisualizer = new SquareVisualizer();
+    }
     myVisualizer.displayBoard(board);
     setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
     animation = new Timeline();

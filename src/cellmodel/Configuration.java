@@ -14,62 +14,65 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ResourceBundle;
 
 
 /**
  * Class to handle setting up the Board and Simulation from an xml file
  */
 public class Configuration {
-    public static final String RULES_PACKAGE = "cellmodel.rules"; //Package containing the java files for the different simulation types
-    public static final String RULES_XML_TAG = "Simulation_Type"; //Tag in the XML file that has the simulation type
-    public static final String RULES_PARAMETERS_XML_TAG = "Rules_Parameters"; //Tag in the xml file that has the setup parameters
+    private static final String RESOURCES = "resources";
+    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
+
+
     private Element myXML;
     private Rules myRules;
+    private ResourceBundle xmlResources;
 
     /**
      * Constructor to create a Configuration object based on a filename
      * @param inputfileName xml file name to parse
      */
-    public Configuration(String inputfileName){
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        try {
-            builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+    public Configuration(String inputfileName) throws XMLException{
+        xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
+        try{
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            File xmlFile = new File(inputfileName);
+            Document document = builder.parse(xmlFile);
+            document.getDocumentElement().normalize();
+            myXML = document.getDocumentElement();
+            myRules = parseRules();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new XMLException(xmlResources.getString("FileErrorMessage"));
         }
-
-        Document document = null;
-        try {
-            document = builder.parse(new File(inputfileName));
-        } catch (SAXException | IOException e) {
-            e.printStackTrace();
-        }
-
-        assert document != null;
-        document.getDocumentElement().normalize();
-
-        myXML = document.getDocumentElement();
-        myRules = parseRules();
     }
 
     /**
      * Parses the information to create a sublcass of Rules based on the xml file
      * @return an object of the specified Rules subclass
      */
-    private Rules parseRules(){
-        String simType = myXML.getElementsByTagName(RULES_XML_TAG).item(0).getTextContent();
-        NodeList parametersNode = myXML.getElementsByTagName(RULES_PARAMETERS_XML_TAG).item(0).getChildNodes();
-        HashMap<String, String> parameters = getParameterVals(parametersNode);
-
-        Object ret = new Object();
-        Constructor rulesConstructor = getRulesConstructor(simType);
+    private Rules parseRules() throws XMLException{
+        String simType;
+        HashMap<String, String> parameters;
+        Object ret;
+        simType = parseStringFromXml(("rulesXMLTag"));
         try {
-            assert rulesConstructor != null;
+            NodeList parametersNode = myXML.getElementsByTagName(xmlResources.getString("ParametersTag")).item(0).getChildNodes();
+            parameters = getParameterVals(parametersNode);
+        } catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("ParametersTag"));
+        }
+
+        try {
+            Constructor rulesConstructor = getRulesConstructor(simType);
             ret = rulesConstructor.newInstance(parameters);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            throw new XMLException(xmlResources.getString("RulesClassErrorMessage") + e.toString());
         }
         return (Rules)ret;
     }
@@ -79,21 +82,17 @@ public class Configuration {
      * @return a constructor for the specific Rules
      */
     private Constructor getRulesConstructor(String simulationType){
-        Class simClass = null;
         try {
-            simClass = Class.forName(RULES_PACKAGE+"."+simulationType);
+            Class simClass = Class.forName(xmlResources.getString("RulesPackage")+"."+simulationType);
+            Class[] parameterTypes = {HashMap.class};
+            Constructor constructor = simClass.getConstructor(parameterTypes);
+            return constructor;
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Class[] parameterTypes = {HashMap.class};
-        Constructor constructor = null;
-        try {
-            assert simClass != null;
-            constructor = simClass.getConstructor(parameterTypes);
+            throw new XMLException(xmlResources.getString("SimTypeDoesNotExistErrorMessage"));
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            throw new XMLException(xmlResources.getString("RulesClassErrorMessage") + e.toString());
         }
-        return constructor;
+
     }
 
     /**
@@ -114,61 +113,100 @@ public class Configuration {
     /**
      * @return a Simulation object based on the xml file
      */
-    public Simulation getInitSim(){
+    public Simulation getInitSim()throws XMLException{
         return new Simulation(getInitBoard(),4);
     }
 
     /**
      * @return a Board object based on the initial configuration from the xml file
      */
-    private Board getInitBoard(){
-        Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules, 0);
-        NodeList cellList = myXML.getElementsByTagName("Cell");
-        for(int i = 0; i < cellList.getLength(); i++){
-            Element cellNode = (Element) cellList.item(i);
-            myBoard.updateCell(parseState(cellNode), parseRow(cellNode), parseCol(cellNode));
+    private Board getInitBoard() throws XMLException{
+        int boardHeight = parseIntFromXML("boardHeightTag");
+        int boardWidth = parseIntFromXML("boardWidthTag");
+        Board myBoard = new Board(boardHeight, boardWidth, myRules, 1);
+        String setupType = parseStringFromXml("setupTypeTag");
+        if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){
+            setupBoardWProbs(myBoard, boardHeight, boardWidth);
+        }
+        else if(setupType.equals(xmlResources.getString("cellListKeyword"))){
+            setupBoardWCellList(myBoard, boardHeight, boardWidth);
         }
         return myBoard;
 
     }
 
-    /**
-     * @param cell
-     * @return the column of the given cell
-     */
-    private int parseCol(Element cell) {
-        return Integer.parseInt(cell.getElementsByTagName("Column").item(0).getTextContent());
+    private void setupBoardWCellList(Board myBoard, int boardHeight, int boardWidth) {
+        try {
+            NodeList cellList = myXML.getElementsByTagName(xmlResources.getString("cellTag"));
+            if(cellList.getLength() != boardHeight*boardWidth){
+                throw new NullPointerException();
+            }
+            for(int i = 0; i < cellList.getLength(); i++){
+                Element cellNode = (Element) cellList.item(i);
+                myBoard.updateCell(parseIntFromCell(cellNode, "stateTag"), parseIntFromCell(cellNode, "rowTag"),
+                        parseIntFromCell(cellNode, "columnTag"));
+            }
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("cellTag"));
+        }
     }
 
-    /**
-     * @param cell
-     * @return the row of the given cell
-     */
-    private int parseRow(Element cell) {
-        return Integer.parseInt(cell.getElementsByTagName("Row").item(0).getTextContent());
+    private void setupBoardWProbs(Board myBoard, int boardHeight, int boardWidth) {
+        try {
+            NodeList probList = myXML.getElementsByTagName(xmlResources.getString("probTag"));
+            if(probList.getLength() != myRules.getNumberOfPossibleStates()){
+                throw new NullPointerException();
+            }
+            List<Float> chancesOfStates = new ArrayList<>();
+            for(int k = 0; k < probList.getLength(); k++){
+                Element cellNode = (Element) probList.item(k);
+                float chance = Float.parseFloat(cellNode.getTextContent());
+                int stateToAdd = Integer.parseInt(cellNode.getAttribute(xmlResources.getString("stateAttribute")));
+                chancesOfStates.add(stateToAdd, chance);
+            }
+            for(int i = 0; i < boardHeight; i++){
+                for(int j = 0; j < boardWidth; j++){
+                    double rand = Math.random();
+                    int ind = 0;
+                    float counter = chancesOfStates.get(0);
+                    while(rand > counter){
+                        ind++;
+                        counter+=chancesOfStates.get(ind);
+                    }
+                    myBoard.updateCell(ind,i, j);
+                }
+            }
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("probTag"));
+        }
     }
 
-    /**
-     * @param cell
-     * @return the state of the given cell
-     */
-    private int parseState(Element cell) {
-        return Integer.parseInt(cell.getElementsByTagName("State").item(0).getTextContent());
+    private int parseIntFromCell(Element cell, String property) throws XMLException{
+        try {
+            return Integer.parseInt(cell.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent());
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
+        }
     }
 
-    /**
-     * @return the height of the board specified in the xml file
-     */
-    private int parseBoardHeight() {
-        return Integer.parseInt(myXML.getElementsByTagName("Screen_Height").item(0).getTextContent());
+    private int parseIntFromXML(String property){
+        try {
+            return Integer.parseInt(myXML.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent());
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
+        }
     }
 
-    /**
-     * @return the width of the board specified in the xml file
-     */
-    private int parseBoardWidth() {
-        return Integer.parseInt(myXML.getElementsByTagName("Screen_Width").item(0).getTextContent());
+    private String parseStringFromXml(String property){
+        try {
+            return myXML.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent();
+        }
+        catch (NullPointerException e){
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
+        }
     }
-
-
 }
