@@ -141,13 +141,18 @@ public class Configuration {
     private void setupBoardWCellList(Board myBoard, int boardHeight, int boardWidth) {
         try {
             NodeList cellList = myXML.getElementsByTagName(xmlResources.getString("cellTag"));
-            if(cellList.getLength() != boardHeight*boardWidth){
+            if(cellList.getLength() != boardHeight){
                 throw new NullPointerException();
             }
-            for(int i = 0; i < cellList.getLength(); i++){
-                Element cellNode = (Element) cellList.item(i);
-                myBoard.updateCell(parseIntFromCell(cellNode, "stateTag"), parseIntFromCell(cellNode, "rowTag"),
-                        parseIntFromCell(cellNode, "columnTag"));
+            for(int row = 0; row < cellList.getLength(); row++){
+                Element cellNode = (Element) cellList.item(row);
+                String[] cols = cellNode.getTextContent().split(" ");
+                if(cols.length != boardWidth){
+                    throw new NullPointerException();
+                }
+                for(int col = 0; col < cols.length; col++){
+                    myBoard.updateCell(Integer.parseInt(cols[col]), row, col);
+                }
             }
         }
         catch (NullPointerException e){
