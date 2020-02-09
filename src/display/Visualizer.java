@@ -109,9 +109,11 @@ public class Visualizer extends Application {
             }
             pointyUp = !pointyUp;
             Color color = Color.GREEN;
-            if(i == 2) color = Color.BLACK;
+            if(i == 3) color = Color.RED;
+            if(i == 2) color = Color.BLUE;
             if(i == 1) color = Color.WHITE;
-            if(i == 0) color = Color.BLUE;
+            if(i == 0) color = Color.BLACK;
+            if(i == 4) color = Color.GOLD;
 
             Polygon cell = cellView(width, height, color, xPos, yPos, triangle, pointyUp);
             root.getChildren().add(cell);

@@ -2,6 +2,7 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ForagingAnts extends Rules {
@@ -13,14 +14,18 @@ public class ForagingAnts extends Rules {
   private static final int pheromoneLookingForFood =1;
   private static final int pheromoneReturningFromFood =3;
 
+  public ForagingAnts(HashMap<String, String> setupParameters){
+    super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
+  }
+
 
   @Override
   public void changeState(Cell cell, Cell cloneCell) {
-    int state = cell.getState();
+    int state = cloneCell.getState();
     if(state == ANTHASFOOD) {
       AntReturnToNest(cell);
     }
-    else{
+    else if(state == ANT){
       AntFindFoodSource(cell);
     }
   }
@@ -61,6 +66,11 @@ public class ForagingAnts extends Rules {
       cell.changeStateAndView(OPEN);
       setPheromone(cell, getPheromone(cell) + pheromoneLookingForFood);
     }
+    List<Cell> antNeighbors = cell.getNeighbors();
+    for(Cell ant: antNeighbors){
+      System.out.println(getPheromone(ant));
+    }
+
   }
 
   private List<Cell> findNeighborOptions(Cell cell, Boolean returning){
@@ -85,7 +95,8 @@ public class ForagingAnts extends Rules {
   private Cell findMaxPheromone(List<Cell> movableNeighbors) {
     Cell cellWithMaxPheromone= null;
     if(movableNeighbors.size()!=0){
-      cellWithMaxPheromone = movableNeighbors.get(0);
+      int random = getRandomIndex(movableNeighbors);
+      cellWithMaxPheromone = movableNeighbors.get(random);
       for(int j=0; j< movableNeighbors.size(); j++) {
         if (getPheromone(movableNeighbors.get(j)) > getPheromone(cellWithMaxPheromone)) {
           cellWithMaxPheromone = movableNeighbors.get(j);

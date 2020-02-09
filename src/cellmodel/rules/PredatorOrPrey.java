@@ -17,6 +17,8 @@ public class PredatorOrPrey extends Rules {
   private static final int FISH = 1;
   private static final int SHARK = 2;
   private static final int NUMBER_OF_POSSIBLE_STATES = 3;
+  private static final int AMOUNT_OF_SUGAR = 0;
+  private static final int MAX_SUGAR = 5;
   private float fishBreed;
   private float sharkBreed;
   private float sharkDie;

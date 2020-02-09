@@ -1,3 +1,4 @@
+/*
 package cellmodel.celltype;
 
 import javafx.scene.paint.Color;
@@ -32,3 +33,4 @@ public class TriangleCell extends Cell {
     return sideLength * Math.sqrt(3) / 2;
   }
 }
+*/
