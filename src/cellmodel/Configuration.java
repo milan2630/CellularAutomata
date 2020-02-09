@@ -131,6 +131,9 @@ public class Configuration {
         else if(setupType.equals(xmlResources.getString("cellListKeyword"))){
             setupBoardWCellList(myBoard, boardHeight, boardWidth);
         }
+        else if(setupType.equals(xmlResources.getString("quotasKeyword"))){
+            setupBoardWQuotas(myBoard, boardHeight, boardWidth);
+        }
         return myBoard;
 
     }
@@ -138,13 +141,18 @@ public class Configuration {
     private void setupBoardWCellList(Board myBoard, int boardHeight, int boardWidth) {
         try {
             NodeList cellList = myXML.getElementsByTagName(xmlResources.getString("cellTag"));
-            if(cellList.getLength() != boardHeight*boardWidth){
+            if(cellList.getLength() != boardHeight){
                 throw new NullPointerException();
             }
-            for(int i = 0; i < cellList.getLength(); i++){
-                Element cellNode = (Element) cellList.item(i);
-                myBoard.updateCell(parseIntFromCell(cellNode, "stateTag"), parseIntFromCell(cellNode, "rowTag"),
-                        parseIntFromCell(cellNode, "columnTag"));
+            for(int row = 0; row < cellList.getLength(); row++){
+                Element cellNode = (Element) cellList.item(row);
+                String[] cols = cellNode.getTextContent().split(" ");
+                if(cols.length != boardWidth){
+                    throw new NullPointerException();
+                }
+                for(int col = 0; col < cols.length; col++){
+                    myBoard.updateCell(Integer.parseInt(cols[col]), row, col);
+                }
             }
         }
         catch (NullPointerException e){
@@ -155,26 +163,11 @@ public class Configuration {
     private void setupBoardWProbs(Board myBoard, int boardHeight, int boardWidth) {
         try {
             NodeList probList = myXML.getElementsByTagName(xmlResources.getString("probTag"));
-            if(probList.getLength() != myRules.getNumberOfPossibleStates()){
-                throw new NullPointerException();
-            }
-            List<Float> chancesOfStates = new ArrayList<>();
-            for(int k = 0; k < probList.getLength(); k++){
-                Element cellNode = (Element) probList.item(k);
-                float chance = Float.parseFloat(cellNode.getTextContent());
-                int stateToAdd = Integer.parseInt(cellNode.getAttribute(xmlResources.getString("stateAttribute")));
-                chancesOfStates.add(stateToAdd, chance);
-            }
-            for(int i = 0; i < boardHeight; i++){
-                for(int j = 0; j < boardWidth; j++){
-                    double rand = Math.random();
-                    int ind = 0;
-                    float counter = chancesOfStates.get(0);
-                    while(rand > counter){
-                        ind++;
-                        counter+=chancesOfStates.get(ind);
-                    }
-                    myBoard.updateCell(ind,i, j);
+            checkAllStatesPresent(probList);
+            List<Float> chancesOfStates = createListProbs(probList);
+            for(int row = 0; row < boardHeight; row++){
+                for(int col = 0; col < boardWidth; col++){
+                    initializeCellFromProbs(myBoard, chancesOfStates, row, col);
                 }
             }
         }
@@ -183,14 +176,69 @@ public class Configuration {
         }
     }
 
-    private int parseIntFromCell(Element cell, String property) throws XMLException{
+    private void initializeCellFromProbs(Board myBoard, List<Float> chancesOfStates, int row, int col) {
+        double rand = Math.random();
+        int ind = 0;
+        float counter = chancesOfStates.get(0);
+        while(rand > counter){
+            ind++;
+            counter+=chancesOfStates.get(ind);
+        }
+        myBoard.updateCell(ind,row, col);
+    }
+
+    private List<Float> createListProbs(NodeList probList) {
+        List<Float> chancesOfStates = new ArrayList<>();
+        for(int k = 0; k < probList.getLength(); k++){
+            Element cellNode = (Element) probList.item(k);
+            float chance = Float.parseFloat(cellNode.getTextContent());
+            int stateToAdd = Integer.parseInt(cellNode.getAttribute(xmlResources.getString("stateAttribute")));
+            chancesOfStates.add(stateToAdd, chance);
+        }
+        return chancesOfStates;
+    }
+
+    private void setupBoardWQuotas(Board myBoard, int boardHeight, int boardWidth) {
         try {
-            return Integer.parseInt(cell.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent());
+            NodeList quotaList = myXML.getElementsByTagName(xmlResources.getString("quotaTag"));
+            checkAllStatesPresent(quotaList);
+            boolean[][] haveVisited = new boolean[boardHeight][boardWidth];
+            int totalCount = 0;
+            for(int k = 0; k < quotaList.getLength(); k++){
+                Element cellNode = (Element) quotaList.item(k);
+                int total = Integer.parseInt(cellNode.getTextContent());
+                totalCount+=total;
+                int stateToAdd = Integer.parseInt(cellNode.getAttribute(xmlResources.getString("stateAttribute")));
+                while(total > 0) {
+                    total = initializeCellFromProbs(myBoard, boardHeight, boardWidth, haveVisited, total, stateToAdd);
+                }
+            }
+            if(totalCount < boardHeight*boardWidth){
+                throw new NullPointerException();
+            }
         }
         catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("probTag"));
         }
     }
+
+    private int initializeCellFromProbs(Board myBoard, int boardHeight, int boardWidth, boolean[][] haveVisited, int total, int stateToAdd) {
+        int row = (int) (Math.random() * boardHeight);
+        int col = (int) (Math.random() * boardWidth);
+        if(!haveVisited[row][col]) {
+            myBoard.updateCell(stateToAdd, row, col);
+            haveVisited[row][col] = true;
+            total--;
+        }
+        return total;
+    }
+
+    private void checkAllStatesPresent(NodeList quotaList) {
+        if(quotaList.getLength() != myRules.getNumberOfPossibleStates()){
+            throw new NullPointerException();
+        }
+    }
+
 
     private int parseIntFromXML(String property){
         try {
