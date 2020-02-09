@@ -9,8 +9,8 @@
     </Rules_Parameters>
   </Rules_Info>
   <Grid_Config>
-    <Screen_Height>7</Screen_Height>
-    <Screen_Width>7</Screen_Width>
+    <Screen_Height>9</Screen_Height>
+    <Screen_Width>9</Screen_Width>
     <Cells>
       <Cell>
         <Row>0</Row>
@@ -45,6 +45,11 @@
       <Cell>
         <Row>0</Row>
         <Column>6</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>0</Row>
+        <Column>7</Column>
         <State>0</State>
       </Cell>
       <Cell>
@@ -83,6 +88,11 @@
         <State>1</State>
       </Cell>
       <Cell>
+        <Row>1</Row>
+        <Column>7</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
         <Row>2</Row>
         <Column>0</Column>
         <State>1</State>
@@ -118,6 +128,11 @@
         <State>1</State>
       </Cell>
       <Cell>
+        <Row>2</Row>
+        <Column>7</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
         <Row>3</Row>
         <Column>0</Column>
         <State>1</State>
@@ -153,6 +168,11 @@
         <State>1</State>
       </Cell>
       <Cell>
+        <Row>3</Row>
+        <Column>7</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
         <Row>4</Row>
         <Column>0</Column>
         <State>1</State>
@@ -188,6 +208,11 @@
         <State>1</State>
       </Cell>
       <Cell>
+        <Row>4</Row>
+        <Column>7</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
         <Row>5</Row>
         <Column>0</Column>
         <State>1</State>
@@ -221,6 +246,11 @@
         <Row>5</Row>
         <Column>6</Column>
         <State>1</State>
+      </Cell>
+      <Cell>
+        <Row>5</Row>
+        <Column>7</Column>
+        <State>0</State>
       </Cell>
       <Cell>
         <Row>6</Row>
@@ -255,6 +285,51 @@
       <Cell>
         <Row>6</Row>
         <Column>6</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>6</Row>
+        <Column>7</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>0</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>1</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>2</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>3</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>4</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>5</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>6</Column>
+        <State>0</State>
+      </Cell>
+      <Cell>
+        <Row>7</Row>
+        <Column>7</Column>
         <State>0</State>
       </Cell>
     </Cells>
