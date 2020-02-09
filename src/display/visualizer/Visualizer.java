@@ -101,9 +101,9 @@ public abstract class Visualizer extends Application {
 
             //TODO REMOVE HARD CODE
             Color color = Color.GREEN;
-            if(i == 2) { color = Color.BLACK; }
+            if(i == 2) color = Color.BLUE;
             if(i == 1) color = Color.WHITE;
-            if(i == 0) color = Color.BLUE;
+            if(i == 0) color = Color.BLACK;
 
             Polygon cell = cellView(color);
             root.getChildren().add(cell);

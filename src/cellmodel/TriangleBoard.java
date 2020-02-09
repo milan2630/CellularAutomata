@@ -12,7 +12,7 @@ public class TriangleBoard extends Board {
    * @param rules   rules of the simulation
    **/
   public TriangleBoard(int numCols, int numRows, Rules rules) {
-    super(numCols, numRows, rules);
+    super(numCols, numRows, rules, 0);
   }
 
  // @Override
