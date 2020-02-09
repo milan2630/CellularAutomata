@@ -15,6 +15,11 @@ public class Board{
   private int myCols;
   private Rules myRules;
   private boolean buildingInitialBoard;
+  private int myNeighborhood;
+  private static final int finite = 0;
+  private static final int torodial =1;
+
+
 
   /**
    * constructor to create a board
@@ -22,8 +27,9 @@ public class Board{
    * @param numCols number of columns on the board
    * @param numRows number of rows on the board
    * @param rules rules of the simulation
+   * @param neighborhoodType
    **/
-  public Board(int numCols, int numRows, Rules rules) {
+  public Board(int numCols, int numRows, Rules rules, int neighborhoodType) {
     myRules = rules;
     myCells = new Cell[numRows][numCols];
     cloneCells = new Cell[numRows][numCols];
@@ -32,6 +38,8 @@ public class Board{
     buildingInitialBoard = true;
     buildBoard(myCells);
     buildingInitialBoard = false;
+    myNeighborhood= neighborhoodType;
+
   }
 
   private void buildBoard(Cell[][] cells){
@@ -68,7 +76,23 @@ public class Board{
         if (col > 0) {
           cell.addNeighbor(cells[row][col-1]);
         }
+        checkGridTypeAndAddNeighbors(cells, row, col, cell);
       }
+    }
+  }
+
+  private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
+    if(myNeighborhood==torodial && col ==0) {
+      cell.addNeighbor(cells[row][getNumCols()-1]);
+    }
+    if(myNeighborhood==torodial && row ==0) {
+      cell.addNeighbor(cells[getNumRows()-1][col]);
+    }
+    if(myNeighborhood==torodial && col ==getNumCols()-1) {
+      cell.addNeighbor(cells[row][0]);
+    }
+    if(myNeighborhood==torodial && row ==getNumRows()-1) {
+      cell.addNeighbor(cells[0][col]);
     }
   }
 
