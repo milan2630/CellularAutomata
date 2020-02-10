@@ -11,12 +11,12 @@
         </Rules_Parameters>
     </Rules_Info>
     <Grid_Config>
-        <Screen_Height>6</Screen_Height>
-        <Screen_Width>6</Screen_Width>
+        <Screen_Height>3</Screen_Height>
+        <Screen_Width>3</Screen_Width>
         <Cells>
             <Probabilites>
-                <Prob state="0">0.2</Prob>
-                <Prob state="1">0.5</Prob>
+                <Prob state="0">0.1</Prob>
+                <Prob state="1">0.6</Prob>
                 <Prob state="2">0.3</Prob>
             </Probabilites>
         </Cells>
