@@ -1,6 +1,7 @@
 package cellmodel;
 
 import cellmodel.rules.Rules;
+import display.visualizer.Visualizer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -113,16 +114,22 @@ public class Configuration {
 
     /**
      * @return a Simulation object based on the xml file
+     * @param numCorners
      */
-    public Simulation getInitSim(){
-        return new Simulation(getInitBoard(),4);
+    public Simulation getInitSim(int numCorners, int neighborhoodType){
+        return new Simulation(getInitBoard(numCorners, neighborhoodType), numCorners);
     }
 
     /**
      * @return a Board object based on the initial configuration from the xml file
      */
-    private Board getInitBoard(){
-        Board myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules, 1);
+    private Board getInitBoard(int numCornersOnACell, int neighborhoodType){
+        Board myBoard;
+        if(numCornersOnACell==Visualizer.TRIANGLE_CORNER_NUMBER){
+            myBoard = new TriangleBoard(parseBoardWidth(), parseBoardHeight(), myRules, neighborhoodType);
+        } else {
+            myBoard = new Board(parseBoardWidth(), parseBoardHeight(), myRules, neighborhoodType);
+        }
         NodeList cellList = myXML.getElementsByTagName("Cell");
         for(int i = 0; i < cellList.getLength(); i++){
             Element cellNode = (Element) cellList.item(i);
