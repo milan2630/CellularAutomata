@@ -13,9 +13,8 @@ public class TriangleBoard extends Board {
    * @param numRows number of rows on the board
    * @param rules   rules of the simulation
    **/
-  public TriangleBoard(int numCols, int numRows, Rules rules, int neighborhoodType, double percentWanted) {
-    super(numCols, numRows, rules, neighborhoodType, percentWanted);
-    myNeighborhood = neighborhoodType;
+  public TriangleBoard(int numCols, int numRows, Rules rules) {
+    super(numCols, numRows, rules);
   }
 
   /**

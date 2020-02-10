@@ -1,11 +1,9 @@
 package display;
 
-import cellmodel.Configuration;
-import cellmodel.Simulation;
-import java.io.File;
+import cellmodel.*;
+
 import java.util.ResourceBundle;
 
-import cellmodel.XMLException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,16 +12,14 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -33,14 +29,13 @@ public class UserInterface extends Application {
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
+    private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
+    private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
     private static final String STYLESHEET = "default.css";
-    private static final String DEFAULT_LANGUAGE = "English";
-    private static final String XMLFOLDER = "XMLFiles/";
-    private static final int UI_SCREEN_WIDTH = 600;
-    private static final int UI_SCREEN_HEIGHT = 80;
-    private static final int SPEED_SETTER_WIDTH_MAX = 50;
 
     private ResourceBundle myResources;
+    private ResourceBundle styleResources;
+    private ResourceBundle xmlResources;
     private Group UIroot;
     private Stage UIstage;
     private Simulation mySim;
@@ -54,7 +49,9 @@ public class UserInterface extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
+        styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + styleResources.getString("Language"));
+        xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
         myConfig = new Configuration(getFileName());
         try {
             mySim = myConfig.getInitSim(3, 1);
@@ -70,12 +67,13 @@ public class UserInterface extends Application {
         createController();
     }
 
+
     /**
      * Creates a FileTextPrompt and returns the inputted string
      * @return the typed file name from the user
      */
     private String getFileName(){
-        FileTextPrompt fileInput = new FileTextPrompt();
+        FileTextPrompt fileInput = new FileTextPrompt("FileInputPrompt", "ChooseCommand");
         return addXMLFileFolder(fileInput.getResult());
     }
 
@@ -88,16 +86,25 @@ public class UserInterface extends Application {
         addButtonToHBox("StepCommand", event -> mySim.step(), controls);
         addButtonToHBox("ContinueCommand", event -> mySim.resetKeyFrame(1), controls);
         addButtonToHBox("RestartCommand", event -> onRestart(), controls);
-        addButtonToHBox("SaveCommand", event -> mySim.saveCurrent(), controls);
+        addButtonToHBox("SaveCommand", event -> saveCurrent(), controls);
         speedSetter = createSpeedSetter();
         controls.getChildren().add(speedSetter);
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
 
         UIroot.getChildren().add(controls);
-        Scene controllerScreen = new Scene(UIroot, UI_SCREEN_WIDTH, UI_SCREEN_HEIGHT);
+        Scene controllerScreen = new Scene(UIroot, Integer.parseInt(styleResources.getString("UIScreenWidth")), Integer.parseInt(styleResources.getString("UIScreenHeight")));
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
+    }
+
+    private void saveCurrent() {
+        try{
+            mySim.saveCurrent();
+        }
+        catch (SaveException e){
+            createErrorDialog(e);
+        }
     }
 
     /**
@@ -105,7 +112,7 @@ public class UserInterface extends Application {
      */
     private TextField createSpeedSetter(){
         TextField setter = new TextField();
-        setter.setMaxWidth(SPEED_SETTER_WIDTH_MAX);
+        setter.setMaxWidth(Integer.parseInt(styleResources.getString("SpeedSetterWidth")));
         setter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
         return setter;
     }
@@ -150,17 +157,28 @@ public class UserInterface extends Application {
     }
 
     private String addXMLFileFolder(String filename){
-        return XMLFOLDER + filename + ".xml";
+        return xmlResources.getString("XMLFilesFolder") + filename + ".xml";
     }
 
     private void createErrorDialog(Exception e){
-        Stage errorStage = new Stage();
-        errorStage.setTitle("Error");
-        Label errorLabel = new Label(e.getMessage());
-        errorLabel.setAlignment(Pos.CENTER);
-        Scene errorScene = new Scene(errorLabel);
-        errorStage.setScene(errorScene);
-        errorStage.showAndWait();
+        ErrorPopup ep = new ErrorPopup(e);
+    }
+
+    /**
+     * @param filename is the text in the textfield when the submit button is clicked
+     * @param stage is the stage holding the textfield
+     */
+    private void handleFileSubmit(String filename, Stage stage){
+        try {
+            myConfig = new Configuration(addXMLFileFolder(filename));
+            stage.close();
+        } catch (XMLException e) {
+            createErrorDialog(e);
+        }
+    }
+
+    private void stopEverything(){
+        System.exit(1);
     }
 
     /**
@@ -172,16 +190,12 @@ public class UserInterface extends Application {
         /**
          * Creates a prompting textfield to take in a string
          */
-        FileTextPrompt() {
+        FileTextPrompt(String titleProperty, String buttonProperty) {
             final Stage dialog = new Stage();
 
-            dialog.setTitle(myResources.getString("FileInputPrompt"));
-            dialog.initStyle(StageStyle.UTILITY);
-            dialog.initModality(Modality.WINDOW_MODAL);
-
-
+            dialog.setTitle(myResources.getString(titleProperty));
             final TextField textField = new TextField();
-            final Button submitButton = makeButton("FileChooseCommand", event -> handleFileSubmit(textField.getText(), dialog));
+            final Button submitButton = makeButton(buttonProperty, event -> handleFileSubmit(textField.getText(), dialog));
             dialog.setOnCloseRequest(t->stopEverything());
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
@@ -195,34 +209,6 @@ public class UserInterface extends Application {
 
             result = textField.getText();
         }
-
-        /**
-         * @param filename is the text in the textfield when the submit button is clicked
-         * @param stage is the stage holding the textfield
-         */
-        private void handleFileSubmit(String filename, Stage stage){
-            try{
-                myConfig = new Configuration(addXMLFileFolder(filename));
-                stage.close();
-            }
-            catch(XMLException e){
-                createErrorDialog(e);
-            }
-        }
-
-        /**
-         * Displays the error message when an invalid file is inputted
-         * Still needs to be implemented
-         */
-        private void displayErrorMessage() {
-            return;
-        }
-
-
-        private void stopEverything(){
-            System.exit(1);
-        }
-
         /**
          * @return the value in the textfield
          */

@@ -32,24 +32,27 @@ public class Simulation {
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
+    private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
     private ResourceBundle xmlResources;
-
+    private ResourceBundle styleResources;
     private Board myBoard;
     private Visualizer myVisualizer;
     private Timeline animation;
     private double millisecondDelay;
+    private Document doc;
     /**
      * constructor that takes in a starting board, and number or corners in the cell shape
      * and starts running the simulation
      * @param board incoming board
      */
-    public Simulation(Board board, int numCornersOnACell){
+    public Simulation(Board board, int numPossStates){
       xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
+      styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
       myBoard = board;
-      if(numCornersOnACell == Visualizer.TRIANGLE_CORNER_NUMBER) {
-        myVisualizer = new TriangleVisualizer();
+      if( Integer.parseInt(styleResources.getString("NumberOfCorners"))== Visualizer.TRIANGLE_CORNER_NUMBER) {
+        myVisualizer = new TriangleVisualizer(myBoard.getRulesClass(), numPossStates);
       } else {
-        myVisualizer = new SquareVisualizer();
+        myVisualizer = new SquareVisualizer(myBoard.getRulesClass(), numPossStates);
       }
       myVisualizer.displayBoard(board);
       setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
@@ -103,76 +106,81 @@ public class Simulation {
 
     public void saveCurrent() {
       try {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
+          initDoc();
+          Element rootElement = doc.createElement("Root");
+          doc.appendChild(rootElement);
+          rootElement.appendChild(createXMLElement(xmlResources.getString("rulesXMLTag"), myBoard.getRulesClass()));
+          rootElement.appendChild(createXMLElement(xmlResources.getString("setupTypeTag"), xmlResources.getString("cellListKeyword")));
+          addParametersNode(rootElement);
+          addGridNode(rootElement);
+          saveDocAsXML();
+      } catch (ParserConfigurationException | TransformerException e) {
+        throw new SaveException(xmlResources.getString("FileErrorMessage"));
+      }
+    }
 
+    private void saveDocAsXML() throws TransformerException {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
 
-        Element rootElement = doc.createElement("Root");
-        doc.appendChild(rootElement);
+        String fileSaveDirectory = xmlResources.getString("XMLFilesFolder");
+        checkDirectoryExists(fileSaveDirectory);
 
-        String simType = myBoard.getRulesClass();
-        Element simTypeNode = doc.createElement(xmlResources.getString("rulesXMLTag"));
-        simTypeNode.setTextContent(simType);
-        rootElement.appendChild(simTypeNode);
+        StreamResult result = new StreamResult(new File(fileSaveDirectory + myBoard.getRulesClass() +
+                System.currentTimeMillis() + xmlResources.getString("fileExtension")));
 
-        Element setupTypeNode = doc.createElement(xmlResources.getString("setupTypeTag"));
-        setupTypeNode.setTextContent(xmlResources.getString("cellListKeyword"));
-        rootElement.appendChild(setupTypeNode);
+        transformer.transform(source, result);
+    }
 
+    private void addGridNode(Element rootElement) {
+        Element gridNode = doc.createElement(xmlResources.getString("gridTag"));
+        gridNode.appendChild(createXMLElement(xmlResources.getString("boardHeightTag"), ""+myBoard.getNumRows()));
+        gridNode.appendChild(createXMLElement(xmlResources.getString("boardWidthTag"), ""+myBoard.getNumCols()));
 
+        Element cellsNode = doc.createElement(xmlResources.getString("generalCellTag"));
+        for(int row = 0; row < myBoard.getNumRows(); row++){
+          String text = "";
+          for(int col = 0; col < myBoard.getNumCols(); col++){
+              text = text + myBoard.getState(row, col)+" ";
+          }
+          cellsNode.appendChild(createXMLElement(xmlResources.getString("cellTag"), text));
+        }
 
+        gridNode.appendChild(cellsNode);
+        rootElement.appendChild(gridNode);
+    }
+
+    private void addParametersNode(Element rootElement) {
         Element rulesInfoNode = doc.createElement(xmlResources.getString("rulesInfoTag"));
         Element rulesParamNode = doc.createElement(xmlResources.getString("parametersTag"));
 
         HashMap<String, String> parameters = myBoard.getRulesParameters();
         for(String key: parameters.keySet()){
-            Element paramElem = doc.createElement(key);
-            paramElem.setTextContent(parameters.get(key));
-            rulesParamNode.appendChild(paramElem);
+            rulesParamNode.appendChild(createXMLElement(key, parameters.get(key)));
         }
 
         rulesInfoNode.appendChild(rulesParamNode);
         rootElement.appendChild(rulesInfoNode);
+    }
 
-        Element gridNode = doc.createElement(xmlResources.getString("gridTag"));
-        Element screenHeightNode = doc.createElement(xmlResources.getString("boardHeightTag"));
-        screenHeightNode.setTextContent(""+myBoard.getNumRows());
-        gridNode.appendChild(screenHeightNode);
-        Element screenWidthNode = doc.createElement(xmlResources.getString("boardWidthTag"));
-        screenWidthNode.setTextContent(""+myBoard.getNumCols());
-        gridNode.appendChild(screenWidthNode);
+    private void initDoc() throws ParserConfigurationException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        doc = docBuilder.newDocument();
+    }
 
-        Element cellsNode = doc.createElement(xmlResources.getString("generalCellTag"));
-        for(int row = 0; row < myBoard.getNumRows(); row++){
-          Element rowNode = doc.createElement(xmlResources.getString("cellTag"));
-          String text = "";
-          for(int col = 0; col < myBoard.getNumCols(); col++){
-              text = text + myBoard.getState(row, col)+" ";
-          }
-          rowNode.setTextContent(text);
-          cellsNode.appendChild(rowNode);
+    private Element createXMLElement(String tag, String content){
+        Element elementNode = doc.createElement(tag);
+        elementNode.setTextContent(content);
+        return elementNode;
+    }
+
+    private void checkDirectoryExists(String filename){
+        File checker = new File(filename);
+        if(!checker.isDirectory()){
+            throw new SaveException("Given file save location is not valid.");
         }
-
-        gridNode.appendChild(cellsNode);
-        rootElement.appendChild(gridNode);
-
-
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-
-        StreamResult result = new StreamResult(new File(xmlResources.getString("XMLFilesFolder") + simType +
-                System.currentTimeMillis() + xmlResources.getString("fileExtension")));
-
-        transformer.transform(source, result);
-
-
-      } catch (ParserConfigurationException | TransformerConfigurationException e) {
-        e.printStackTrace();
-      } catch (TransformerException e) {
-        e.printStackTrace();
-      }
     }
 
 }

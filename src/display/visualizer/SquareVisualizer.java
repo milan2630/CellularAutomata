@@ -5,8 +5,8 @@ public class SquareVisualizer extends Visualizer {
   /**
    * Constructor, creates a scene, a stage, and then set the stage to that scene
    */
-  public SquareVisualizer() {
-    super();
+  public SquareVisualizer(String rulesClass, int numPossibleStates) {
+    super(rulesClass, numPossibleStates);
   }
 
   /**
