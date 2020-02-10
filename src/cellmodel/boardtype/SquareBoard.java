@@ -1,6 +1,5 @@
 package cellmodel.boardtype;
 
-import cellmodel.boardtype.Board;
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
 
