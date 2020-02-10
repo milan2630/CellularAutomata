@@ -42,7 +42,6 @@ public class HistoryGraph extends Application {
 
     for(int state = 0; state < numStates; state++){
       XYChart.Series series = new Series();
-      series.setName(state.toString());
       myLines.putIfAbsent(state, series);
       XYChart.Series specificSeries = myLines.get(state);
       if(countsOfStates.containsKey(state)){
