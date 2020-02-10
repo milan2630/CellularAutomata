@@ -6,9 +6,6 @@ import cellmodel.rules.Rules;
 
 public class SquareBoard extends Board {
   private static String myNeighborhood = getStyleResourceBundle().getString("NeighborhoodType");
-  private static final String RESOURCES = "resources";
-  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-  private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
   private boolean cornersAreNeighbors;
 
   /**
@@ -51,32 +48,16 @@ public class SquareBoard extends Board {
   private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
     if (myNeighborhood.equals(getStyleResourceBundle().getString("ToroidalTag"))) {
       if (col == 0) {
-        cell.addNeighbor(cells[row][getNumCols() - 1]);
-        if (cornersAreNeighbors) {
-          cell.addNeighbor(cells[row + 1][getNumCols() - 1]);
-          cell.addNeighbor(cells[row - 1][getNumCols() - 1]);
-        }
+        addNeighborRow(cell, row, cells, getNumCols() - 1, cornersAreNeighbors);
       }
       if (row == 0) {
-        cell.addNeighbor(cells[getNumRows() - 1][col]);
-        if (cornersAreNeighbors) {
-          cell.addNeighbor(cells[getNumRows() - 1][col - 1]);
-          cell.addNeighbor(cells[getNumRows() - 1][col + 1]);
-        }
+        addNeighborCols(cell, col, cells, getNumRows() - 1, cornersAreNeighbors);
       }
       if (col == getNumCols() - 1) {
-        cell.addNeighbor(cells[row][0]);
-        if (cornersAreNeighbors) {
-          cell.addNeighbor(cells[row - 1][0]);
-          cell.addNeighbor(cells[row + 1][0]);
-        }
+        addNeighborRow(cell, row, cells,0,cornersAreNeighbors);
       }
       if (row == getNumRows() - 1) {
-        cell.addNeighbor(cells[0][col]);
-        if (cornersAreNeighbors) {
-          cell.addNeighbor(cells[0][col - 1]);
-          cell.addNeighbor(cells[0][col + 1]);
-        }
+        addNeighborCols(cell, col, cells, 0, cornersAreNeighbors);
       }
     }
   }
@@ -89,6 +70,18 @@ public class SquareBoard extends Board {
       }
       if (col + 1 < getNumCols()) {
         cell.addNeighbor(cells[neighborRow][col + 1]);
+      }
+    }
+  }
+
+  private void addNeighborRow(Cell cell, int row, Cell[][] cells, int neighborCol, boolean corners) {
+    cell.addNeighbor(cells[row][neighborCol]);
+    if(corners) {
+      if (row > 0) {
+        cell.addNeighbor(cells[row-1][neighborCol]);
+      }
+      if (row + 1 < getNumCols()) {
+        cell.addNeighbor(cells[row+1][neighborCol]);
       }
     }
   }
