@@ -42,7 +42,8 @@ public class TriangleBoard extends Board {
           addNeighborRow(cells, cell, row - ONE_AWAY, col, ONE_AWAY, true);
         }
         addNeighborsSpecificToOrientation(cells, cell, row, col);
-        checkTriangleTypeForGridType(cells, cell, row, col);
+        //checkTriangleTypeForGridType(cells, cell, row, col);
+        //toroidal for triangle currently not working :(
         removeUnwantedNeighbors(cells);
       }
     }
@@ -73,9 +74,10 @@ public class TriangleBoard extends Board {
     } else if (row % 2 != col % 2 && row + ONE_AWAY < this.getNumRows()) {
       addNeighborRow(cells, cell, row + ONE_AWAY, col, TWO_AWAY, false);
     }
-    gridTypeAddNeighborsTriangle1(cells, row, col, cell);
+    //gridTypeAddNeighborsTriangle1(cells, row, col, cell);
+    //toroidal is currently not working :(
   }
-
+/*
   private void checkTriangleTypeForGridType(Cell[][] cells, Cell cell, int row, int col) {
     if (row % 2 == col % 2) {
       gridTypeAddNeighborsTriangle1(cells, row, col, cell);
@@ -145,4 +147,6 @@ public class TriangleBoard extends Board {
     cell.addNeighbor(cells[row][col]);
     cell.addNeighbor(cells[row + rowChange][col]);
   }
+
+ */
 }
