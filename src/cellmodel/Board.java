@@ -29,7 +29,7 @@ public class Board{
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;
-  protected ResourceBundle styleResource;
+  private ResourceBundle styleResource;
 
 
   /**
@@ -38,9 +38,8 @@ public class Board{
    * @param numCols number of columns on the board
    * @param numRows number of rows on the board
    * @param rules rules of the simulation
-   * @param percentOfNeighborsWanted
    **/
-  public Board(int numCols, int numRows, Rules rules, double percentOfNeighborsWanted) {
+  public Board(int numCols, int numRows, Rules rules) {
     styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
     percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
     myNeighborhood= styleResource.getString("NeighborhoodType");
@@ -272,5 +271,8 @@ public class Board{
     return classParts[classParts.length-1];
   }
 
+  protected ResourceBundle getStyleResourceBundle(){
+    return styleResource;
+  }
 }
 

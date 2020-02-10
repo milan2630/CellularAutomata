@@ -115,7 +115,6 @@ public class Configuration {
 
     /**
      * @return a Simulation object based on the xml file
-     * @param numCorners
      */
     public Simulation getInitSim()throws XMLException{
         return new Simulation(getInitBoard());
@@ -130,9 +129,9 @@ public class Configuration {
         int boardWidth = parseIntFromXML("boardWidthTag");
         Board myBoard;
         if(Integer.parseInt(styleResources.getString("NumberOfCorners"))==Visualizer.TRIANGLE_CORNER_NUMBER){
-            myBoard = new TriangleBoard(boardWidth, boardHeight, myRules, 0.6);
+            myBoard = new TriangleBoard(boardWidth, boardHeight, myRules);
         } else {
-            myBoard = new Board(boardHeight, boardWidth, myRules, 0.6);
+            myBoard = new Board(boardHeight, boardWidth, myRules);
         }
         String setupType = parseStringFromXml("setupTypeTag");
         if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){
