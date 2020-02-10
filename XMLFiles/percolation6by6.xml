@@ -2,6 +2,7 @@
 <Root>
     <Simulation_Type>Percolation</Simulation_Type>
     <Title>TestPercolation</Title>
+    <Setup_Type>CellList</Setup_Type>
     <Author1>Milan</Author1>
     <Author2>Dana</Author2>
     <Rules_Info>
@@ -191,21 +192,6 @@
             <Cell>
                 <Row>5</Row>
                 <Column>5</Column>
-                <State>1</State>
-            </Cell>
-            <Cell>
-                <Row>0</Row>
-                <Column>0</Column>
-                <State>0</State>
-            </Cell>
-            <Cell>
-                <Row>0</Row>
-                <Column>1</Column>
-                <State>1</State>
-            </Cell>
-            <Cell>
-                <Row>0</Row>
-                <Column>2</Column>
                 <State>1</State>
             </Cell>
         </Cells>

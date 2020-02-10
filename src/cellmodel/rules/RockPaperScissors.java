@@ -15,6 +15,7 @@ public class RockPaperScissors extends Rules {
   private static float THRESHOLD;
 
   public RockPaperScissors(HashMap<String, String> setupParameters) {
+    super(setupParameters);
     THRESHOLD = Float.parseFloat(setupParameters.get("threshold"));
   }
 

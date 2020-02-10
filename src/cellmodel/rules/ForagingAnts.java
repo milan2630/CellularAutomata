@@ -15,6 +15,7 @@ public class ForagingAnts extends Rules {
   private static final int pheromoneReturningFromFood =3;
 
   public ForagingAnts(HashMap<String, String> setupParameters){
+    super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
