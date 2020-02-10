@@ -9,6 +9,10 @@ import java.util.List;
  * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
  **/
 public class Board{
+
+  protected static final int ONE_AWAY = 1;
+  protected static final int TWO_AWAY = 2;
+
   private Cell[][] myCells;
   private Cell[][] cloneCells;
   private int myRows;
@@ -16,8 +20,8 @@ public class Board{
   private Rules myRules;
   private boolean buildingInitialBoard;
   private int myNeighborhood;
-  private static final int finite = 0;
-  private static final int torodial =1;
+  private static final int FINITE = 0;
+  private static final int TORODIAL =1;
 
 
 
@@ -60,7 +64,11 @@ public class Board{
     addNeighborsToCells(cells);
   }
 
-  private void addNeighborsToCells(Cell[][] cells) {
+  /**
+   * add neighbors to a cell
+   * @param cells
+   */
+  protected void addNeighborsToCells(Cell[][] cells) {
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
         Cell cell = cells[row][col];
@@ -82,16 +90,16 @@ public class Board{
   }
 
   private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
-    if(myNeighborhood==torodial && col ==0) {
+    if(myNeighborhood== TORODIAL && col ==0) {
       cell.addNeighbor(cells[row][getNumCols()-1]);
     }
-    if(myNeighborhood==torodial && row ==0) {
+    if(myNeighborhood== TORODIAL && row ==0) {
       cell.addNeighbor(cells[getNumRows()-1][col]);
     }
-    if(myNeighborhood==torodial && col ==getNumCols()-1) {
+    if(myNeighborhood== TORODIAL && col ==getNumCols()-1) {
       cell.addNeighbor(cells[row][0]);
     }
-    if(myNeighborhood==torodial && row ==getNumRows()-1) {
+    if(myNeighborhood== TORODIAL && row ==getNumRows()-1) {
       cell.addNeighbor(cells[0][col]);
     }
   }
