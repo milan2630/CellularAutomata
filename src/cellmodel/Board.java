@@ -11,14 +11,12 @@ import java.util.ResourceBundle;
 /**
  * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
  **/
-public class Board{
+public abstract class Board{
   private static final String RESOURCES = "resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
-
   protected static final int ONE_AWAY = 1;
   protected static final int TWO_AWAY = 2;
-
   private Cell[][] myCells;
   private Cell[][] cloneCells;
   private int myRows;
@@ -31,7 +29,7 @@ public class Board{
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;
-  private ResourceBundle styleResource;
+  private static ResourceBundle styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
 
 
   /**
@@ -42,7 +40,6 @@ public class Board{
    * @param rules rules of the simulation
    **/
   public Board(int numCols, int numRows, Rules rules) {
-    styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
     percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
     myNeighborhood= styleResource.getString("NeighborhoodType");
     myRules = rules;
@@ -75,7 +72,7 @@ public class Board{
     removeUnwantedNeighbors(cells);
   }
 
-  private void removeUnwantedNeighbors(Cell[][] cells) {
+  protected void removeUnwantedNeighbors(Cell[][] cells) {
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
         int numNeighbors = cells[row][col].getNeighbors().size();
@@ -107,55 +104,7 @@ public class Board{
    * add neighbors to a cell
    * @param cells
    */
-  protected void addNeighborsToCells(Cell[][] cells) {
-    for (int row = 0; row < myRows; row++) {
-      for (int col = 0; col < myCols; col++) {
-        Cell cell = cells[row][col];
-        if (row + 1 < myRows) {
-          addNeighborCols(cell, col, cells, row+1, myRules.areCornersNeighbors());
-        }
-        if (row > 0) {
-          addNeighborCols(cell, col, cells, row-1, myRules.areCornersNeighbors());
-        }
-        if (col + 1 < myCols) {
-          cell.addNeighbor(cells[row][col+1]);
-        }
-        if (col > 0) {
-          cell.addNeighbor(cells[row][col-1]);
-        }
-        checkGridTypeAndAddNeighbors(cells, row, col, cell);
-      }
-    }
-  }
-
-  private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
-    if(myNeighborhood.equals(styleResource.getString("ToroidalTag"))){
-      if(col ==0) {
-        cell.addNeighbor(cells[row][getNumCols()-1]);
-      }
-      if(row ==0) {
-        cell.addNeighbor(cells[getNumRows()-1][col]);
-      }
-      if(col ==getNumCols()-1) {
-        cell.addNeighbor(cells[row][0]);
-      }
-      if(row ==getNumRows()-1) {
-        cell.addNeighbor(cells[0][col]);
-      }
-    }
-  }
-
-  private void addNeighborCols(Cell cell, int col, Cell[][] cells, int neighborRow, boolean corners) {
-    cell.addNeighbor(cells[neighborRow][col]);
-    if(corners) {
-      if (col > 0) {
-        cell.addNeighbor(cells[neighborRow][col - 1]);
-      }
-      if (col + 1 < myCols) {
-        cell.addNeighbor(cells[neighborRow][col + 1]);
-      }
-    }
-  }
+  abstract protected void addNeighborsToCells(Cell[][] cells);
 
   /**
    * make a copy of the board, with a copy of all of the neighbors of each cell
@@ -268,7 +217,7 @@ public class Board{
     return myRules.getNumberOfPossibleStates();
   }
 
-  protected ResourceBundle getStyleResourceBundle(){
+  protected static ResourceBundle getStyleResourceBundle(){
     return styleResource;
   }
 }

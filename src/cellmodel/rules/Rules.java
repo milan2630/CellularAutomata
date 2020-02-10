@@ -4,6 +4,7 @@ import cellmodel.celltype.Cell;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * abstract class; easy to add another CA simulation from this class
@@ -11,9 +12,9 @@ import java.util.List;
 abstract public class Rules {
 
   protected int numberOfPossibleStates;
-  private HashMap<String, String> parameters;
+  private Map<String, String> parameters;
 
-  public Rules(HashMap<String, String> setupParameters){
+  public Rules(Map<String, String> setupParameters){
     parameters =setupParameters;
   }
 
@@ -41,7 +42,7 @@ abstract public class Rules {
     return random;
   }
 
-  public HashMap<String, String> getParameters(){
+  public Map<String, String> getParameters(){
     return parameters;
   }
 

@@ -1,7 +1,14 @@
 package display.visualizer;
 
 import cellmodel.Board;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+import cellmodel.ErrorPopup;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,7 +21,9 @@ import javafx.stage.Stage;
  * creates a view of the CA simulation, extends application
  */
 public abstract class Visualizer extends Application {
-
+    private static final String RESOURCES = "resources";
+    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
     private static final double CA_WIDTH = 600;
     private static final double CA_HEIGHT = 600;
     private static final Color BACKGROUND = Color.LAVENDERBLUSH;
@@ -31,12 +40,16 @@ public abstract class Visualizer extends Application {
     private int row;
     private double width;
     private double height;
+    private ResourceBundle styleResources;
+    private Map<Integer, Color> colorMap;
 
     /**
      * Constructor, creates a scene, a stage, and then set the stage to that scene
      */
-    public Visualizer() {
+    public Visualizer(String rulesClass, int totalNumStates) {
+        styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
         makeNewGrid();
+        initHashmap(rulesClass, totalNumStates);
         xPos = 0;
         yPos = 0;
         row = 0;
@@ -44,6 +57,19 @@ public abstract class Visualizer extends Application {
         width = 0;
         height = 0;
         myStage = new Stage();
+    }
+
+    private void initHashmap(String rulesClass, int totalNumStates) {
+        colorMap = new HashMap<>();
+        for(int i = 0; i < totalNumStates; i++){
+            String colorName = styleResources.getString(rulesClass + i);
+            try {
+                Color color = (Color)Color.class.getField(colorName).get(null);
+                colorMap.put(i, color);
+            } catch (IllegalAccessException | NoSuchFieldException e) {
+                ErrorPopup errorScreen = new ErrorPopup(new RuntimeException("No Color as specified by Style Properties"));
+            }
+        }
     }
 
     /**
@@ -99,14 +125,7 @@ public abstract class Visualizer extends Application {
                 col %= board.getNumCols();
                 moveToNextRow();
             }
-
-            //TODO REMOVE HARD CODE
-            Color color = Color.GREEN;
-            if(i == 0) color = Color.BLUE;
-            if(i == 1) color = Color.WHITE;
-            if(i == 2) color = Color.BLACK;
-
-            Polygon cell = cellView(color);
+            Polygon cell = cellView(colorMap.get(i));
             root.getChildren().add(cell);
 
             moveOver();

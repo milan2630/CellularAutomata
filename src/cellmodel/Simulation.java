@@ -23,6 +23,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -49,14 +50,14 @@ public class Simulation {
      * and starts running the simulation
      * @param board incoming board
      */
-    public Simulation(Board board){
+    public Simulation(Board board, int numPossStates){
       xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
       styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
       myBoard = board;
       if( Integer.parseInt(styleResources.getString("NumberOfCorners"))== Visualizer.TRIANGLE_CORNER_NUMBER) {
-        myVisualizer = new TriangleVisualizer();
+        myVisualizer = new TriangleVisualizer(myBoard.getRulesClass(), numPossStates);
       } else {
-        myVisualizer = new SquareVisualizer();
+        myVisualizer = new SquareVisualizer(myBoard.getRulesClass(), numPossStates);
       }
       myVisualizer.displayBoard(board);
       setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
