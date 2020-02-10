@@ -12,18 +12,25 @@ public class LangtonsLoop extends Rules {
   private static final int EXTENDER = 3;
   private static final int TURNER = 4;
 
-  public LangtonsLoop(HashMap<String, String> setupParameters){
+  public LangtonsLoop(HashMap<String, String> setupParameters) {
     super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
-
   @Override
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cloneCell.getState();
-    if(state == EXTENDER || state == TURNER) {
-      moveExtender(cell, cloneCell);
+    if (state == EXTENDER || state == TURNER) {
+      mover(cell, cloneCell);
     }
+  }
+
+  private void mover(Cell cell, Cell cloneCell){
+    List<Cell> openNeighbor = cell.getNeighborsWithState(OPEN);
+    List<Cell> deadNeighbor = cell.getNeighborsWithState(DEAD);
+    openNeighbor.get(0).changeStateAndView(cell.getState());
+    cell.changeStateAndView(DEAD);
+    deadNeighbor.get(0).changeStateAndView(OPEN);
   }
 
   private void moveExtender(Cell cell, Cell clonecCell){
