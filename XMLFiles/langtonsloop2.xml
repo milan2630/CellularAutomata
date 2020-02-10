@@ -2,6 +2,7 @@
 <Root>
   <Simulation_Type>LangtonsLoop2</Simulation_Type>
   <Title>langtonsloop2</Title>
+  <Setup_Type>CellList</Setup_Type>
   <Author>Cayla Schuval</Author>
   <Rules_Info>
     <Rules_Parameters>

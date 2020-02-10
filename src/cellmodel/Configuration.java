@@ -131,7 +131,7 @@ public class Configuration {
         if(Integer.parseInt(styleResources.getString("NumberOfCorners"))==Visualizer.TRIANGLE_CORNER_NUMBER){
             myBoard = new TriangleBoard(boardWidth, boardHeight, myRules);
         } else {
-            myBoard = new Board(boardWidth, boardHeight, myRules);
+            myBoard = new SquareBoard(boardWidth, boardHeight, myRules);
         }
         String setupType = parseStringFromXml("setupTypeTag");
         if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){

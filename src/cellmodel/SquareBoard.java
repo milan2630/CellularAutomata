@@ -2,14 +2,9 @@ package cellmodel;
 
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
-import java.util.ResourceBundle;
 
 public class SquareBoard extends Board {
 
-  private String myNeighborhood;
-  private static final String RESOURCES = "resources";
-  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-  private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
 
   /**
    * constructor to create a board takes in the number of columns, rows, and the rules
@@ -20,9 +15,6 @@ public class SquareBoard extends Board {
    **/
   public SquareBoard(int numCols, int numRows, Rules rules) {
     super(numCols, numRows, rules);
-    styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
-    //percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
-    myNeighborhood= styleResource.getString("NeighborhoodType");
   }
   /**
    * add neighbors to a cell
@@ -46,7 +38,6 @@ public class SquareBoard extends Board {
           cell.addNeighbor(cells[row][col-1]);
         }
         checkGridTypeAndAddNeighbors(cells, row, col, cell);
-        //System.out.println(cell.getNeighbors());
       }
     }
   }

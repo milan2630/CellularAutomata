@@ -11,9 +11,9 @@ import java.util.ResourceBundle;
  * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
  **/
 public class Board{
-  private static final String RESOURCES = "resources";
-  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-  private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
+  protected static final String RESOURCES = "resources";
+  protected static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+  protected static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
   protected static final int ONE_AWAY = 1;
   protected static final int TWO_AWAY = 2;
   private Cell[][] myCells;
@@ -22,7 +22,7 @@ public class Board{
   protected int myCols;
   protected Rules myRules;
   private boolean buildingInitialBoard;
-  private String myNeighborhood;
+  protected String myNeighborhood;
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;

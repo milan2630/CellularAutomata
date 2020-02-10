@@ -6,10 +6,6 @@ import java.util.ResourceBundle;
 
 public class TriangleBoard extends Board {
 
-  private String myNeighborhood;
-  private static final String RESOURCES = "resources";
-  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-  private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
 
   /**
    * constructor to create a board takes in the number of columns, rows, and the rules
@@ -20,9 +16,6 @@ public class TriangleBoard extends Board {
    **/
   public TriangleBoard(int numCols, int numRows, Rules rules) {
     super(numCols, numRows, rules);
-    styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
-    //percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
-    myNeighborhood= styleResource.getString("NeighborhoodType");
   }
 
   /**
