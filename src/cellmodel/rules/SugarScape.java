@@ -75,19 +75,6 @@ public class SugarScape extends Rules {
     cell.changeStateAndView(SUGAR1);
   }
 
-/*  private Cell findMaxSugar(Cell cell){
-    HashSet<Cell> listofneighbors = new HashSet<>();
-    int counter = 4;
-    listofneighbors.addAll(cell.getNeighbors());
-    for(Cell neighbor : cell.getNeighbors()){
-      if(counter!=0) {
-        findMaxSugar(neighbor);
-      }
-    }
-
-  }*/
-
-
   private Cell Max(List<Cell> agentNeighbors, Cell cellwithMaxSugar, Cell cell) {
     for (Cell neighbor : agentNeighbors) {
       if (!blocked.contains(neighbor)) {
