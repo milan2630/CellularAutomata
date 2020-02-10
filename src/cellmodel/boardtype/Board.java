@@ -25,8 +25,6 @@ public abstract class Board{
   private boolean buildingInitialBoard;
   private String myNeighborhood;
   private Map<Integer,Integer> stateHistory;
-  private static final int FINITE = 0;
-  private static final int TORODIAL =1;
   private double percentOfNeighbors;
   private static ResourceBundle styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
 
@@ -71,6 +69,10 @@ public abstract class Board{
     removeUnwantedNeighbors(cells);
   }
 
+  /**
+   * get rid of the extra neighbors; this is for when there are fewer than max number of neighbors
+   * @param cells
+   */
   protected void removeUnwantedNeighbors(Cell[][] cells) {
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
@@ -120,6 +122,14 @@ public abstract class Board{
       }
     }
     findAndAddAssociatedCloneNeighbor();
+  }
+
+  /**
+   * return neighborhood type
+   * @return myNeighborhood
+   */
+  protected String getMyNeighborhood(){
+    return myNeighborhood;
   }
 
   private void findAndAddAssociatedCloneNeighbor() {
@@ -202,27 +212,53 @@ public abstract class Board{
     return cellStates;
   }
 
+  /**
+   * return the rules parameters
+   * @return myRules.getParameters()
+   */
   public Map<String, String> getRulesParameters() {
     return myRules.getParameters();
   }
 
+  /**
+   * return state of a cell at a certain position, used in Simulation
+   * @param row
+   * @param col
+   * @return state of myCells[row][col]
+   */
   public int getState(int row, int col){
     return myCells[row][col].getState();
   }
 
+  /**
+   * return a map of all of the states and how many of them exist on the current board
+   * @return
+   */
   public Map getStateHistory(){
     return stateHistory;
   }
 
+  /**
+   * return the name of the rules class
+   * @return rules name
+   */
   public String getRulesClass() {
     String[] classParts = myRules.getClass().toString().split("\\.");
     return classParts[classParts.length-1];
   }
 
+  /**
+   * return the total number of possible states
+   * @return the number of states myRules has
+   */
   public int getNumPossibleStates(){
     return myRules.getNumberOfPossibleStates();
   }
 
+  /**
+   * return the ResourceBundle that has all of the styles specific to that rules class
+   * @return
+   */
   protected static ResourceBundle getStyleResourceBundle(){
     return styleResource;
   }
