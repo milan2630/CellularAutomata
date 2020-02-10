@@ -22,6 +22,7 @@ public class Fire extends Rules {
      * @param setupParameters
      */
     public Fire(HashMap<String, String> setupParameters){
+      super(setupParameters);
       probCatch = Float.parseFloat(setupParameters.get("probCatch"));
       super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
     }

@@ -19,6 +19,7 @@ public class Percolation extends Rules {
    * @param setupParameters has no set up parameters
    */
   public Percolation(HashMap<String, String> setupParameters){
+    super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
@@ -33,6 +34,8 @@ public class Percolation extends Rules {
    */
   @Override
   public void changeState(Cell cell, Cell cloneCell) {
+    System.out.println("Cell " + cell.getNeighbors());
+    System.out.println("Clone " + cloneCell.getNeighbors());
     int state = cell.getState();
     if(state == OPEN && cloneCell.numNeighborsWithGivenState(FILLED)>0){
       cell.changeStateAndView(FILLED);

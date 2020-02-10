@@ -31,6 +31,7 @@ public class PredatorOrPrey extends Rules {
    * @param setupParameters
    */
   public PredatorOrPrey(HashMap<String, String> setupParameters){
+    super(setupParameters);
     fishBreed = Float.parseFloat(setupParameters.get("fishBreed")); //TODO change these to saved things
     sharkBreed = Float.parseFloat(setupParameters.get("sharkBreed"));
     sharkDie = Float.parseFloat(setupParameters.get("sharkDie"));

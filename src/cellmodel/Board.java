@@ -3,6 +3,7 @@ package cellmodel;
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,8 +21,10 @@ public class Board{
   private Rules myRules;
   private boolean buildingInitialBoard;
   private int myNeighborhood;
+
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
+  private double percentOfNeighbors;
 
 
 
@@ -32,8 +35,10 @@ public class Board{
    * @param numRows number of rows on the board
    * @param rules rules of the simulation
    * @param neighborhoodType
+   * @param percentOfNeighborsWanted
    **/
-  public Board(int numCols, int numRows, Rules rules, int neighborhoodType) {
+  public Board(int numCols, int numRows, Rules rules, int neighborhoodType,
+      double percentOfNeighborsWanted) {
     myRules = rules;
     myCells = new Cell[numRows][numCols];
     cloneCells = new Cell[numRows][numCols];
@@ -43,7 +48,7 @@ public class Board{
     buildBoard(myCells);
     buildingInitialBoard = false;
     myNeighborhood= neighborhoodType;
-
+    percentOfNeighbors=percentOfNeighborsWanted;
   }
 
   private void buildBoard(Cell[][] cells){
@@ -62,6 +67,44 @@ public class Board{
       }
     }
     addNeighborsToCells(cells);
+    //neighborsToRemove = getWhichNeighborsToRemove();
+    removeUnwantedNeighbors(cells);
+  }
+
+  private void removeUnwantedNeighbors(Cell[][] cells) {
+    for (int row = 0; row < myRows; row++) {
+      for (int col = 0; col < myCols; col++) {
+        int numNeighbors = cells[row][col].getNeighbors().size();
+        int [] neighborsToRemove = getWhichNeighborsToRemove(numNeighbors);
+        Cell cell = cells[row][col];
+        for (int i = cell.getNeighbors().size()-1; i >= 0; i--) {
+          System.out.println( "num " + neighborsToRemove[i]);
+          if (neighborsToRemove[i] == 0) {
+            cell.removeNeighbor(cell.getNeighbors().get(i));
+          }
+        }
+        //System.out.println(cell.getNeighbors());
+      }
+    }
+  }
+
+  private int[] getWhichNeighborsToRemove(int numNeighbors) {
+    int[] neighborsNotWanted = new int[numNeighbors];
+    System.out.println(numNeighbors);
+    System.out.println(percentOfNeighbors);
+    double count = (percentOfNeighbors*((double) numNeighbors));
+    System.out.println(count);
+    int counter = (int) Math.round(count);
+    System.out.println(counter);
+    while (counter > 0) {
+      int randomIndex = (int) (Math.random() * (numNeighbors));
+      System.out.println("rand" + randomIndex);
+      if (neighborsNotWanted[randomIndex] == 0) {
+        neighborsNotWanted[randomIndex] = 1;
+        counter--;
+      }
+    }
+    return neighborsNotWanted;
   }
 
   /**
@@ -85,6 +128,7 @@ public class Board{
           cell.addNeighbor(cells[row][col-1]);
         }
         checkGridTypeAndAddNeighbors(cells, row, col, cell);
+        //System.out.println(cell.getNeighbors());
       }
     }
   }
@@ -102,6 +146,7 @@ public class Board{
     if(myNeighborhood== TORODIAL && row ==getNumRows()-1) {
       cell.addNeighbor(cells[0][col]);
     }
+    //totalNeighbors=cell.getNeighbors().size();
   }
 
   private void addNeighborCols(Cell cell, int col, Cell[][] cells, int neighborRow, boolean corners) {
@@ -119,8 +164,42 @@ public class Board{
   /**
    * make a copy of the board, with a copy of all of the neighbors of each cell
    */
-  private void cloneNeighbors(){
-    buildBoard(cloneCells);
+  private void cloneNeighbors() {
+    //buildBoard(cloneCells);
+    for (int row = 0; row < myRows; row++) {
+      for (int col = 0; col < myCols; col++) {
+        Cell myCell;
+        Cell cellToCopyFrom = myCells[row][col];
+        //we want a copy of the cell, NOT THE SAME OBJECT
+        myCell = new Cell(cellToCopyFrom.getState(), row, col);
+        cloneCells[row][col] = myCell;
+        //myCell= cloneCells[row][col];
+        //List<Cell> copiedCellsNeighbors = cellToCopyFrom.getNeighbors();
+      }
+    }
+    findAndAddAssociatedCloneNeighbor();
+  }
+
+  private void findAndAddAssociatedCloneNeighbor() {
+    for (int row = 0; row < myRows; row++) {
+      for (int col = 0; col < myCols; col++) {
+        Cell cellToCopyFrom = myCells[row][col];
+        Cell cloneCell = cloneCells[row][col];
+        List<Cell> copiedCellsNeighbors = cellToCopyFrom.getNeighbors();
+        for (Cell copiedCellsNeighbor : copiedCellsNeighbors) {
+          int r = copiedCellsNeighbor.getRowNumber();
+          int c = copiedCellsNeighbor.getColNumber();
+          cloneCell.addNeighbor(cloneCells[r][c]);
+      /*for (int cloneRow = 0; cloneRow < myRows; cloneRow++) {
+        for (int cloneCol = 0; cloneCol < myCols; cloneCol++) {
+          if (cloneRow == r && cloneCol == c) {
+            myCell.addNeighbor(cloneCells[cloneRow][cloneCol]);
+          }
+        }
+      }*/
+        }
+      }
+    }
   }
 
   /**
@@ -175,5 +254,19 @@ public class Board{
     }
     return cellStates;
   }
+
+  public HashMap<String, String> getRulesParameters() {
+    return myRules.getParameters();
+  }
+
+  public int getState(int row, int col){
+    return myCells[row][col].getState();
+  }
+
+  public String getRulesClass() {
+    String[] classParts = myRules.getClass().toString().split("\\.");
+    return classParts[classParts.length-1];
+  }
+
 }
 

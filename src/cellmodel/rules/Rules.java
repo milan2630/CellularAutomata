@@ -1,6 +1,8 @@
 package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,6 +11,11 @@ import java.util.List;
 abstract public class Rules {
 
   protected int numberOfPossibleStates;
+  private HashMap<String, String> parameters;
+
+  public Rules(HashMap<String, String> setupParameters){
+    parameters =setupParameters;
+  }
 
   /**
    * Change the state of a cell to the next one based on its state and the states of its neighbors
@@ -33,4 +40,9 @@ abstract public class Rules {
     }
     return random;
   }
+
+  public HashMap<String, String> getParameters(){
+    return parameters;
+  }
+
 }

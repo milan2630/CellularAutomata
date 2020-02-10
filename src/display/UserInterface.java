@@ -4,6 +4,8 @@ import cellmodel.Configuration;
 import cellmodel.Simulation;
 import java.io.File;
 import java.util.ResourceBundle;
+
+import cellmodel.XMLException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,6 +14,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,15 +36,16 @@ public class UserInterface extends Application {
     private static final String STYLESHEET = "default.css";
     private static final String DEFAULT_LANGUAGE = "English";
     private static final String XMLFOLDER = "XMLFiles/";
-    private static final int UI_SCREEN_WIDTH = 500;
+    private static final int UI_SCREEN_WIDTH = 600;
     private static final int UI_SCREEN_HEIGHT = 80;
-    private static final int SPEED_SETTER_WIDTH_MAX = 500;
+    private static final int SPEED_SETTER_WIDTH_MAX = 50;
 
     private ResourceBundle myResources;
     private Group UIroot;
     private Stage UIstage;
     private Simulation mySim;
     private TextField speedSetter;
+    private Configuration myConfig;
 
     /**
      * Starts the program by opening an input screen for the xml file
@@ -50,13 +54,19 @@ public class UserInterface extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
+        myConfig = new Configuration(getFileName());
+        try {
+            mySim = myConfig.getInitSim();
+        }
+        catch (XMLException e){
+            createErrorDialog(e);
+            start(primaryStage);
+        }
         UIroot = new Group();
         UIstage = primaryStage;
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
         UIstage.setX(screen.getWidth());
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
-        Configuration config = new Configuration(getFileName());
-        mySim = config.getInitSim();
         createController();
     }
 
@@ -78,6 +88,7 @@ public class UserInterface extends Application {
         addButtonToHBox("StepCommand", event -> mySim.step(), controls);
         addButtonToHBox("ContinueCommand", event -> mySim.resetKeyFrame(1), controls);
         addButtonToHBox("RestartCommand", event -> onRestart(), controls);
+        addButtonToHBox("SaveCommand", event -> mySim.saveCurrent(), controls);
         speedSetter = createSpeedSetter();
         controls.getChildren().add(speedSetter);
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
@@ -142,6 +153,16 @@ public class UserInterface extends Application {
         return XMLFOLDER + filename + ".xml";
     }
 
+    private void createErrorDialog(Exception e){
+        Stage errorStage = new Stage();
+        errorStage.setTitle("Error");
+        Label errorLabel = new Label(e.getMessage());
+        errorLabel.setAlignment(Pos.CENTER);
+        Scene errorScene = new Scene(errorLabel);
+        errorStage.setScene(errorScene);
+        errorStage.showAndWait();
+    }
+
     /**
      * Class for file input
      */
@@ -180,11 +201,12 @@ public class UserInterface extends Application {
          * @param stage is the stage holding the textfield
          */
         private void handleFileSubmit(String filename, Stage stage){
-            if(isValidFile(filename)) {
+            try{
+                myConfig = new Configuration(addXMLFileFolder(filename));
                 stage.close();
             }
-            else{
-                displayErrorMessage();
+            catch(XMLException e){
+                createErrorDialog(e);
             }
         }
 
@@ -196,14 +218,6 @@ public class UserInterface extends Application {
             return;
         }
 
-        /**
-         * @param filename name to check if it is valid
-         * @return whether the filename is valid
-         */
-        private boolean isValidFile(String filename) {
-            File caFile = new File(addXMLFileFolder(filename));
-            return caFile.exists();
-        }
 
         private void stopEverything(){
             System.exit(1);

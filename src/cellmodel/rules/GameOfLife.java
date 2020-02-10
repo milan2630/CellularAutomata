@@ -20,6 +20,7 @@ public class GameOfLife extends Rules {
    * @param setupParameters has no setup parameters for Game of Life
    */
   public GameOfLife(HashMap<String, String> setupParameters){
+    super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 

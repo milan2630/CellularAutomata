@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <Simulation_Type>Percolation</Simulation_Type>
+    <Title>TestPercolation</Title>
+    <Setup_Type>Probabilities</Setup_Type>
+    <Author1>Milan</Author1>
+    <Author2>Dana</Author2>
+    <Rules_Info>
+        <Rules_Parameters>
+            <probCatch>.1</probCatch>
+        </Rules_Parameters>
+    </Rules_Info>
+    <Grid_Config>
+        <Screen_Height>6</Screen_Height>
+        <Screen_Width>6</Screen_Width>
+        <Cells>
+            <Probabilites>
+                <Prob state="0">0.2</Prob>
+                <Prob state="1">0.5</Prob>
+                <Prob state="2">0.3</Prob>
+            </Probabilites>
+        </Cells>
+    </Grid_Config>
+</Root>

@@ -2,7 +2,7 @@
 <Root>
   <Simulation_Type>Fire</Simulation_Type>
   <Title>fire6by6</Title>
-  <Setup_Type>CellList</Setup_Type>
+  <Setup_Type>Probabilities</Setup_Type>
   <Author>Dana Mulligan</Author>
   <Rules_Info>
     <Rules_Parameters>
@@ -10,15 +10,14 @@
     </Rules_Parameters>
   </Rules_Info>
   <Grid_Config>
-    <Screen_Height>6</Screen_Height>
-    <Screen_Width>6</Screen_Width>
+    <Screen_Height>26</Screen_Height>
+    <Screen_Width>26</Screen_Width>
     <Cells>
-      <Row>1 0 0 1 1 1</Row>
-      <Row>1 2 0 2 1 1</Row>
-      <Row>1 0 2 1 1 1</Row>
-      <Row>2 0 0 1 2 1</Row>
-      <Row>1 1 0 1 1 1</Row>
-      <Row>1 0 2 1 1 1</Row>
+      <Probabilites>
+        <Prob state="0">0.2</Prob>
+        <Prob state="1">0.5</Prob>
+        <Prob state="2">0.3</Prob>
+      </Probabilites>
     </Cells>
   </Grid_Config>
 </Root>
