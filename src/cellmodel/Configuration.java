@@ -51,7 +51,7 @@ public class Configuration {
             myXML = document.getDocumentElement();
             myRules = parseRules();
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new XMLException(xmlResources.getString("FileErrorMessage"));
+            throw new XMLException("FileErrorMessage");
         }
     }
 
@@ -68,14 +68,14 @@ public class Configuration {
             NodeList parametersNode = myXML.getElementsByTagName(xmlResources.getString("parametersTag")).item(0).getChildNodes();
             parameters = getParameterVals(parametersNode);
         } catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("parametersTag"));
+            throw new XMLException("MissingTagErrorMessage", "parametersTag");
         }
 
         try {
             Constructor rulesConstructor = getRulesConstructor(simType);
             ret = rulesConstructor.newInstance(parameters);
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            throw new XMLException(xmlResources.getString("RulesClassErrorMessage") + e.toString());
+            throw new XMLException("RulesClassErrorMessage");
         }
         return (Rules)ret;
     }
@@ -91,9 +91,9 @@ public class Configuration {
             Constructor constructor = simClass.getConstructor(parameterTypes);
             return constructor;
         } catch (ClassNotFoundException e) {
-            throw new XMLException(xmlResources.getString("SimTypeDoesNotExistErrorMessage"));
+            throw new XMLException("SimTypeDoesNotExistErrorMessage");
         } catch (NoSuchMethodException e) {
-            throw new XMLException(xmlResources.getString("RulesClassErrorMessage") + e.toString());
+            throw new XMLException("RulesClassErrorMessage");
         }
 
     }
@@ -166,7 +166,7 @@ public class Configuration {
             }
         }
         catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("cellTag"));
+            throw new XMLException("MissingTagErrorMessage", "cellTag");
         }
     }
 
@@ -182,7 +182,7 @@ public class Configuration {
             }
         }
         catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("probTag"));
+            throw new XMLException("MissingTagErrorMessage", "probTag");
         }
     }
 
@@ -228,7 +228,7 @@ public class Configuration {
             }
         }
         catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("probTag"));
+            throw new XMLException("MissingTagErrorMessage","probTag");
         }
     }
 
@@ -255,7 +255,7 @@ public class Configuration {
             return Integer.parseInt(myXML.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent());
         }
         catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
+            throw new XMLException("MissingTagErrorMessage", property);
         }
     }
 
@@ -264,7 +264,7 @@ public class Configuration {
             return myXML.getElementsByTagName(xmlResources.getString(property)).item(0).getTextContent();
         }
         catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString(property));
+            throw new XMLException("MissingTagErrorMessage", property);
         }
     }
 }
