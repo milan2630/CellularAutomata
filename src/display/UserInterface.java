@@ -36,7 +36,7 @@ public class UserInterface extends Application {
     private static final String STYLESHEET = "default.css";
     private static final String DEFAULT_LANGUAGE = "English";
     private static final String XMLFOLDER = "XMLFiles/";
-    private static final int UI_SCREEN_WIDTH = 500;
+    private static final int UI_SCREEN_WIDTH = 600;
     private static final int UI_SCREEN_HEIGHT = 80;
     private static final int SPEED_SETTER_WIDTH_MAX = 50;
 
@@ -88,6 +88,7 @@ public class UserInterface extends Application {
         addButtonToHBox("StepCommand", event -> mySim.step(), controls);
         addButtonToHBox("ContinueCommand", event -> mySim.resetKeyFrame(1), controls);
         addButtonToHBox("RestartCommand", event -> onRestart(), controls);
+        addButtonToHBox("SaveCommand", event -> mySim.saveCurrent(), controls);
         speedSetter = createSpeedSetter();
         controls.getChildren().add(speedSetter);
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
