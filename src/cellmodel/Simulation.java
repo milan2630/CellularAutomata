@@ -1,5 +1,7 @@
 package cellmodel;
 
+import cellmodel.boardtype.Board;
+import cellmodel.errorhandling.SaveException;
 import display.visualizer.HistoryGraph;
 import display.visualizer.SquareVisualizer;
 import display.visualizer.TriangleVisualizer;
@@ -16,14 +18,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**

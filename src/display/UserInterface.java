@@ -2,6 +2,9 @@ package display;
 
 import cellmodel.*;
 
+import cellmodel.errorhandling.ErrorPopup;
+import cellmodel.errorhandling.SaveException;
+import cellmodel.errorhandling.XMLException;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;

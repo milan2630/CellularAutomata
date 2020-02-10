@@ -1,4 +1,4 @@
-package cellmodel;
+package cellmodel.errorhandling;
 
 public class SaveException extends RuntimeException {
     public SaveException(String errorMessage){

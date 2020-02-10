@@ -1,8 +1,8 @@
-package cellmodel;
+package cellmodel.boardtype;
 
+import cellmodel.boardtype.Board;
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
-import java.util.ResourceBundle;
 
 public class SquareBoard extends Board {
 

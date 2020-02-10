@@ -1,4 +1,4 @@
-package cellmodel;
+package cellmodel.boardtype;
 
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
