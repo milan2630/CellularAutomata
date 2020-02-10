@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
  * Class to run the simulation by repeatedly calling a step function
  */
 public class Simulation {
-    public static final int DEFAULT_FRAMES_PER_SECOND = 0;
+    public static final int DEFAULT_FRAMES_PER_SECOND = 1;
     public static final double MILLIS_PER_SECOND = 1000.0;
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
@@ -113,6 +113,9 @@ public class Simulation {
           myVisualizer.closeWindow();
       }
 
+    /**
+     * Creates an XML File with the current state of the board saved and saves it to the XMLFiles folder
+     */
     public void saveCurrent() {
       try {
           initDoc();
