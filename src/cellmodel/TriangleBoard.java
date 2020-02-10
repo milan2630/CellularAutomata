@@ -2,9 +2,14 @@ package cellmodel;
 
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
+import java.util.ResourceBundle;
 
 public class TriangleBoard extends Board {
-  private int myNeighborhood;
+
+  private String myNeighborhood;
+  private static final String RESOURCES = "resources";
+  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+  private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
 
   /**
    * constructor to create a board takes in the number of columns, rows, and the rules
@@ -15,24 +20,28 @@ public class TriangleBoard extends Board {
    **/
   public TriangleBoard(int numCols, int numRows, Rules rules) {
     super(numCols, numRows, rules);
+    styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
+    //percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
+    myNeighborhood= styleResource.getString("NeighborhoodType");
   }
 
   /**
    * add neighbors to a triangle cell
+   *
    * @param cells
    */
   @Override
-  protected void addNeighborsToCells(Cell[][] cells){
+  protected void addNeighborsToCells(Cell[][] cells) {
     Cell[] rows;
     for (int row = 0; row < this.getNumRows(); row++) {
       for (int col = 0; col < this.getNumCols(); col++) {
         Cell cell = cells[row][col];
         addMyRow(cells, cell, row, col, false);
         if (row + ONE_AWAY < this.getNumRows()) {
-          addNeighborRow(cells, cell, row+ONE_AWAY, col, ONE_AWAY, true);
+          addNeighborRow(cells, cell, row + ONE_AWAY, col, ONE_AWAY, true);
         }
         if (row > 0) {
-          addNeighborRow(cells, cell, row-ONE_AWAY, col, ONE_AWAY, true);
+          addNeighborRow(cells, cell, row - ONE_AWAY, col, ONE_AWAY, true);
         }
         System.out.println("hi " + myNeighborhood);
         addNeighborsSpecificToOrientation(cells, cell, row, col);
@@ -42,14 +51,15 @@ public class TriangleBoard extends Board {
     }
   }
 
-  private void addNeighborRow(Cell[][] cells, Cell cell, int neighborRow, int col, int dif, boolean addMiddleCell){
-    if(col - dif + ONE_AWAY > 0) { //col>0
+  private void addNeighborRow(Cell[][] cells, Cell cell, int neighborRow, int col, int dif,
+      boolean addMiddleCell) {
+    if (col - dif + ONE_AWAY > 0) { //col>0
       cell.addNeighbor(cells[neighborRow][col - dif]);
     }
-    if(addMiddleCell) {
+    if (addMiddleCell) {
       cell.addNeighbor(cells[neighborRow][col]);
     }
-    if(col + dif < this.getNumCols()) { //col<myCols
+    if (col + dif < this.getNumCols()) { //col<myCols
       cell.addNeighbor(cells[neighborRow][col + dif]);
     }
   }
@@ -59,76 +69,78 @@ public class TriangleBoard extends Board {
     addNeighborRow(cells, cell, row, col, TWO_AWAY, addMiddle);
   }
 
-  private void addNeighborsSpecificToOrientation(Cell[][] cells, Cell cell, int row, int col){
-    if(row%2==col%2 && row > 0) {
-        addNeighborRow(cells, cell, row-ONE_AWAY, col, TWO_AWAY, false);
+  private void addNeighborsSpecificToOrientation(Cell[][] cells, Cell cell, int row, int col) {
+    if (row % 2 == col % 2 && row > 0) {
+      addNeighborRow(cells, cell, row - ONE_AWAY, col, TWO_AWAY, false);
 
-    } else if(row%2!=col%2 && row+1 < this.getNumRows()) {
-      addNeighborRow(cells, cell, row+ONE_AWAY, col, TWO_AWAY, false);
+    } else if (row % 2 != col % 2 && row + ONE_AWAY < this.getNumRows()) {
+      addNeighborRow(cells, cell, row + ONE_AWAY, col, TWO_AWAY, false);
     }
     gridTypeAddNeighborsTriangle1(cells, row, col, cell);
   }
 
-  private void checkTriangleTypeForGridType(Cell[][] cells, Cell cell, int row, int col){
-    if(row%2==col%2){
+  private void checkTriangleTypeForGridType(Cell[][] cells, Cell cell, int row, int col) {
+    if (row % 2 == col % 2) {
       gridTypeAddNeighborsTriangle1(cells, row, col, cell);
-    }
-    else{
+    } else {
       gridTypeAddNeighborsTriangle2(cells, row, col, cell);
     }
   }
 
   private void gridTypeAddNeighborsTriangle1(Cell[][] cells, int row, int col, Cell cell) {
-    if(myNeighborhood == TORODIAL && col == 0) {
-      addNeighborsOnOtherSide(cells, cell, row, getNumCols()-1, 1);
-      addNeighborsOnOtherSide(cells, cell, row, getNumCols()-2, 1);
-      cell.addNeighbor(cells[row-1][getNumCols()-1]);
-    }
-    if(myNeighborhood == TORODIAL && row == 0) {
-      addMyRow(cells, cell, getNumRows()-1, col, true);
-    }
-    if(myNeighborhood == TORODIAL && col == getNumCols()-1) {
-      addNeighborsOnOtherSide(cells, cell, row, 0, 1);
-      addNeighborsOnOtherSide(cells, cell, row, 1, 1);
-      cell.addNeighbor((cells[row-1][0]));
-    }
-    if(myNeighborhood == TORODIAL && row == getNumRows()-1) {
-      addNeighborRow(cells,cell,0,col,1,true);
-    }
-    if(myNeighborhood == TORODIAL && col == 1){
-      cell.addNeighbor(cells[row][getNumCols()-1]);
-      cell.addNeighbor(cells[row+1][getNumCols()-1]);
-      addNeighborsOnOtherSide(cells, cell, row, getNumCols()-1, 1);
-    }
-    if(myNeighborhood == TORODIAL && col == getNumCols()-2){
-      cell.addNeighbor(cells[row][0]);
-      cell.addNeighbor(cells[row+1][0]);
-      addNeighborsOnOtherSide(cells, cell, row, 0,  1);
+    if (myNeighborhood.equals(styleResource.getString("ToroidalTag"))) {
+      if (col == 0) {
+        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 1, ONE_AWAY);
+        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 2, ONE_AWAY);
+        cell.addNeighbor(cells[row - ONE_AWAY][getNumCols() - ONE_AWAY]);
+      }
+      if (row == 0) {
+        addMyRow(cells, cell, getNumRows() - ONE_AWAY, col, true);
+      }
+      if (col == getNumCols() - ONE_AWAY) {
+        addNeighborsOnOtherSide(cells, cell, row, 0, ONE_AWAY);
+        addNeighborsOnOtherSide(cells, cell, row, ONE_AWAY, ONE_AWAY);
+        cell.addNeighbor((cells[row - ONE_AWAY][0]));
+      }
+      if (row == getNumRows() - ONE_AWAY) {
+        addNeighborRow(cells, cell, 0, col, ONE_AWAY, true);
+      }
+      if (col == ONE_AWAY) {
+        cell.addNeighbor(cells[row][getNumCols() - ONE_AWAY]);
+        cell.addNeighbor(cells[row + ONE_AWAY][getNumCols() - ONE_AWAY]);
+        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, ONE_AWAY);
+      }
+      if (col == getNumCols() - TWO_AWAY) {
+        cell.addNeighbor(cells[row][0]);
+        cell.addNeighbor(cells[row + ONE_AWAY][0]);
+        addNeighborsOnOtherSide(cells, cell, row, 0, ONE_AWAY);
+      }
     }
   }
-
   private void gridTypeAddNeighborsTriangle2(Cell[][] cells, int row, int col, Cell cell) {
-    if(myNeighborhood == TORODIAL && col == 0) {
-      addNeighborsOnOtherSide(cells, cell, row, getNumCols()-1,-1);
-      addNeighborsOnOtherSide(cells, cell, row, getNumCols()-2,-1);
-      cell.addNeighbor(cells[row+1][getNumCols()-1]);
-    }
-    if(myNeighborhood == TORODIAL && row == 0) {
-      addNeighborRow(cells,cell,getNumCols()-1,col,1,true);
-    }
-    if(myNeighborhood == TORODIAL && col == getNumCols()-1) {
-      addNeighborsOnOtherSide(cells, cell, row, 0, -1);
-      addNeighborsOnOtherSide(cells, cell, row, 1, -1);
-      cell.addNeighbor((cells[row+1][0]));
-    }
-    if(myNeighborhood == TORODIAL && row == getNumRows()-1) {
-      addMyRow(cells, cell, 0, col, true);
-    }
-    if(myNeighborhood == TORODIAL && col == 1){
-      addNeighborsOnOtherSide(cells, cell, row,getNumCols()-1,-1);
-    }
-    if(myNeighborhood == TORODIAL && col == getNumCols()-2){
-      addNeighborsOnOtherSide(cells, cell, row, 0, -1);
+    if (myNeighborhood.equals(styleResource.getString("ToroidalTag"))) {
+      if (col == 0) {
+        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, -ONE_AWAY);
+        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - TWO_AWAY, -ONE_AWAY);
+        cell.addNeighbor(cells[row + ONE_AWAY][getNumCols() - ONE_AWAY]);
+      }
+      if (row == 0) {
+        addNeighborRow(cells, cell, getNumCols() - ONE_AWAY, col, ONE_AWAY, true);
+      }
+      if (col == getNumCols() - ONE_AWAY) {
+        addNeighborsOnOtherSide(cells, cell, row, 0, -ONE_AWAY);
+        addNeighborsOnOtherSide(cells, cell, row, ONE_AWAY, -ONE_AWAY);
+        cell.addNeighbor((cells[row + ONE_AWAY][0]));
+      }
+      if (row == getNumRows() - ONE_AWAY) {
+        addMyRow(cells, cell, 0, col, true);
+      }
+      if (col == 1) {
+        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, -ONE_AWAY);
+      }
+      if (col == getNumCols() - TWO_AWAY) {
+        addNeighborsOnOtherSide(cells, cell, row, 0, -ONE_AWAY);
+      }
     }
   }
 
