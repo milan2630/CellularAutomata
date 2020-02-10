@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
   <Simulation_Type>Fire</Simulation_Type>
-  <Title>fire6by6</Title>
-  <Setup_Type>Quotas</Setup_Type>
+  <Title>fire</Title>
+  <Setup_Type>CellList</Setup_Type>
   <Author>Dana Mulligan</Author>
+  <Authod>Milan Bhat</Authod>
   <Rules_Info>
     <Rules_Parameters>
       <probCatch>.66</probCatch>
@@ -13,11 +14,12 @@
     <Screen_Height>6</Screen_Height>
     <Screen_Width>6</Screen_Width>
     <Cells>
-      <Quotas>
-        <Quota state="0">4</Quota>
-        <Quota state="1">20</Quota>
-        <Quota state="2">12</Quota>
-      </Quotas>
+      <Row>1 0 0 1 1 1</Row>
+      <Row>1 2 0 2 1 1</Row>
+      <Row>1 0 2 1 1 1</Row>
+      <Row>2 0 0 1 2 1</Row>
+      <Row>1 1 0 1 1 1</Row>
+      <Row>1 0 2 1 1 1</Row>
     </Cells>
   </Grid_Config>
 </Root>

@@ -14,7 +14,6 @@ public class Fire extends Rules {
   private static final int TREE = 1;
   private static final int GROUND = 2;
   private static final int NUMBER_OF_POSSIBLE_STATES = 3;
-
   private float probCatch;
 
     /**
@@ -30,6 +29,7 @@ public class Fire extends Rules {
     /**
      * Given a cell, change its state and color based on its current status & neighbor status
      * @param cell cell to be updated
+     * @param cloneCell copy of the cell in the position as the cell
      */
     public void changeState(Cell cell, Cell cloneCell) {
       int state = cell.getState();

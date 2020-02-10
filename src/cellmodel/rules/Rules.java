@@ -30,20 +30,30 @@ abstract public class Rules {
    */
   abstract public boolean areCornersNeighbors();
 
+
+  /**
+   * @return the number of possible states for a given rules
+   */
   public int getNumberOfPossibleStates(){
     return numberOfPossibleStates;
   }
 
-  protected int getRandomIndex(List<Cell> givenStateNeighbors) {
+  /**
+   * @param cellList a lit of cells
+   * @return the a random index of a given list of cells
+   */
+  protected int getRandomIndex(List<Cell> cellList) {
     int random = 0;
-    if(givenStateNeighbors.size()!=1) {
-      random = (int) (Math.random() * givenStateNeighbors.size());
+    if(cellList.size()!=1) {
+      random = (int) (Math.random() * cellList.size());
     }
     return random;
   }
 
+  /**
+   * @return the parameters for rules
+   */
   public HashMap<String, String> getParameters(){
     return parameters;
   }
-
 }

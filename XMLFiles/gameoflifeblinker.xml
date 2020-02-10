@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
   <Simulation_Type>GameOfLife</Simulation_Type>
-  <Title>test</Title>
+  <Title>gameoflifeblinker</Title>
   <Setup_Type>CellList</Setup_Type>
   <Author1>Dana Mulligan</Author1>
   <Author2>Cayla Schuval</Author2>
