@@ -1,8 +1,8 @@
-package cellmodel;
+package cellmodel.boardtype;
 
+import cellmodel.boardtype.Board;
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
-import java.util.ResourceBundle;
 
 public class TriangleBoard extends Board {
 
@@ -16,6 +16,8 @@ public class TriangleBoard extends Board {
    **/
   public TriangleBoard(int numCols, int numRows, Rules rules) {
     super(numCols, numRows, rules);
+    //percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
+    myNeighborhood= super.getStyleResourceBundle().getString("NeighborhoodType");
   }
 
   /**
@@ -81,7 +83,7 @@ public class TriangleBoard extends Board {
   }
 
   private void gridTypeAddNeighborsTriangle1(Cell[][] cells, int row, int col, Cell cell) {
-    if (myNeighborhood.equals(styleResource.getString("ToroidalTag"))) {
+    if (myNeighborhood.equals(getStyleResourceBundle().getString("ToroidalTag"))) {
       if (col == 0) {
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 1, ONE_AWAY);
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 2, ONE_AWAY);
@@ -111,7 +113,7 @@ public class TriangleBoard extends Board {
     }
   }
   private void gridTypeAddNeighborsTriangle2(Cell[][] cells, int row, int col, Cell cell) {
-    if (myNeighborhood.equals(styleResource.getString("ToroidalTag"))) {
+    if (myNeighborhood.equals(getStyleResourceBundle().getString("ToroidalTag"))) {
       if (col == 0) {
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, -ONE_AWAY);
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - TWO_AWAY, -ONE_AWAY);

@@ -1,14 +1,13 @@
 package display.visualizer;
 
-import cellmodel.Board;
+import cellmodel.boardtype.Board;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import cellmodel.ErrorPopup;
+import cellmodel.errorhandling.ErrorPopup;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,12 +23,7 @@ public abstract class Visualizer extends Application {
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
-    private static final double CA_WIDTH = 600;
-    private static final double CA_HEIGHT = 600;
-    private static final Color BACKGROUND = Color.LAVENDERBLUSH;
-    private static final Color BORDER_COLOR = Color.RED;
     public static final int TRIANGLE_CORNER_NUMBER = 3; //this is public because it is referenced elsewhere, but cannot be changed
-    private static final double GAP = 190;
 
     private Scene myScene;
     private GridPane grid;
@@ -42,12 +36,16 @@ public abstract class Visualizer extends Application {
     private double height;
     private ResourceBundle styleResources;
     private Map<Integer, Color> colorMap;
+    private double caWidth;
+    private double caHeight;
 
     /**
      * Constructor, creates a scene, a stage, and then set the stage to that scene
      */
     public Visualizer(String rulesClass, int totalNumStates) {
         styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
+        caHeight = Integer.parseInt(styleResources.getString("ScreenHeight"));
+        caWidth = Integer.parseInt(styleResources.getString("ScreenWidth"));
         makeNewGrid();
         initHashmap(rulesClass, totalNumStates);
         xPos = 0;
@@ -62,13 +60,7 @@ public abstract class Visualizer extends Application {
     private void initHashmap(String rulesClass, int totalNumStates) {
         colorMap = new HashMap<>();
         for(int i = 0; i < totalNumStates; i++){
-            String colorName = styleResources.getString(rulesClass + i);
-            try {
-                Color color = (Color)Color.class.getField(colorName).get(null);
-                colorMap.put(i, color);
-            } catch (IllegalAccessException | NoSuchFieldException e) {
-                ErrorPopup errorScreen = new ErrorPopup(new RuntimeException("No Color as specified by Style Properties"));
-            }
+            colorMap.put(i, getColorFromStyleFile(rulesClass+i, "NoColorError"));
         }
     }
 
@@ -79,6 +71,7 @@ public abstract class Visualizer extends Application {
     @Override
     public void start(Stage primaryStage){
         myStage.setX(0);
+        myScene.setFill(Color.BLACK);
         myStage.setScene(myScene);
         myStage.show();
         myStage.setOnCloseRequest(t->stopEverything());
@@ -86,8 +79,6 @@ public abstract class Visualizer extends Application {
 
     private void makeNewGrid(){
         grid = new GridPane();
-        grid.setHgap(GAP);
-        grid.setVgap(GAP);
     }
 
     /**
@@ -105,7 +96,7 @@ public abstract class Visualizer extends Application {
         width = getIndividualCellWidth(board);
         height = getIndividualCellHeight(board);
         grid.getChildren().addAll(getBoardView(board));
-        myScene = new Scene(grid, CA_WIDTH, CA_HEIGHT, BACKGROUND);
+        myScene = new Scene(grid, caWidth, caHeight);
         start(new Stage());
     }
 
@@ -137,16 +128,30 @@ public abstract class Visualizer extends Application {
         Double[] corners = getCorners();
         cellShape.getPoints().addAll(corners);
         cellShape.setFill(color);
-        cellShape.setStroke(BORDER_COLOR);
+        cellShape.setStroke(getColorFromStyleFile("StrokeColor", "NoStrokeColorError"));
         return cellShape;
     }
 
+    private Color getColorFromStyleFile(String property, String errorMessageProperty){
+        try {
+            String colorName = styleResources.getString(property);
+            if(colorName.equals("null")){
+                return null;
+            }
+            Color color = (Color) Color.class.getField(colorName).get(null);
+            return color;
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            ErrorPopup errorScreen = new ErrorPopup(new RuntimeException(styleResources.getString(errorMessageProperty)));
+            return null;
+        }
+    }
+
     private double getIndividualCellWidth(Board board){
-        return CA_WIDTH/board.getNumCols();
+        return caWidth /board.getNumCols();
     }
 
     private double getIndividualCellHeight(Board board){
-        return CA_HEIGHT/board.getNumRows();
+        return caHeight /board.getNumRows();
     }
 
     abstract protected void moveToNextRow();

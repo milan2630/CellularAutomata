@@ -1,4 +1,4 @@
-package cellmodel;
+package cellmodel.errorhandling;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

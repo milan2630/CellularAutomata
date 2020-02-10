@@ -1,8 +1,12 @@
 package cellmodel;
 
+import cellmodel.boardtype.Board;
+import cellmodel.errorhandling.SaveException;
+import display.visualizer.HistoryGraph;
 import display.visualizer.SquareVisualizer;
 import display.visualizer.TriangleVisualizer;
 import display.visualizer.Visualizer;
+import java.util.Map;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,14 +18,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -38,9 +39,11 @@ public class Simulation {
     private ResourceBundle styleResources;
     private Board myBoard;
     private Visualizer myVisualizer;
+    private HistoryGraph myGraph;
     private Timeline animation;
     private double millisecondDelay;
     private Document doc;
+    private int cycleCount;
     /**
      * constructor that takes in a starting board, and number or corners in the cell shape
      * and starts running the simulation
@@ -60,6 +63,9 @@ public class Simulation {
       animation = new Timeline();
       animation.setCycleCount(Animation.INDEFINITE);
       setKeyFrame();
+      myGraph = new HistoryGraph();
+      cycleCount = 0;
+      myGraph.beginGraph(myBoard.getNumPossibleStates());
     }
 
     /**
@@ -95,7 +101,9 @@ public class Simulation {
      */
     public void step() {
       myBoard.updateBoard();
+      myGraph.updateGraph(myBoard.getStateHistory(), cycleCount);
       myVisualizer.displayBoard(myBoard);
+      cycleCount++;
     }
 
     /**

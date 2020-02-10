@@ -2,6 +2,9 @@ package display;
 
 import cellmodel.*;
 
+import cellmodel.errorhandling.ErrorPopup;
+import cellmodel.errorhandling.SaveException;
+import cellmodel.errorhandling.XMLException;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
@@ -87,15 +90,22 @@ public class UserInterface extends Application {
         addButtonToHBox("ContinueCommand", event -> mySim.resetKeyFrame(1), controls);
         addButtonToHBox("RestartCommand", event -> onRestart(), controls);
         addButtonToHBox("SaveCommand", event -> saveCurrent(), controls);
+        addButtonToHBox("NewSimCommand", event -> startAnother(), controls);
         speedSetter = createSpeedSetter();
         controls.getChildren().add(speedSetter);
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
 
         UIroot.getChildren().add(controls);
-        Scene controllerScreen = new Scene(UIroot, Integer.parseInt(styleResources.getString("UIScreenWidth")), Integer.parseInt(styleResources.getString("UIScreenHeight")));
+        Scene controllerScreen = new Scene(UIroot, controls.getPrefWidth(), controls.getPrefHeight());
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
+    }
+
+    private void startAnother() {
+        UserInterface ui = new UserInterface();
+        ui.start(new Stage());
+
     }
 
     private void saveCurrent() {
