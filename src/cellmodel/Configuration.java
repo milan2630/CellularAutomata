@@ -1,6 +1,7 @@
 package cellmodel;
 
 import cellmodel.rules.Rules;
+import display.visualizer.Visualizer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -112,18 +113,25 @@ public class Configuration {
 
     /**
      * @return a Simulation object based on the xml file
+     * @param numCorners
      */
-    public Simulation getInitSim()throws XMLException{
-        return new Simulation(getInitBoard(),4);
+    public Simulation getInitSim(int numCorners, int neighborhoodType)throws XMLException{
+        return new Simulation(getInitBoard(numCorners, neighborhoodType), numCorners);
     }
 
     /**
      * @return a Board object based on the initial configuration from the xml file
      */
-    private Board getInitBoard() throws XMLException{
+
+    private Board getInitBoard(int numCornersOnACell, int neighborhoodType) throws XMLException{
         int boardHeight = parseIntFromXML("boardHeightTag");
         int boardWidth = parseIntFromXML("boardWidthTag");
-        Board myBoard = new Board(boardHeight, boardWidth, myRules, 0, 0.6);
+        Board myBoard;
+        if(numCornersOnACell==Visualizer.TRIANGLE_CORNER_NUMBER){
+            myBoard = new TriangleBoard(boardWidth, boardHeight, myRules, neighborhoodType, 0.6);
+        } else {
+            myBoard = new Board(boardHeight, boardWidth, myRules, neighborhoodType, 0.6);
+        }
         String setupType = parseStringFromXml("setupTypeTag");
         if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){
             setupBoardWProbs(myBoard, boardHeight, boardWidth);
@@ -133,6 +141,7 @@ public class Configuration {
         }
         else if(setupType.equals(xmlResources.getString("quotasKeyword"))){
             setupBoardWQuotas(myBoard, boardHeight, boardWidth);
+
         }
         return myBoard;
 

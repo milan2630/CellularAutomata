@@ -15,22 +15,22 @@ import javafx.stage.Stage;
  */
 public abstract class Visualizer extends Application {
 
-    public static final double CA_WIDTH = 600;
-    public static final double CA_HEIGHT = 600;
-    public static final Color BACKGROUND = Color.LAVENDERBLUSH;
-    public static final Color BORDER_COLOR = Color.RED;
-    public static final int TRIANGLE_CORNER_NUMBER = 3;
-    public static final double GAP = 190;
+    private static final double CA_WIDTH = 600;
+    private static final double CA_HEIGHT = 600;
+    private static final Color BACKGROUND = Color.LAVENDERBLUSH;
+    private static final Color BORDER_COLOR = Color.RED;
+    public static final int TRIANGLE_CORNER_NUMBER = 3; //this is public because it is referenced elsewhere, but cannot be changed
+    private static final double GAP = 190;
 
     private Scene myScene;
     private GridPane grid;
     private Stage myStage;
-    protected double xPos;
-    protected double yPos;
-    protected int col;
-    protected int row;
-    protected double width;
-    protected double height;
+    private double xPos;
+    private double yPos;
+    private int col;
+    private int row;
+    private double width;
+    private double height;
 
     /**
      * Constructor, creates a scene, a stage, and then set the stage to that scene
@@ -101,9 +101,9 @@ public abstract class Visualizer extends Application {
 
             //TODO REMOVE HARD CODE
             Color color = Color.GREEN;
-            if(i == 2) color = Color.BLUE;
+            if(i == 0) color = Color.BLUE;
             if(i == 1) color = Color.WHITE;
-            if(i == 0) color = Color.BLACK;
+            if(i == 2) color = Color.BLACK;
 
             Polygon cell = cellView(color);
             root.getChildren().add(cell);
@@ -130,10 +130,116 @@ public abstract class Visualizer extends Application {
         return CA_HEIGHT/board.getNumRows();
     }
 
-    abstract void moveToNextRow();
-    abstract void moveOver();
-    abstract Double[] getCorners();
-    abstract void resetVariables();
+    abstract protected void moveToNextRow();
+    abstract protected void moveOver();
+    abstract protected Double[] getCorners();
+    abstract protected void resetVariables();
+
+    /**
+     * add dif to xPos
+     * @param dif
+     */
+    protected void incrementXPos(double dif){
+        xPos += dif;
+    }
+
+    /**
+     * set xPos to 0
+     */
+    protected void resetXPos(){
+        xPos = 0;
+    }
+
+    /**
+     * return xPos
+     * @return xPos
+     */
+    protected double getXPos(){
+        return xPos;
+    }
+
+    /**
+     * set yPos to 0
+     */
+    protected void resetYPos(){
+        yPos = 0;
+    }
+
+    /**
+     * add dif to yPos
+     * @param dif
+     */
+    protected void incrementYPos(double dif){
+        yPos += dif;
+    }
+
+    /**
+     * return yPos
+     * @return yPos
+     */
+    protected double getYPos(){
+        return yPos;
+    }
+
+    /**
+     * reset row to 0
+     */
+    protected void resetRow(){
+        row = 0;
+    }
+
+    /**
+     * increment row by 1
+     */
+    protected void incrementRow(){
+        row++;
+    }
+
+    /**
+     * return row value
+     * @return row
+     */
+    protected int getRow(){
+        return row;
+    }
+
+    /**
+     * reset col to 0
+     */
+    protected void resetCol(){
+        col = 0;
+    }
+
+    /**
+     * increment col by 1
+     */
+    protected void incrementCol(){
+        col++;
+    }
+
+    /**
+     * return col value
+     * @return col
+     */
+    protected int getCol(){
+        return col;
+    }
+
+    /**
+     * get width value
+     * @return width
+     */
+    protected double getWidth(){
+        return width;
+    }
+
+    /**
+     * get height value
+     * @return height
+     */
+    protected double getHeight(){
+        return height;
+    }
 
     public static void main(String[] args) {
         launch(args);

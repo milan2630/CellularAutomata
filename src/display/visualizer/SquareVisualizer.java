@@ -9,38 +9,51 @@ public class SquareVisualizer extends Visualizer {
     super();
   }
 
+  /**
+   * move to the next row, update y position, and reset x position to 0
+   */
   @Override
-  void moveToNextRow(){
-    row++;
-    yPos += height;
-    xPos = 0;
+  protected void moveToNextRow(){
+    incrementRow();
+    incrementYPos(getHeight());
+    resetXPos();
   }
 
+  /**
+   * move to the next column, increment x position by the width
+   */
   @Override
-  void moveOver(){
-    xPos += width;
-    col++;
+  protected void moveOver(){
+    incrementXPos(getWidth());
+    incrementCol();
   }
 
+  /**
+   * reset all of the variables that we need to reset
+   */
   @Override
-  void resetVariables(){
-    xPos = 0;
-    yPos = 0;
-    col = 0;
-    row = 0;
+  protected void resetVariables(){
+    resetXPos();
+    resetYPos();
+    resetCol();
+    resetRow();
   }
 
+  /**
+   * make a Double array of all the points of the square
+   * @return that array
+   */
   @Override
-  Double[] getCorners(){
+  protected Double[] getCorners(){
     return new Double[]{
         //upper left corner
-        xPos, yPos,
+        getXPos(), getYPos(),
         //upper right corner
-        xPos + width, yPos,
+        getXPos() + getWidth(), getYPos(),
         //bottom right corner
-        xPos + width, yPos + height,
+        getXPos() + getWidth(), getYPos() + getHeight(),
         //bottom left corner
-        xPos, yPos + height
+        getXPos(), getYPos() + getHeight()
     };
   }
 }
