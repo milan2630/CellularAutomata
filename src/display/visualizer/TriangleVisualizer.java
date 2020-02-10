@@ -5,6 +5,7 @@ public class TriangleVisualizer extends Visualizer {
   private boolean pointUp;
   /**
    * Constructor, creates a scene, a stage, and then set the stage to that scene
+   * specifically for creating triangles
    */
   public TriangleVisualizer(String rulesClass, int numPossibleStates) {
     super(rulesClass, numPossibleStates);
