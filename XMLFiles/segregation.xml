@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
   <Simulation_Type>Segregation</Simulation_Type>
-  <Title>segregation6by6</Title>
+  <Title>segregation</Title>
   <Setup_Type>CellList</Setup_Type>
   <Author>Cayla Schuval</Author>
   <Rules_Info>

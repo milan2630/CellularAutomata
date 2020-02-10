@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
   <Simulation_Type>PredatorOrPrey</Simulation_Type>
-  <Title>predatororprey6by6</Title>
+  <Title>predatororprey</Title>
   <Setup_Type>CellList</Setup_Type>
   <Author>Cayla Schuval</Author>
   <Rules_Info>

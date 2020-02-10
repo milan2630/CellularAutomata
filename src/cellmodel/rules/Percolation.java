@@ -23,16 +23,16 @@ public class Percolation extends Rules {
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
+  @Override
   /**
    * given a certain cell, change its state based on percolation rules
    *  filled -> filled
    *  open -> open if no filled neighbors
    *  eopn -> filled if filled neighbors
    *  blocked -> blocked/open depending on response to piazza post
-   * @param cell
-   * @param cloneCell
-   */
-  @Override
+   * @param cell cell to be updated
+   * @param cloneCell copy of the cell in the position as the cell
+   **/
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
     if(state == OPEN && cloneCell.numNeighborsWithGivenState(FILLED)>0){

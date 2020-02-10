@@ -3,14 +3,13 @@ package cellmodel.celltype;
 import java.util.*;
 
 /**
- * creates a cell object that extends rectangle, has an associated state, a list of neighbors, and a number of moves
+ * creates a cell object that has an associated state, a list of neighbors, number of moves, number of turns since shape change, and a row and column number
  **/
 public class Cell{
 
   private int myState;
   private int turnsSinceStateChange;
   private List<Cell> myNeighbors;
- // private Type shape;
   private int myMoves;
   private int rowNumber;
   private int colNumber;
@@ -54,6 +53,7 @@ public class Cell{
   public void setTurnsSinceStateChange(int val){
     turnsSinceStateChange =val;
   }
+
   /**
    * @return the state of the cell
    **/
@@ -85,6 +85,10 @@ public class Cell{
     myNeighbors.add(neighbor);
   }
 
+  /**
+   * Add a neighbor to a cell
+   * @param neighbor cell to be removed as a neighbor
+   */
   public void removeNeighbor(Cell neighbor){
     myNeighbors.remove(neighbor);
   }
@@ -96,10 +100,11 @@ public class Cell{
     return myNeighbors;
   }
 
+  /**
+   * sets the neighbors of a cell to be a given list of cells
+   * @param neighbors a given list of cells that are neighbors of cell
+   **/
   public void setNeighbors(List<Cell> neighbors){
-    for(int i =0; i<neighbors.size(); i++){
-
-    }
     myNeighbors = new ArrayList<>();
     myNeighbors= neighbors;
   }
@@ -164,7 +169,6 @@ public class Cell{
 
   /**
    * sets the number of moves completed to a given integer
-   *
    * @param moves the number of moves that the cell has gone through
    **/
   public void setMoves(int moves) {

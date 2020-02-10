@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Contains logic for Foraging Ants CA
+ * Ants move towards food and leave a scent that other ants will follow
+ * When the ants find food te scent gets stronger
+ * After they find food they return back to the nest which is the corner
+ */
 public class ForagingAnts extends Rules {
   private static final int NUMBER_OF_POSSIBLE_STATES = 4;
   private static final int OPEN = 0;
@@ -14,6 +20,10 @@ public class ForagingAnts extends Rules {
   private static final int pheromoneLookingForFood =1;
   private static final int pheromoneReturningFromFood =3;
 
+  /**
+   * Initialize variables, get probability of a tree catching fire from setupParameters
+   * @param setupParameters initialize number of possible states
+   */
   public ForagingAnts(HashMap<String, String> setupParameters){
     super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
@@ -21,6 +31,11 @@ public class ForagingAnts extends Rules {
 
 
   @Override
+  /**
+   * Given a cell, change its state and color based on its current status & neighbor status
+   * @param cell cell to be updated
+   * @param cloneCell copy of the cell in the position as the cell
+   */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cloneCell.getState();
     if(state == ANTHASFOOD) {
@@ -117,6 +132,10 @@ public class ForagingAnts extends Rules {
   }
 
   @Override
+  /**
+   * Does this CA simulation count the corners as neighbors?
+   * @return false; in Foraging Ants, it does not
+   */
   public boolean areCornersNeighbors() {
     return false;
   }

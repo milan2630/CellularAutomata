@@ -17,7 +17,7 @@ public class GameOfLife extends Rules {
 
   /**
    * Construct a GameOfLife object
-   * @param setupParameters has no setup parameters for Game of Life
+   * @param setupParameters set the number of possible states
    */
   public GameOfLife(HashMap<String, String> setupParameters){
     super(setupParameters);
@@ -28,6 +28,7 @@ public class GameOfLife extends Rules {
   /**
    * Given a cell, change its state and color based on its current status & neighbor status
    * @param cell cell to be updated
+   * @param cloneCell copy of the cell in the position as the cell
    */
   public void changeState(Cell cell, Cell cloneCell) {
     int state = cell.getState();
