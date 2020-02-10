@@ -1,6 +1,5 @@
-package cellmodel;
+package cellmodel.errorhandling;
 
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class XMLException extends RuntimeException {
