@@ -1,12 +1,9 @@
 package display;
 
-import cellmodel.Configuration;
-import cellmodel.SaveException;
-import cellmodel.Simulation;
+import cellmodel.*;
 
 import java.util.ResourceBundle;
 
-import cellmodel.XMLException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +12,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -164,13 +160,7 @@ public class UserInterface extends Application {
     }
 
     private void createErrorDialog(Exception e){
-        Stage errorStage = new Stage();
-        errorStage.setTitle("Error");
-        Label errorLabel = new Label(e.getMessage());
-        errorLabel.setAlignment(Pos.CENTER);
-        Scene errorScene = new Scene(errorLabel);
-        errorStage.setScene(errorScene);
-        errorStage.showAndWait();
+        ErrorPopup ep = new ErrorPopup(e);
     }
 
     /**
