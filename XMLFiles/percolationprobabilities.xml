@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
     <Simulation_Type>Percolation</Simulation_Type>
-    <Title>TestPercolation</Title>
+    <Title>percolationprobabilities</Title>
     <Setup_Type>Probabilities</Setup_Type>
     <Author1>Milan</Author1>
     <Author2>Dana</Author2>
