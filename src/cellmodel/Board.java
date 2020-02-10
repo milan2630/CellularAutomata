@@ -5,12 +5,13 @@ import cellmodel.rules.Rules;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
  * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
  **/
-public class Board{
+public abstract class Board{
   private static final String RESOURCES = "resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
@@ -18,15 +19,17 @@ public class Board{
   protected static final int TWO_AWAY = 2;
   private Cell[][] myCells;
   private Cell[][] cloneCells;
-  protected int myRows;
-  protected int myCols;
-  protected Rules myRules;
+  private int myRows;
+  private int myCols;
+  private Rules myRules;
   private boolean buildingInitialBoard;
   private String myNeighborhood;
+  private Map<Integer,Integer> stateHistory;
+
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;
-  protected ResourceBundle styleResource;
+  private static ResourceBundle styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
 
 
   /**
@@ -37,7 +40,6 @@ public class Board{
    * @param rules rules of the simulation
    **/
   public Board(int numCols, int numRows, Rules rules) {
-    styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
     percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
     myNeighborhood= styleResource.getString("NeighborhoodType");
     myRules = rules;
@@ -48,10 +50,10 @@ public class Board{
     buildingInitialBoard = true;
     buildBoard(myCells);
     buildingInitialBoard = false;
+    stateHistory = new HashMap<Integer, Integer>();
   }
 
   private void buildBoard(Cell[][] cells){
-    System.out.println(myNeighborhood);
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
         Cell myCell;
@@ -67,7 +69,6 @@ public class Board{
       }
     }
     addNeighborsToCells(cells);
-    //neighborsToRemove = getWhichNeighborsToRemove();
     removeUnwantedNeighbors(cells);
   }
 
@@ -82,17 +83,15 @@ public class Board{
             cell.removeNeighbor(cell.getNeighbors().get(i));
           }
         }
-        //System.out.println(cell.getNeighbors());
       }
     }
   }
 
   private int[] getWhichNeighborsToRemove(int numNeighbors) {
     int[] neighborsNotWanted = new int[numNeighbors];
-    double count = (percentOfNeighbors*((double) numNeighbors));
-    int counter = (int) Math.round(count);
+    int counter = (int) Math.round(percentOfNeighbors*((double) numNeighbors));
     while (counter > 0) {
-      int randomIndex = (int) (Math.random() * (numNeighbors));;
+      int randomIndex = (int) (Math.random() * (numNeighbors));
       if (neighborsNotWanted[randomIndex] == 0) {
         neighborsNotWanted[randomIndex] = 1;
         counter--;
@@ -105,8 +104,7 @@ public class Board{
    * add neighbors to a cell
    * @param cells
    */
-  protected void addNeighborsToCells(Cell[][] cells) {
-  }
+  abstract protected void addNeighborsToCells(Cell[][] cells);
 
   /**
    * make a copy of the board, with a copy of all of the neighbors of each cell
@@ -120,8 +118,6 @@ public class Board{
         //we want a copy of the cell, NOT THE SAME OBJECT
         myCell = new Cell(cellToCopyFrom.getState(), row, col);
         cloneCells[row][col] = myCell;
-        //myCell= cloneCells[row][col];
-        //List<Cell> copiedCellsNeighbors = cellToCopyFrom.getNeighbors();
       }
     }
     findAndAddAssociatedCloneNeighbor();
@@ -137,13 +133,6 @@ public class Board{
           int r = copiedCellsNeighbor.getRowNumber();
           int c = copiedCellsNeighbor.getColNumber();
           cloneCell.addNeighbor(cloneCells[r][c]);
-      /*for (int cloneRow = 0; cloneRow < myRows; cloneRow++) {
-        for (int cloneCol = 0; cloneCol < myCols; cloneCol++) {
-          if (cloneRow == r && cloneCol == c) {
-            myCell.addNeighbor(cloneCells[cloneRow][cloneCol]);
-          }
-        }
-      }*/
         }
       }
     }
@@ -154,12 +143,17 @@ public class Board{
    * so that it has an accurate representation of neighbors
    */
   public void updateBoard(){
-        cloneNeighbors();
-        for(int row = 0; row < myRows; row++){
-          for(int col = 0; col < myCols; col++){
-            myRules.changeState(myCells[row][col], cloneCells[row][col]);
-          }
-        }
+    stateHistory = new HashMap<>();
+    cloneNeighbors();
+    for(int row = 0; row < myRows; row++){
+      for(int col = 0; col < myCols; col++){
+        int state = getState(row, col);
+        stateHistory.putIfAbsent(state, 0);
+        int oldNumber = stateHistory.get(state);
+        stateHistory.put(state, oldNumber+1);
+        myRules.changeState(myCells[row][col], cloneCells[row][col]);
+      }
+    }
   }
 
   /**
@@ -202,7 +196,7 @@ public class Board{
     return cellStates;
   }
 
-  public HashMap<String, String> getRulesParameters() {
+  public Map<String, String> getRulesParameters() {
     return myRules.getParameters();
   }
 
@@ -210,13 +204,20 @@ public class Board{
     return myCells[row][col].getState();
   }
 
+  public Map getStateHistory(){
+    return stateHistory;
+  }
+
   public String getRulesClass() {
     String[] classParts = myRules.getClass().toString().split("\\.");
     return classParts[classParts.length-1];
   }
 
-  protected ResourceBundle getStyleResourceBundle(){
+  public int getNumPossibleStates(){
+    return myRules.getNumberOfPossibleStates();
+  }
+
+  protected static ResourceBundle getStyleResourceBundle(){
     return styleResource;
   }
 }
-

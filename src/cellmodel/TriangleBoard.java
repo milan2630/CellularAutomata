@@ -20,9 +20,8 @@ public class TriangleBoard extends Board {
    **/
   public TriangleBoard(int numCols, int numRows, Rules rules) {
     super(numCols, numRows, rules);
-    styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
     //percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
-    myNeighborhood= styleResource.getString("NeighborhoodType");
+    myNeighborhood= super.getStyleResourceBundle().getString("NeighborhoodType");
   }
 
   /**
@@ -88,7 +87,7 @@ public class TriangleBoard extends Board {
   }
 
   private void gridTypeAddNeighborsTriangle1(Cell[][] cells, int row, int col, Cell cell) {
-    if (myNeighborhood.equals(styleResource.getString("ToroidalTag"))) {
+    if (myNeighborhood.equals(getStyleResourceBundle().getString("ToroidalTag"))) {
       if (col == 0) {
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 1, ONE_AWAY);
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 2, ONE_AWAY);
@@ -118,7 +117,7 @@ public class TriangleBoard extends Board {
     }
   }
   private void gridTypeAddNeighborsTriangle2(Cell[][] cells, int row, int col, Cell cell) {
-    if (myNeighborhood.equals(styleResource.getString("ToroidalTag"))) {
+    if (myNeighborhood.equals(getStyleResourceBundle().getString("ToroidalTag"))) {
       if (col == 0) {
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, -ONE_AWAY);
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - TWO_AWAY, -ONE_AWAY);
