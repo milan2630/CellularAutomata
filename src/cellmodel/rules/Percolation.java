@@ -19,6 +19,7 @@ public class Percolation extends Rules {
    * @param setupParameters has no set up parameters
    */
   public Percolation(HashMap<String, String> setupParameters){
+    super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 

@@ -21,6 +21,7 @@ public class SugarScape extends Rules {
 
 
   public SugarScape(HashMap<String, String> setupParameters) {
+    super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 

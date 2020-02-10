@@ -3,6 +3,7 @@ package cellmodel;
 import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -248,5 +249,19 @@ public class Board{
     }
     return cellStates;
   }
+
+  public HashMap<String, String> getRulesParameters() {
+    return myRules.getParameters();
+  }
+
+  public int getState(int row, int col){
+    return myCells[row][col].getState();
+  }
+
+  public String getRulesClass() {
+    String[] classParts = myRules.getClass().toString().split("\\.");
+    return classParts[classParts.length-1];
+  }
+
 }
 

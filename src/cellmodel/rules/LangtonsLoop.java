@@ -13,6 +13,7 @@ public class LangtonsLoop extends Rules {
   private static final int TURNER = 4;
 
   public LangtonsLoop(HashMap<String, String> setupParameters){
+    super(setupParameters);
     super.numberOfPossibleStates = NUMBER_OF_POSSIBLE_STATES;
   }
 
