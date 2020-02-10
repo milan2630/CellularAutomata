@@ -157,7 +157,7 @@ public class UserInterface extends Application {
     }
 
     private String addXMLFileFolder(String filename){
-        return xmlResources.getString("XMLFolder") + filename + ".xml";
+        return xmlResources.getString("XMLFilesFolder") + filename + ".xml";
     }
 
     private void createErrorDialog(Exception e){
