@@ -1,13 +1,13 @@
 package display.visualizer;
 
-import cellmodel.Board;
+import cellmodel.boardtype.Board;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import cellmodel.ErrorPopup;
+import cellmodel.errorhandling.ErrorPopup;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -23,8 +23,6 @@ public abstract class Visualizer extends Application {
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
-    private static final Color BACKGROUND = Color.LAVENDERBLUSH;
-    private static final Color BORDER_COLOR = Color.RED;
     public static final int TRIANGLE_CORNER_NUMBER = 3; //this is public because it is referenced elsewhere, but cannot be changed
 
     private Scene myScene;
@@ -98,7 +96,7 @@ public abstract class Visualizer extends Application {
         width = getIndividualCellWidth(board);
         height = getIndividualCellHeight(board);
         grid.getChildren().addAll(getBoardView(board));
-        myScene = new Scene(grid, caWidth, caHeight, BACKGROUND);
+        myScene = new Scene(grid, caWidth, caHeight);
         start(new Stage());
     }
 
