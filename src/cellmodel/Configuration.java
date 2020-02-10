@@ -117,7 +117,7 @@ public class Configuration {
      * @return a Simulation object based on the xml file
      */
     public Simulation getInitSim()throws XMLException{
-        return new Simulation(getInitBoard());
+        return new Simulation(getInitBoard(), myRules.getNumberOfPossibleStates());
     }
 
     /**
@@ -131,7 +131,7 @@ public class Configuration {
         if(Integer.parseInt(styleResources.getString("NumberOfCorners"))==Visualizer.TRIANGLE_CORNER_NUMBER){
             myBoard = new TriangleBoard(boardWidth, boardHeight, myRules);
         } else {
-            myBoard = new Board(boardHeight, boardWidth, myRules);
+            myBoard = new Board(boardWidth, boardHeight, myRules);
         }
         String setupType = parseStringFromXml("setupTypeTag");
         if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){
