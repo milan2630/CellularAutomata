@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <Simulation_Type>Percolation</Simulation_Type>
+    <Title>TestPercolation</Title>
+    <Setup_Type>CellList</Setup_Type>
+    <Author1>Milan</Author1>
+    <Author2>Dana</Author2>
+    <Rules_Info>
+        <Rules_Parameters>
+            <probCatch>.1</probCatch>
+        </Rules_Parameters>
+    </Rules_Info>
+    <Grid_Config>
+        <Screen_Height>10</Screen_Height>
+        <Screen_Width>10</Screen_Width>
+        <Cells>
+            <Row>1 1 1 1 1 2 0 1 1 1 </Row>
+            <Row>1 2 1 2 1 1 2 2 1 1</Row>
+            <Row>1 1 2 1 1 1 2 1 1 1</Row>
+            <Row>2 1 1 1 2 1 1 1 2 1</Row>
+            <Row>1 1 1 1 1 1 2 1 1 1</Row>
+            <Row>1 1 2 1 1 2 1 1 1 1</Row>
+            <Row>1 1 2 1 1 1 2 1 1 1</Row>
+            <Row>2 1 1 1 2 1 1 1 2 1</Row>
+            <Row>1 1 1 1 1 1 2 1 1 1</Row>
+            <Row>1 1 2 1 1 2 1 1 1 1</Row>
+        </Cells>
+    </Grid_Config>
+</Root>
