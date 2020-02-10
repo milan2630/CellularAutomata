@@ -3,7 +3,7 @@ package display;
 import cellmodel.Configuration;
 import cellmodel.SaveException;
 import cellmodel.Simulation;
-import java.io.File;
+
 import java.util.ResourceBundle;
 
 import cellmodel.XMLException;
@@ -21,10 +21,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -71,12 +70,13 @@ public class UserInterface extends Application {
         createController();
     }
 
+
     /**
      * Creates a FileTextPrompt and returns the inputted string
      * @return the typed file name from the user
      */
     private String getFileName(){
-        FileTextPrompt fileInput = new FileTextPrompt();
+        FileTextPrompt fileInput = new FileTextPrompt("FileInputPrompt", "ChooseCommand");
         return addXMLFileFolder(fileInput.getResult());
     }
 
@@ -174,6 +174,23 @@ public class UserInterface extends Application {
     }
 
     /**
+     * @param filename is the text in the textfield when the submit button is clicked
+     * @param stage is the stage holding the textfield
+     */
+    private void handleFileSubmit(String filename, Stage stage){
+        try {
+            myConfig = new Configuration(addXMLFileFolder(filename));
+            stage.close();
+        } catch (XMLException e) {
+            createErrorDialog(e);
+        }
+    }
+
+    private void stopEverything(){
+        System.exit(1);
+    }
+
+    /**
      * Class for file input
      */
     class FileTextPrompt {
@@ -182,16 +199,12 @@ public class UserInterface extends Application {
         /**
          * Creates a prompting textfield to take in a string
          */
-        FileTextPrompt() {
+        FileTextPrompt(String titleProperty, String buttonProperty) {
             final Stage dialog = new Stage();
 
-            dialog.setTitle(myResources.getString("FileInputPrompt"));
-            dialog.initStyle(StageStyle.UTILITY);
-            dialog.initModality(Modality.WINDOW_MODAL);
-
-
+            dialog.setTitle(myResources.getString(titleProperty));
             final TextField textField = new TextField();
-            final Button submitButton = makeButton("FileChooseCommand", event -> handleFileSubmit(textField.getText(), dialog));
+            final Button submitButton = makeButton(buttonProperty, event -> handleFileSubmit(textField.getText(), dialog));
             dialog.setOnCloseRequest(t->stopEverything());
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
@@ -205,25 +218,6 @@ public class UserInterface extends Application {
 
             result = textField.getText();
         }
-
-        /**
-         * @param filename is the text in the textfield when the submit button is clicked
-         * @param stage is the stage holding the textfield
-         */
-        private void handleFileSubmit(String filename, Stage stage){
-            try{
-                myConfig = new Configuration(addXMLFileFolder(filename));
-                stage.close();
-            }
-            catch(XMLException e){
-                createErrorDialog(e);
-            }
-        }
-
-        private void stopEverything(){
-            System.exit(1);
-        }
-
         /**
          * @return the value in the textfield
          */
