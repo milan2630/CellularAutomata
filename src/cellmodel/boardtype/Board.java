@@ -25,7 +25,6 @@ public abstract class Board{
   private boolean buildingInitialBoard;
   private String myNeighborhood;
   private Map<Integer,Integer> stateHistory;
-
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;
@@ -164,6 +163,13 @@ public abstract class Board{
    */
   public void updateCell(int state, int row, int col){
     myCells[row][col].setState(state);
+  }
+
+  public void randomizeCellState(int row, int col){
+    int randState = (int)(Math.random()*myRules.getNumberOfPossibleStates());
+    System.out.println(row);
+    System.out.println(col);
+    updateCell(randState, row, col);
   }
 
   /**

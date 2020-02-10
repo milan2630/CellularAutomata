@@ -11,6 +11,7 @@ public class TriangleBoard extends Board {
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
 
+
   /**
    * constructor to create a board takes in the number of columns, rows, and the rules
    *

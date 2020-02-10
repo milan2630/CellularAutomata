@@ -12,9 +12,9 @@ import java.util.Map;
 abstract public class Rules {
 
   protected int numberOfPossibleStates;
-  private Map<String, String> parameters;
+  private HashMap<String, String> parameters;
 
-  public Rules(Map<String, String> setupParameters){
+  public Rules(HashMap<String, String> setupParameters){
     parameters =setupParameters;
   }
 
@@ -42,7 +42,7 @@ abstract public class Rules {
     return random;
   }
 
-  public Map<String, String> getParameters(){
+  public HashMap<String, String> getParameters(){
     return parameters;
   }
 
