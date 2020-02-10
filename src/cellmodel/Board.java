@@ -14,22 +14,19 @@ public class Board{
   private static final String RESOURCES = "resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
-
   protected static final int ONE_AWAY = 1;
   protected static final int TWO_AWAY = 2;
-
   private Cell[][] myCells;
   private Cell[][] cloneCells;
-  private int myRows;
-  private int myCols;
-  private Rules myRules;
+  protected int myRows;
+  protected int myCols;
+  protected Rules myRules;
   private boolean buildingInitialBoard;
   private String myNeighborhood;
-
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;
-  private ResourceBundle styleResource;
+  protected ResourceBundle styleResource;
 
 
   /**
@@ -109,54 +106,6 @@ public class Board{
    * @param cells
    */
   protected void addNeighborsToCells(Cell[][] cells) {
-    for (int row = 0; row < myRows; row++) {
-      for (int col = 0; col < myCols; col++) {
-        Cell cell = cells[row][col];
-        if (row + 1 < myRows) {
-          addNeighborCols(cell, col, cells, row+1, myRules.areCornersNeighbors());
-        }
-        if (row > 0) {
-          addNeighborCols(cell, col, cells, row-1, myRules.areCornersNeighbors());
-        }
-        if (col + 1 < myCols) {
-          cell.addNeighbor(cells[row][col+1]);
-        }
-        if (col > 0) {
-          cell.addNeighbor(cells[row][col-1]);
-        }
-        checkGridTypeAndAddNeighbors(cells, row, col, cell);
-        //System.out.println(cell.getNeighbors());
-      }
-    }
-  }
-
-  private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
-    if(myNeighborhood.equals(styleResource.getString("ToroidalTag"))){
-      if(col ==0) {
-        cell.addNeighbor(cells[row][getNumCols()-1]);
-      }
-      if(row ==0) {
-        cell.addNeighbor(cells[getNumRows()-1][col]);
-      }
-      if(col ==getNumCols()-1) {
-        cell.addNeighbor(cells[row][0]);
-      }
-      if(row ==getNumRows()-1) {
-        cell.addNeighbor(cells[0][col]);
-      }
-    }
-  }
-
-  private void addNeighborCols(Cell cell, int col, Cell[][] cells, int neighborRow, boolean corners) {
-    cell.addNeighbor(cells[neighborRow][col]);
-    if(corners) {
-      if (col > 0) {
-        cell.addNeighbor(cells[neighborRow][col - 1]);
-      }
-      if (col + 1 < myCols) {
-        cell.addNeighbor(cells[neighborRow][col + 1]);
-      }
-    }
   }
 
   /**
