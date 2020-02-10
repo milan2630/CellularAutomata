@@ -54,7 +54,7 @@ public class UserInterface extends Application {
         xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
         myConfig = new Configuration(getFileName());
         try {
-            mySim = myConfig.getInitSim(3, 1);
+            mySim = myConfig.getInitSim();
         }
         catch (XMLException e){
             createErrorDialog(e);
@@ -87,15 +87,22 @@ public class UserInterface extends Application {
         addButtonToHBox("ContinueCommand", event -> mySim.resetKeyFrame(1), controls);
         addButtonToHBox("RestartCommand", event -> onRestart(), controls);
         addButtonToHBox("SaveCommand", event -> saveCurrent(), controls);
+        addButtonToHBox("NewSimCommand", event -> startAnother(), controls);
         speedSetter = createSpeedSetter();
         controls.getChildren().add(speedSetter);
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
 
         UIroot.getChildren().add(controls);
-        Scene controllerScreen = new Scene(UIroot, Integer.parseInt(styleResources.getString("UIScreenWidth")), Integer.parseInt(styleResources.getString("UIScreenHeight")));
+        Scene controllerScreen = new Scene(UIroot, controls.getPrefWidth(), controls.getPrefHeight());
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
+    }
+
+    private void startAnother() {
+        UserInterface ui = new UserInterface();
+        ui.start(new Stage());
+
     }
 
     private void saveCurrent() {
