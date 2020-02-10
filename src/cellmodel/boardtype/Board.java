@@ -25,7 +25,6 @@ public abstract class Board{
   private boolean buildingInitialBoard;
   private String myNeighborhood;
   private Map<Integer,Integer> stateHistory;
-
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;

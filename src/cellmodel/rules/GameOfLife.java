@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class GameOfLife extends Rules {
 
   private static final int BIRTH_THRESHOLD = 3;
-  private static final int NUMBER_OF_POSSIBLE_STATES = 3;
+  private static final int NUMBER_OF_POSSIBLE_STATES = 2;
   private static final int ALIVE = 1;
   private static final int DEAD = 0;
 

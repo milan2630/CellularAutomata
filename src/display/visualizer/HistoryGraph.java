@@ -1,15 +1,10 @@
 package display.visualizer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javafx.application.Application;
 import javafx.scene.Scene;
 
-import javafx.animation.Timeline;
-
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -44,6 +39,7 @@ public class HistoryGraph extends Application {
       XYChart.Series series = new Series();
       myLines.putIfAbsent(state, series);
       XYChart.Series specificSeries = myLines.get(state);
+
       if(countsOfStates.containsKey(state)){
         Object population = countsOfStates.get(state);
         specificSeries.getData().add(new XYChart.Data(time, population));
@@ -51,7 +47,7 @@ public class HistoryGraph extends Application {
       lineChart.getData().add(specificSeries);
     }
 
-    Scene scene  = new Scene(lineChart,800,600);
+    Scene scene = new Scene(lineChart,800,600);
 
     stage.setScene(scene);
     stage.show();
@@ -59,15 +55,17 @@ public class HistoryGraph extends Application {
 
   public void beginGraph(int numberOfStates){
     numStates = numberOfStates;
-
   }
+
+  /**
+   * get the new map, update cycle, and regraph according to new dimensions
+   * @param counts map that holds the counts of the states AT THIS CYCLE
+   * @param cycle current cycleNumber
+   */
   public void updateGraph(Map counts, int cycle){
     countsOfStates = counts;
     time = cycle;
     start(myStage);
   }
 
-  public static void main(String[] args) {
-    launch(args);
-  }
 }
