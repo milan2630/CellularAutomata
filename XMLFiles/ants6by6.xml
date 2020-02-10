@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
-  <Simulation_Type>RockPaperScissors</Simulation_Type>
-  <Title>rockpaperscissors</Title>
+  <Simulation_Type>ForagingAnts</Simulation_Type>
+  <Title>ants6by6</Title>
   <Setup_Type>CellList</Setup_Type>
   <Author>Cayla Schuval</Author>
   <Rules_Info>
     <Rules_Parameters>
-      <threshold>3</threshold>
+      <probCatch>.66</probCatch>
     </Rules_Parameters>
   </Rules_Info>
   <Grid_Config>
     <Screen_Height>6</Screen_Height>
     <Screen_Width>6</Screen_Width>
     <Cells>
-      <Row>1 1 2 1 2 0</Row>
-      <Row>0 2 2 2 2 0</Row>
       <Row>1 1 0 0 0 0</Row>
-      <Row>1 2 1 1 1 0</Row>
-      <Row>1 2 2 0 2 0</Row>
       <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 0 0 2 2</Row>
     </Cells>
   </Grid_Config>
 </Root>
