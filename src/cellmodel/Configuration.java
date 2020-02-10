@@ -1,5 +1,9 @@
 package cellmodel;
 
+import cellmodel.boardtype.Board;
+import cellmodel.boardtype.SquareBoard;
+import cellmodel.boardtype.TriangleBoard;
+import cellmodel.errorhandling.XMLException;
 import cellmodel.rules.Rules;
 import display.visualizer.Visualizer;
 import org.w3c.dom.Document;
@@ -39,7 +43,7 @@ public class Configuration {
      * Constructor to create a Configuration object based on a filename
      * @param inputfileName xml file name to parse
      */
-    public Configuration(String inputfileName) throws XMLException{
+    public Configuration(String inputfileName) throws XMLException {
         xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
         styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
         try{
