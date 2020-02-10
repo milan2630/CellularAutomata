@@ -5,11 +5,15 @@ import cellmodel.rules.Rules;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * creates a cloneable board object that establishes the positions of each cell, updates the states of the cells based on the rules, and determines the neighbors of the cells
  **/
 public class Board{
+  private static final String RESOURCES = "resources";
+  private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+  private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
 
   protected static final int ONE_AWAY = 1;
   protected static final int TWO_AWAY = 2;
@@ -20,12 +24,12 @@ public class Board{
   private int myCols;
   private Rules myRules;
   private boolean buildingInitialBoard;
-  private int myNeighborhood;
+  private String myNeighborhood;
 
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
   private double percentOfNeighbors;
-
+  private ResourceBundle styleResource;
 
 
   /**
@@ -34,11 +38,11 @@ public class Board{
    * @param numCols number of columns on the board
    * @param numRows number of rows on the board
    * @param rules rules of the simulation
-   * @param neighborhoodType
-   * @param percentOfNeighborsWanted
    **/
-  public Board(int numCols, int numRows, Rules rules, int neighborhoodType,
-      double percentOfNeighborsWanted) {
+  public Board(int numCols, int numRows, Rules rules) {
+    styleResource = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
+    percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
+    myNeighborhood= styleResource.getString("NeighborhoodType");
     myRules = rules;
     myCells = new Cell[numRows][numCols];
     cloneCells = new Cell[numRows][numCols];
@@ -47,8 +51,6 @@ public class Board{
     buildingInitialBoard = true;
     buildBoard(myCells);
     buildingInitialBoard = false;
-    myNeighborhood= neighborhoodType;
-    percentOfNeighbors=percentOfNeighborsWanted;
   }
 
   private void buildBoard(Cell[][] cells){
@@ -134,19 +136,20 @@ public class Board{
   }
 
   private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
-    if(myNeighborhood== TORODIAL && col ==0) {
-      cell.addNeighbor(cells[row][getNumCols()-1]);
+    if(myNeighborhood.equals(styleResource.getString("ToroidalTag"))){
+      if(col ==0) {
+        cell.addNeighbor(cells[row][getNumCols()-1]);
+      }
+      if(row ==0) {
+        cell.addNeighbor(cells[getNumRows()-1][col]);
+      }
+      if(col ==getNumCols()-1) {
+        cell.addNeighbor(cells[row][0]);
+      }
+      if(row ==getNumRows()-1) {
+        cell.addNeighbor(cells[0][col]);
+      }
     }
-    if(myNeighborhood== TORODIAL && row ==0) {
-      cell.addNeighbor(cells[getNumRows()-1][col]);
-    }
-    if(myNeighborhood== TORODIAL && col ==getNumCols()-1) {
-      cell.addNeighbor(cells[row][0]);
-    }
-    if(myNeighborhood== TORODIAL && row ==getNumRows()-1) {
-      cell.addNeighbor(cells[0][col]);
-    }
-    //totalNeighbors=cell.getNeighbors().size();
   }
 
   private void addNeighborCols(Cell cell, int col, Cell[][] cells, int neighborRow, boolean corners) {
@@ -268,5 +271,8 @@ public class Board{
     return classParts[classParts.length-1];
   }
 
+  protected ResourceBundle getStyleResourceBundle(){
+    return styleResource;
+  }
 }
 
