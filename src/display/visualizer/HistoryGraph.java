@@ -1,7 +1,11 @@
 package display.visualizer;
 
+import static display.UserInterface.DEFAULT_RESOURCE_PACKAGE;
+import static display.UserInterface.STYLE_PROPERTIES_FILENAME;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.scene.Scene;
 
@@ -19,6 +23,8 @@ public class HistoryGraph extends Application {
   private int time;
   private static Stage myStage = new Stage();
   private Map<Integer, Series> myLines;
+  private ResourceBundle styleResources;
+  private ResourceBundle myResources;
 
   public HistoryGraph(){
     myLines = new HashMap<>();
@@ -26,17 +32,20 @@ public class HistoryGraph extends Application {
 
   @Override
   public void start(Stage stage) {
-    stage.setTitle("StateHistoryChartTitle");
+    styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
+    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + styleResources.getString("Language"));
+    stage.setTitle(myResources.getString("StateHistoryChartTitle"));
     final NumberAxis xAxis = new NumberAxis();
     final NumberAxis yAxis = new NumberAxis();
-    xAxis.setLabel("ChartXLabel");
+    xAxis.setLabel(myResources.getString("ChartXLabel"));
     final LineChart<Number, Number> lineChart =
         new LineChart<Number, Number>(xAxis,yAxis);
 
-    lineChart.setTitle("ChartTitle");
+    lineChart.setTitle(myResources.getString("ChartTitle"));
 
     for(int state = 0; state < numStates; state++){
       XYChart.Series series = new Series();
+      series.setName(""+state);
       myLines.putIfAbsent(state, series);
       XYChart.Series specificSeries = myLines.get(state);
 
