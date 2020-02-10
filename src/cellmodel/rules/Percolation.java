@@ -33,6 +33,8 @@ public class Percolation extends Rules {
    */
   @Override
   public void changeState(Cell cell, Cell cloneCell) {
+    System.out.println("Cell " + cell.getNeighbors());
+    System.out.println("Clone " + cloneCell.getNeighbors());
     int state = cell.getState();
     if(state == OPEN && cloneCell.numNeighborsWithGivenState(FILLED)>0){
       cell.changeStateAndView(FILLED);

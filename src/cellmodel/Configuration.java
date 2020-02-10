@@ -123,7 +123,7 @@ public class Configuration {
     private Board getInitBoard() throws XMLException{
         int boardHeight = parseIntFromXML("boardHeightTag");
         int boardWidth = parseIntFromXML("boardWidthTag");
-        Board myBoard = new Board(boardHeight, boardWidth, myRules, 1);
+        Board myBoard = new Board(boardHeight, boardWidth, myRules, 0, 0.6);
         String setupType = parseStringFromXml("setupTypeTag");
         if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){
             setupBoardWProbs(myBoard, boardHeight, boardWidth);

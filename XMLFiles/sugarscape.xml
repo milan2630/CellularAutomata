@@ -2,7 +2,8 @@
 <Root>
   <Simulation_Type>SugarScape</Simulation_Type>
   <Title>sugarscape</Title>
-  <Author>Cayla Schuval</Author>
+  <Setup_Type>CellList</Setup_Type>
+  <Author1>Cayla</Author1>
   <Rules_Info>
     <Rules_Parameters>
       <probCatch>.66</probCatch>
