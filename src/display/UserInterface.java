@@ -57,7 +57,7 @@ public class UserInterface extends Application {
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
         myConfig = new Configuration(getFileName());
         try {
-            mySim = myConfig.getInitSim(4, 1);
+            mySim = myConfig.getInitSim(3, 1);
         }
         catch (XMLException e){
             createErrorDialog(e);

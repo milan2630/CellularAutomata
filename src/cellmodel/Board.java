@@ -20,10 +20,10 @@ public class Board{
   private int myCols;
   private Rules myRules;
   private boolean buildingInitialBoard;
-  protected int myNeighborhood;
+  private int myNeighborhood;
   protected static final int FINITE = 0;
   protected static final int TORODIAL =1;
-  private double percentOfNeighbors=1;
+  protected double percentOfNeighbors=1;
 
 
 
@@ -51,7 +51,7 @@ public class Board{
   }
 
   private void buildBoard(Cell[][] cells){
-    System.out.println("percent " + percentOfNeighbors);
+    System.out.println(myNeighborhood);
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
         Cell myCell;
@@ -78,7 +78,6 @@ public class Board{
         int [] neighborsToRemove = getWhichNeighborsToRemove(numNeighbors);
         Cell cell = cells[row][col];
         for (int i = cell.getNeighbors().size()-1; i >= 0; i--) {
-          System.out.println( "num " + neighborsToRemove[i]);
           if (neighborsToRemove[i] == 0) {
             cell.removeNeighbor(cell.getNeighbors().get(i));
           }
@@ -90,15 +89,10 @@ public class Board{
 
   private int[] getWhichNeighborsToRemove(int numNeighbors) {
     int[] neighborsNotWanted = new int[numNeighbors];
-    System.out.println(numNeighbors);
-    System.out.println(percentOfNeighbors);
     double count = (percentOfNeighbors*((double) numNeighbors));
-    System.out.println(count);
     int counter = (int) Math.round(count);
-    System.out.println(counter);
     while (counter > 0) {
-      int randomIndex = (int) (Math.random() * (numNeighbors));
-      System.out.println("rand" + randomIndex);
+      int randomIndex = (int) (Math.random() * (numNeighbors));;
       if (neighborsNotWanted[randomIndex] == 0) {
         neighborsNotWanted[randomIndex] = 1;
         counter--;
