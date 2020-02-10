@@ -62,10 +62,10 @@ public class Configuration {
         Object ret;
         simType = parseStringFromXml(("rulesXMLTag"));
         try {
-            NodeList parametersNode = myXML.getElementsByTagName(xmlResources.getString("ParametersTag")).item(0).getChildNodes();
+            NodeList parametersNode = myXML.getElementsByTagName(xmlResources.getString("parametersTag")).item(0).getChildNodes();
             parameters = getParameterVals(parametersNode);
         } catch (NullPointerException e){
-            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("ParametersTag"));
+            throw new XMLException(xmlResources.getString("MissingTagErrorMessage") + xmlResources.getString("parametersTag"));
         }
 
         try {
