@@ -30,9 +30,9 @@ import javax.imageio.ImageIO;
  */
 public class UserInterface extends Application {
     private static final String RESOURCES = "resources";
-    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    public static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
-    private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
+    public static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
     private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
     private static final String STYLESHEET = "default.css";
 
