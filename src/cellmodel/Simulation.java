@@ -21,6 +21,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -155,7 +156,7 @@ public class Simulation {
         Element rulesInfoNode = doc.createElement(xmlResources.getString("rulesInfoTag"));
         Element rulesParamNode = doc.createElement(xmlResources.getString("parametersTag"));
 
-        HashMap<String, String> parameters = myBoard.getRulesParameters();
+        Map<String, String> parameters = myBoard.getRulesParameters();
         for(String key: parameters.keySet()){
             rulesParamNode.appendChild(createXMLElement(key, parameters.get(key)));
         }
