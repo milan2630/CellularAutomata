@@ -5,7 +5,7 @@ import cellmodel.celltype.Cell;
 import cellmodel.rules.Rules;
 
 public class SquareBoard extends Board {
-  String myNeighborhood = getStyleResourceBundle().getString("NeighborhoodType");
+  private static String myNeighborhood = getStyleResourceBundle().getString("NeighborhoodType");
   private static final String RESOURCES = "resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
