@@ -85,11 +85,23 @@ public class Cell{
     myNeighbors.add(neighbor);
   }
 
+  public void removeNeighbor(Cell neighbor){
+    myNeighbors.remove(neighbor);
+  }
+
   /**
    * @return a list of the neighbors of the cell
    **/
   public List<Cell> getNeighbors() {
     return myNeighbors;
+  }
+
+  public void setNeighbors(List<Cell> neighbors){
+    for(int i =0; i<neighbors.size(); i++){
+
+    }
+    myNeighbors = new ArrayList<>();
+    myNeighbors= neighbors;
   }
 
   /**
