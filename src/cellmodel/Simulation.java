@@ -1,8 +1,10 @@
 package cellmodel;
 
+import display.visualizer.HistoryGraph;
 import display.visualizer.SquareVisualizer;
 import display.visualizer.TriangleVisualizer;
 import display.visualizer.Visualizer;
+import java.util.Map;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -37,9 +39,11 @@ public class Simulation {
     private ResourceBundle styleResources;
     private Board myBoard;
     private Visualizer myVisualizer;
+    private HistoryGraph myGraph;
     private Timeline animation;
     private double millisecondDelay;
     private Document doc;
+    private int cycleCount;
     /**
      * constructor that takes in a starting board, and number or corners in the cell shape
      * and starts running the simulation
@@ -59,6 +63,9 @@ public class Simulation {
       animation = new Timeline();
       animation.setCycleCount(Animation.INDEFINITE);
       setKeyFrame();
+      myGraph = new HistoryGraph();
+      cycleCount = 0;
+      myGraph.beginGraph(myBoard.getNumPossibleStates());
     }
 
     /**
@@ -94,7 +101,9 @@ public class Simulation {
      */
     public void step() {
       myBoard.updateBoard();
+      myGraph.updateGraph(myBoard.getStateHistory(), cycleCount);
       myVisualizer.displayBoard(myBoard);
+      cycleCount++;
     }
 
     /**
@@ -155,7 +164,7 @@ public class Simulation {
         Element rulesInfoNode = doc.createElement(xmlResources.getString("rulesInfoTag"));
         Element rulesParamNode = doc.createElement(xmlResources.getString("parametersTag"));
 
-        HashMap<String, String> parameters = myBoard.getRulesParameters();
+        Map<String, String> parameters = myBoard.getRulesParameters();
         for(String key: parameters.keySet()){
             rulesParamNode.appendChild(createXMLElement(key, parameters.get(key)));
         }

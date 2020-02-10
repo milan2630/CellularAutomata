@@ -53,6 +53,7 @@ public abstract class Visualizer extends Application {
     @Override
     public void start(Stage primaryStage){
         myStage.setX(0);
+        myScene.setFill(Color.BLACK);
         myStage.setScene(myScene);
         myStage.show();
         myStage.setOnCloseRequest(t->stopEverything());

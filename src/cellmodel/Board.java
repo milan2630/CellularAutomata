@@ -5,6 +5,7 @@ import cellmodel.rules.Rules;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -25,6 +26,7 @@ public class Board{
   private Rules myRules;
   private boolean buildingInitialBoard;
   private String myNeighborhood;
+  private Map<Integer,Integer> stateHistory;
 
   private static final int FINITE = 0;
   private static final int TORODIAL =1;
@@ -51,6 +53,7 @@ public class Board{
     buildingInitialBoard = true;
     buildBoard(myCells);
     buildingInitialBoard = false;
+    stateHistory = new HashMap<Integer, Integer>();
   }
 
   private void buildBoard(Cell[][] cells){
@@ -69,7 +72,6 @@ public class Board{
       }
     }
     addNeighborsToCells(cells);
-    //neighborsToRemove = getWhichNeighborsToRemove();
     removeUnwantedNeighbors(cells);
   }
 
@@ -80,27 +82,19 @@ public class Board{
         int [] neighborsToRemove = getWhichNeighborsToRemove(numNeighbors);
         Cell cell = cells[row][col];
         for (int i = cell.getNeighbors().size()-1; i >= 0; i--) {
-          System.out.println( "num " + neighborsToRemove[i]);
           if (neighborsToRemove[i] == 0) {
             cell.removeNeighbor(cell.getNeighbors().get(i));
           }
         }
-        //System.out.println(cell.getNeighbors());
       }
     }
   }
 
   private int[] getWhichNeighborsToRemove(int numNeighbors) {
     int[] neighborsNotWanted = new int[numNeighbors];
-    System.out.println(numNeighbors);
-    System.out.println(percentOfNeighbors);
-    double count = (percentOfNeighbors*((double) numNeighbors));
-    System.out.println(count);
-    int counter = (int) Math.round(count);
-    System.out.println(counter);
+    int counter = (int) Math.round(percentOfNeighbors*((double) numNeighbors));
     while (counter > 0) {
       int randomIndex = (int) (Math.random() * (numNeighbors));
-      System.out.println("rand" + randomIndex);
       if (neighborsNotWanted[randomIndex] == 0) {
         neighborsNotWanted[randomIndex] = 1;
         counter--;
@@ -130,7 +124,6 @@ public class Board{
           cell.addNeighbor(cells[row][col-1]);
         }
         checkGridTypeAndAddNeighbors(cells, row, col, cell);
-        //System.out.println(cell.getNeighbors());
       }
     }
   }
@@ -176,8 +169,6 @@ public class Board{
         //we want a copy of the cell, NOT THE SAME OBJECT
         myCell = new Cell(cellToCopyFrom.getState(), row, col);
         cloneCells[row][col] = myCell;
-        //myCell= cloneCells[row][col];
-        //List<Cell> copiedCellsNeighbors = cellToCopyFrom.getNeighbors();
       }
     }
     findAndAddAssociatedCloneNeighbor();
@@ -193,13 +184,6 @@ public class Board{
           int r = copiedCellsNeighbor.getRowNumber();
           int c = copiedCellsNeighbor.getColNumber();
           cloneCell.addNeighbor(cloneCells[r][c]);
-      /*for (int cloneRow = 0; cloneRow < myRows; cloneRow++) {
-        for (int cloneCol = 0; cloneCol < myCols; cloneCol++) {
-          if (cloneRow == r && cloneCol == c) {
-            myCell.addNeighbor(cloneCells[cloneRow][cloneCol]);
-          }
-        }
-      }*/
         }
       }
     }
@@ -210,12 +194,17 @@ public class Board{
    * so that it has an accurate representation of neighbors
    */
   public void updateBoard(){
-        cloneNeighbors();
-        for(int row = 0; row < myRows; row++){
-          for(int col = 0; col < myCols; col++){
-            myRules.changeState(myCells[row][col], cloneCells[row][col]);
-          }
-        }
+    stateHistory = new HashMap<>();
+    cloneNeighbors();
+    for(int row = 0; row < myRows; row++){
+      for(int col = 0; col < myCols; col++){
+        int state = getState(row, col);
+        stateHistory.putIfAbsent(state, 0);
+        int oldNumber = stateHistory.get(state);
+        stateHistory.put(state, oldNumber+1);
+        myRules.changeState(myCells[row][col], cloneCells[row][col]);
+      }
+    }
   }
 
   /**
@@ -258,7 +247,7 @@ public class Board{
     return cellStates;
   }
 
-  public HashMap<String, String> getRulesParameters() {
+  public Map<String, String> getRulesParameters() {
     return myRules.getParameters();
   }
 
@@ -266,13 +255,20 @@ public class Board{
     return myCells[row][col].getState();
   }
 
+  public Map getStateHistory(){
+    return stateHistory;
+  }
+
   public String getRulesClass() {
     String[] classParts = myRules.getClass().toString().split("\\.");
     return classParts[classParts.length-1];
+  }
+
+  public int getNumPossibleStates(){
+    return myRules.getNumberOfPossibleStates();
   }
 
   protected ResourceBundle getStyleResourceBundle(){
     return styleResource;
   }
 }
-
