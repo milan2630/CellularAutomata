@@ -110,17 +110,24 @@ public abstract class Visualizer extends Application {
         resetVariables();
         for(Integer i : states){
             //pointy up switches, color comes from css file, xPos and yPos increment by cell width and height respectively
-
             if(col == board.getNumCols()) {
                 col %= board.getNumCols();
                 moveToNextRow();
             }
             Polygon cell = cellView(colorMap.get(i));
             root.getChildren().add(cell);
+            int r= row;
+            int c = col;
+            cell.setOnMouseClicked(event -> onClick(board, r, c));
 
             moveOver();
         }
         return root;
+    }
+
+    private void onClick(Board board, int row, int col){
+        board.randomizeCellState(row, col);
+        displayBoard(board);
     }
 
     protected Polygon cellView(Color color){

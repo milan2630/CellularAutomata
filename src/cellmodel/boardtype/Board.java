@@ -165,6 +165,13 @@ public abstract class Board{
     myCells[row][col].setState(state);
   }
 
+  public void randomizeCellState(int row, int col){
+    int randState = (int)(Math.random()*myRules.getNumberOfPossibleStates());
+    System.out.println(row);
+    System.out.println(col);
+    updateCell(randState, row, col);
+  }
+
   /**
    * Return the number of rows in the board
    * @return myRows
