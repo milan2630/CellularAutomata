@@ -6,7 +6,6 @@ import cellmodel.rules.Rules;
 
 public class TriangleBoard extends Board {
 
-  private String myNeighborhood;
   private static final String RESOURCES = "resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
@@ -22,7 +21,6 @@ public class TriangleBoard extends Board {
   public TriangleBoard(int numCols, int numRows, Rules rules) {
     super(numCols, numRows, rules);
     //percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
-    myNeighborhood= super.getStyleResourceBundle().getString("NeighborhoodType");
   }
 
   /**
@@ -43,7 +41,6 @@ public class TriangleBoard extends Board {
         if (row > 0) {
           addNeighborRow(cells, cell, row - ONE_AWAY, col, ONE_AWAY, true);
         }
-        System.out.println("hi " + myNeighborhood);
         addNeighborsSpecificToOrientation(cells, cell, row, col);
         checkTriangleTypeForGridType(cells, cell, row, col);
         removeUnwantedNeighbors(cells);
@@ -88,7 +85,7 @@ public class TriangleBoard extends Board {
   }
 
   private void gridTypeAddNeighborsTriangle1(Cell[][] cells, int row, int col, Cell cell) {
-    if (myNeighborhood.equals(getStyleResourceBundle().getString("ToroidalTag"))) {
+    if (getMyNeighborhood().equals(getStyleResourceBundle().getString("ToroidalTag"))) {
       if (col == 0) {
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 1, ONE_AWAY);
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 2, ONE_AWAY);
@@ -118,7 +115,7 @@ public class TriangleBoard extends Board {
     }
   }
   private void gridTypeAddNeighborsTriangle2(Cell[][] cells, int row, int col, Cell cell) {
-    if (myNeighborhood.equals(getStyleResourceBundle().getString("ToroidalTag"))) {
+    if (getMyNeighborhood().equals(getStyleResourceBundle().getString("ToroidalTag"))) {
       if (col == 0) {
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, -ONE_AWAY);
         addNeighborsOnOtherSide(cells, cell, row, getNumCols() - TWO_AWAY, -ONE_AWAY);
