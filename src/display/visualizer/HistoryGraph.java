@@ -15,7 +15,10 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.stage.Stage;
 
-
+/**
+ * Create and display a graph that plots the states of all of the cells on the board
+ * as time progresses
+ */
 public class HistoryGraph extends Application {
 
   private int numStates;
@@ -26,10 +29,19 @@ public class HistoryGraph extends Application {
   private ResourceBundle styleResources;
   private ResourceBundle myResources;
 
+  /**
+   * constructor, create a new map to keep track of the lines
+   */
   public HistoryGraph(){
     myLines = new HashMap<>();
   }
 
+  /**
+   * Create a line graph that has the same number of series as the simulation
+   * does states
+   * Plot the population as time goes on
+   * @param stage
+   */
   @Override
   public void start(Stage stage) {
     styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
