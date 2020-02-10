@@ -29,14 +29,13 @@ public class UserInterface extends Application {
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
+    private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
+    private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
     private static final String STYLESHEET = "default.css";
-    private static final String DEFAULT_LANGUAGE = "English";
-    private static final String XMLFOLDER = "XMLFiles/";
-    private static final int UI_SCREEN_WIDTH = 600;
-    private static final int UI_SCREEN_HEIGHT = 80;
-    private static final int SPEED_SETTER_WIDTH_MAX = 50;
 
     private ResourceBundle myResources;
+    private ResourceBundle styleResources;
+    private ResourceBundle xmlResources;
     private Group UIroot;
     private Stage UIstage;
     private Simulation mySim;
@@ -50,7 +49,9 @@ public class UserInterface extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
+        styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + styleResources.getString("Language"));
+        xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
         myConfig = new Configuration(getFileName());
         try {
             mySim = myConfig.getInitSim();
@@ -91,7 +92,7 @@ public class UserInterface extends Application {
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
 
         UIroot.getChildren().add(controls);
-        Scene controllerScreen = new Scene(UIroot, UI_SCREEN_WIDTH, UI_SCREEN_HEIGHT);
+        Scene controllerScreen = new Scene(UIroot, Integer.parseInt(styleResources.getString("UIScreenWidth")), Integer.parseInt(styleResources.getString("UIScreenHeight")));
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
@@ -111,7 +112,7 @@ public class UserInterface extends Application {
      */
     private TextField createSpeedSetter(){
         TextField setter = new TextField();
-        setter.setMaxWidth(SPEED_SETTER_WIDTH_MAX);
+        setter.setMaxWidth(Integer.parseInt(styleResources.getString("SpeedSetterWidth")));
         setter.setText(Simulation.DEFAULT_FRAMES_PER_SECOND+"");
         return setter;
     }
@@ -156,7 +157,7 @@ public class UserInterface extends Application {
     }
 
     private String addXMLFileFolder(String filename){
-        return XMLFOLDER + filename + ".xml";
+        return xmlResources.getString("XMLFolder") + filename + ".xml";
     }
 
     private void createErrorDialog(Exception e){
