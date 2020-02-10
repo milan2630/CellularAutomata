@@ -28,11 +28,12 @@ public class Configuration {
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
-
+    private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
 
     private Element myXML;
     private Rules myRules;
     private ResourceBundle xmlResources;
+    private ResourceBundle styleResources;
 
     /**
      * Constructor to create a Configuration object based on a filename
@@ -40,6 +41,7 @@ public class Configuration {
      */
     public Configuration(String inputfileName) throws XMLException{
         xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
+        styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
         try{
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -115,22 +117,22 @@ public class Configuration {
      * @return a Simulation object based on the xml file
      * @param numCorners
      */
-    public Simulation getInitSim(int numCorners, int neighborhoodType)throws XMLException{
-        return new Simulation(getInitBoard(numCorners, neighborhoodType), numCorners);
+    public Simulation getInitSim()throws XMLException{
+        return new Simulation(getInitBoard());
     }
 
     /**
      * @return a Board object based on the initial configuration from the xml file
      */
 
-    private Board getInitBoard(int numCornersOnACell, int neighborhoodType) throws XMLException{
+    private Board getInitBoard() throws XMLException{
         int boardHeight = parseIntFromXML("boardHeightTag");
         int boardWidth = parseIntFromXML("boardWidthTag");
         Board myBoard;
-        if(numCornersOnACell==Visualizer.TRIANGLE_CORNER_NUMBER){
-            myBoard = new TriangleBoard(boardWidth, boardHeight, myRules, neighborhoodType, 0.6);
+        if(Integer.parseInt(styleResources.getString("NumberOfCorners"))==Visualizer.TRIANGLE_CORNER_NUMBER){
+            myBoard = new TriangleBoard(boardWidth, boardHeight, myRules, 0.6);
         } else {
-            myBoard = new Board(boardHeight, boardWidth, myRules, neighborhoodType, 0.6);
+            myBoard = new Board(boardHeight, boardWidth, myRules, 0.6);
         }
         String setupType = parseStringFromXml("setupTypeTag");
         if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){

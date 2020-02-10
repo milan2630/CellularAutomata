@@ -32,8 +32,9 @@ public class Simulation {
     private static final String RESOURCES = "resources";
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
+    private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
     private ResourceBundle xmlResources;
-
+    private ResourceBundle styleResources;
     private Board myBoard;
     private Visualizer myVisualizer;
     private Timeline animation;
@@ -44,10 +45,11 @@ public class Simulation {
      * and starts running the simulation
      * @param board incoming board
      */
-    public Simulation(Board board, int numCornersOnACell){
+    public Simulation(Board board){
       xmlResources = ResourceBundle.getBundle(XML_PROPERTIES_FILENAME);
+      styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
       myBoard = board;
-      if(numCornersOnACell == Visualizer.TRIANGLE_CORNER_NUMBER) {
+      if( Integer.parseInt(styleResources.getString("NumberOfCorners"))== Visualizer.TRIANGLE_CORNER_NUMBER) {
         myVisualizer = new TriangleVisualizer();
       } else {
         myVisualizer = new SquareVisualizer();
