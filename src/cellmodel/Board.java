@@ -20,11 +20,10 @@ public class Board{
   private int myCols;
   private Rules myRules;
   private boolean buildingInitialBoard;
-  private int myNeighborhood;
-
-  private static final int FINITE = 0;
-  private static final int TORODIAL =1;
-  private double percentOfNeighbors;
+  protected int myNeighborhood;
+  protected static final int FINITE = 0;
+  protected static final int TORODIAL =1;
+  private double percentOfNeighbors=1;
 
 
 
@@ -52,6 +51,7 @@ public class Board{
   }
 
   private void buildBoard(Cell[][] cells){
+    System.out.println("percent " + percentOfNeighbors);
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
         Cell myCell;
@@ -71,7 +71,7 @@ public class Board{
     removeUnwantedNeighbors(cells);
   }
 
-  private void removeUnwantedNeighbors(Cell[][] cells) {
+  protected void removeUnwantedNeighbors(Cell[][] cells) {
     for (int row = 0; row < myRows; row++) {
       for (int col = 0; col < myCols; col++) {
         int numNeighbors = cells[row][col].getNeighbors().size();
@@ -136,15 +136,31 @@ public class Board{
   private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
     if(myNeighborhood== TORODIAL && col ==0) {
       cell.addNeighbor(cells[row][getNumCols()-1]);
+      if(myRules.areCornersNeighbors()){
+        cell.addNeighbor(cells[row+1][getNumCols()-1]);
+        cell.addNeighbor(cells[row-1][getNumCols()-1]);
+      }
     }
     if(myNeighborhood== TORODIAL && row ==0) {
       cell.addNeighbor(cells[getNumRows()-1][col]);
+      if(myRules.areCornersNeighbors()){
+        cell.addNeighbor(cells[getNumRows()-1][col-1]);
+        cell.addNeighbor(cells[getNumRows()-1][col+1]);
+      }
     }
     if(myNeighborhood== TORODIAL && col ==getNumCols()-1) {
       cell.addNeighbor(cells[row][0]);
+      if(myRules.areCornersNeighbors()){
+        cell.addNeighbor(cells[row-1][0]);
+        cell.addNeighbor(cells[row+1][0]);
+      }
     }
     if(myNeighborhood== TORODIAL && row ==getNumRows()-1) {
       cell.addNeighbor(cells[0][col]);
+      if(myRules.areCornersNeighbors()){
+        cell.addNeighbor(cells[0][col-1]);
+        cell.addNeighbor(cells[0][col+1]);
+      }
     }
     //totalNeighbors=cell.getNeighbors().size();
   }

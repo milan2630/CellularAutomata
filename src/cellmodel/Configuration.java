@@ -128,9 +128,9 @@ public class Configuration {
         int boardWidth = parseIntFromXML("boardWidthTag");
         Board myBoard;
         if(numCornersOnACell==Visualizer.TRIANGLE_CORNER_NUMBER){
-            myBoard = new TriangleBoard(boardWidth, boardHeight, myRules, neighborhoodType, 0.6);
+            myBoard = new TriangleBoard(boardWidth, boardHeight, myRules, neighborhoodType, .6);
         } else {
-            myBoard = new Board(boardHeight, boardWidth, myRules, neighborhoodType, 0.6);
+            myBoard = new Board(boardHeight, boardWidth, myRules, neighborhoodType, .6);
         }
         String setupType = parseStringFromXml("setupTypeTag");
         if(setupType.equals(xmlResources.getString("probabilitiesKeyword"))){

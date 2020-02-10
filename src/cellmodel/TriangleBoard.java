@@ -14,6 +14,7 @@ public class TriangleBoard extends Board {
    **/
   public TriangleBoard(int numCols, int numRows, Rules rules, int neighborhoodType, double percentWanted) {
     super(numCols, numRows, rules, neighborhoodType, percentWanted);
+    super.myNeighborhood = neighborhoodType;
   }
 
   /**
@@ -34,6 +35,7 @@ public class TriangleBoard extends Board {
           addNeighborRow(cells, cell, row-ONE_AWAY, col, ONE_AWAY, true);
         }
         addNeighborsSpecificToOrientation(cells, cell, row, col);
+        removeUnwantedNeighbors(cells);
       }
     }
   }
@@ -58,8 +60,27 @@ public class TriangleBoard extends Board {
   private void addNeighborsSpecificToOrientation(Cell[][] cells, Cell cell, int row, int col){
     if(row%2==col%2 && row > 0) {
         addNeighborRow(cells, cell, row-ONE_AWAY, col, TWO_AWAY, false);
+      checkGridTypeAndAddNeighbors(cells, row, col, cell);
     } else if(row%2!=col%2 && row+1 < this.getNumRows()) {
       addNeighborRow(cells, cell, row+ONE_AWAY, col, TWO_AWAY, false);
     }
+    checkGridTypeAndAddNeighbors(cells, row, col, cell);
+  }
+
+  private void checkGridTypeAndAddNeighbors(Cell[][] cells, int row, int col, Cell cell) {
+    if(myNeighborhood== TORODIAL && col ==0) {
+      cell.addNeighbor(cells[row][getNumCols()-1]);
+      cell.addNeighbor(cells[row][getNumCols()-2]);
+    }
+    if(myNeighborhood== TORODIAL && row ==0) {
+      cell.addNeighbor(cells[getNumRows()-1][col]);
+    }
+    if(myNeighborhood== TORODIAL && col ==getNumCols()-1) {
+      cell.addNeighbor(cells[row][0]);
+    }
+    if(myNeighborhood== TORODIAL && row ==getNumRows()-1) {
+      cell.addNeighbor(cells[0][col]);
+    }
+    //totalNeighbors=cell.getNeighbors().size();
   }
 }
