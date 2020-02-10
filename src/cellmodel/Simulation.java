@@ -162,17 +162,25 @@ public class Simulation {
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 
-        StreamResult result = new StreamResult(new File(xmlResources.getString("XMLFilesFolder") + simType +
+        String fileSaveDirectory = xmlResources.getString("XMLFilesFolder");
+        checkDirectoryExists(fileSaveDirectory);
+
+        StreamResult result = new StreamResult(new File(fileSaveDirectory + simType +
                 System.currentTimeMillis() + xmlResources.getString("fileExtension")));
 
         transformer.transform(source, result);
 
 
-      } catch (ParserConfigurationException | TransformerConfigurationException e) {
-        e.printStackTrace();
-      } catch (TransformerException e) {
-        e.printStackTrace();
+      } catch (ParserConfigurationException | TransformerException e) {
+        throw new SaveException(xmlResources.getString("FileErrorMessage"));
       }
+    }
+
+    private void checkDirectoryExists(String filename){
+        File checker = new File(filename);
+        if(!checker.isDirectory()){
+            throw new SaveException("Given file save location is not valid.");
+        }
     }
 
 }

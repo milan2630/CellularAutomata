@@ -1,6 +1,7 @@
 package display;
 
 import cellmodel.Configuration;
+import cellmodel.SaveException;
 import cellmodel.Simulation;
 import java.io.File;
 import java.util.ResourceBundle;
@@ -88,7 +89,7 @@ public class UserInterface extends Application {
         addButtonToHBox("StepCommand", event -> mySim.step(), controls);
         addButtonToHBox("ContinueCommand", event -> mySim.resetKeyFrame(1), controls);
         addButtonToHBox("RestartCommand", event -> onRestart(), controls);
-        addButtonToHBox("SaveCommand", event -> mySim.saveCurrent(), controls);
+        addButtonToHBox("SaveCommand", event -> saveCurrent(), controls);
         speedSetter = createSpeedSetter();
         controls.getChildren().add(speedSetter);
         addButtonToHBox("SetSpeedCommand", event -> mySim.resetKeyFrame(Integer.parseInt(speedSetter.getText())),controls);
@@ -98,6 +99,15 @@ public class UserInterface extends Application {
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
         UIstage.show();
+    }
+
+    private void saveCurrent() {
+        try{
+            mySim.saveCurrent();
+        }
+        catch (SaveException e){
+            createErrorDialog(e);
+        }
     }
 
     /**
@@ -209,15 +219,6 @@ public class UserInterface extends Application {
                 createErrorDialog(e);
             }
         }
-
-        /**
-         * Displays the error message when an invalid file is inputted
-         * Still needs to be implemented
-         */
-        private void displayErrorMessage() {
-            return;
-        }
-
 
         private void stopEverything(){
             System.exit(1);
