@@ -26,11 +26,7 @@ import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 
 /**
- * Class to control user input and change the simulation accordingly.
- * I believe this class is well-designed because it does not contain duplicate code
- * and the code is very readable and extensible. The createController() method specifically
- * is well-written because it is very well broken up and makes several calls to the powerful
- * addButtonToHBox() method.
+ * Class to control user input and change the simulation accordingly
  */
 public class UserInterface extends Application {
     private static final String RESOURCES = "resources";
