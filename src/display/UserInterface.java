@@ -211,7 +211,7 @@ public class UserInterface extends Application {
             dialog.setTitle(myResources.getString(titleProperty));
             final TextField textField = new TextField();
             final Button submitButton = makeButton(buttonProperty, event -> handleFileSubmit(textField.getText(), dialog));
-            dialog.setOnCloseRequest(t->stopEverything());
+            dialog.setOnCloseRequest(t->System.exit(1));
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
             final VBox layout = new VBox();
