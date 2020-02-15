@@ -2,6 +2,7 @@ package display.visualizer;
 
 import cellmodel.boardtype.Board;
 
+import display.UserInterface;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public abstract class Visualizer extends Application {
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
     public static final int TRIANGLE_CORNER_NUMBER = 3; //this is public because it is referenced elsewhere, but cannot be changed
+    private static final int HAVE_NOT_BEGUN = -1;
 
     private Scene myScene;
     private GridPane grid;
@@ -38,29 +40,33 @@ public abstract class Visualizer extends Application {
     private Map<Integer, Color> colorMap;
     private double caWidth;
     private double caHeight;
+    private int cycleCount;
+    private HistoryGraph myGraph;
 
     /**
      * Constructor, creates a scene, a stage, and then set the stage to that scene
      */
-    public Visualizer(String rulesClass, int totalNumStates) {
+    public Visualizer(String rulesClass, Map<Integer, String> names, int totalNumStates) {
         styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
         caHeight = Integer.parseInt(styleResources.getString("ScreenHeight"));
         caWidth = Integer.parseInt(styleResources.getString("ScreenWidth"));
-        makeNewGrid();
-        initHashmap(rulesClass, totalNumStates);
-        xPos = 0;
-        yPos = 0;
-        row = 0;
-        col = 0;
-        width = 0;
-        height = 0;
+        grid = new GridPane();
+        myGraph = new HistoryGraph(names);
+        myGraph.beginGraph(totalNumStates);
+        initMap(rulesClass, totalNumStates);
+        cycleCount = HAVE_NOT_BEGUN;
+        resetVariables();
         myStage = new Stage();
     }
 
-    private void initHashmap(String rulesClass, int totalNumStates) {
+    private void initMap(String rulesClass, int totalNumStates) {
         colorMap = new HashMap<>();
         for(int i = 0; i < totalNumStates; i++){
-            colorMap.put(i, getColorFromStyleFile(rulesClass+i, "NoColorError"));
+            try{
+                colorMap.put(i, getColorFromStyleFile(rulesClass+i, "NoColorError"));
+            } catch (NullPointerException e){
+                ErrorPopup errorScreen = new ErrorPopup(new NullPointerException(styleResources.getString("NullError")));
+            }
         }
     }
 
@@ -71,14 +77,11 @@ public abstract class Visualizer extends Application {
     @Override
     public void start(Stage primaryStage){
         myStage.setX(0);
+        myStage.setY(UserInterface.UI_GAP);
         myScene.setFill(Color.BLACK);
         myStage.setScene(myScene);
         myStage.show();
         myStage.setOnCloseRequest(t->stopEverything());
-    }
-
-    private void makeNewGrid(){
-        grid = new GridPane();
     }
 
     /**
@@ -86,21 +89,25 @@ public abstract class Visualizer extends Application {
      */
     public void closeWindow(){
         myStage.close();
+        myGraph.endGraph();
     }
 
     /**
      *  Change the display
      */
     public void displayBoard(Board board){
-        makeNewGrid();
-        width = getIndividualCellWidth(board);
+        grid = new GridPane();
+        width = getIndividualCellWidth(board.getNumCols(), caWidth);
         height = getIndividualCellHeight(board);
         grid.getChildren().addAll(getBoardView(board));
         myScene = new Scene(grid, caWidth, caHeight);
-        start(new Stage());
+        start(myStage);
+        myGraph.updateGraph(board.getStateHistory(), cycleCount, caWidth);
+        cycleCount++;
     }
 
     private void stopEverything(){
+        myGraph.endGraph();
         System.exit(1);
     }
 
@@ -153,8 +160,8 @@ public abstract class Visualizer extends Application {
         }
     }
 
-    private double getIndividualCellWidth(Board board){
-        return caWidth /board.getNumCols();
+    protected double getIndividualCellWidth(int boardDimension, double screenDimension){
+        return screenDimension / boardDimension;
     }
 
     private double getIndividualCellHeight(Board board){
@@ -164,7 +171,12 @@ public abstract class Visualizer extends Application {
     abstract protected void moveToNextRow();
     abstract protected void moveOver();
     abstract protected Double[] getCorners();
-    abstract protected void resetVariables();
+    protected void resetVariables(){
+        xPos = 0;
+        yPos = 0;
+        row = 0;
+        col = 0;
+    }
 
     /**
      * add dif to xPos
@@ -190,13 +202,6 @@ public abstract class Visualizer extends Application {
     }
 
     /**
-     * set yPos to 0
-     */
-    protected void resetYPos(){
-        yPos = 0;
-    }
-
-    /**
      * add dif to yPos
      * @param dif
      */
@@ -210,13 +215,6 @@ public abstract class Visualizer extends Application {
      */
     protected double getYPos(){
         return yPos;
-    }
-
-    /**
-     * reset row to 0
-     */
-    protected void resetRow(){
-        row = 0;
     }
 
     /**

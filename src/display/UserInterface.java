@@ -35,6 +35,7 @@ public class UserInterface extends Application {
     public static final String STYLE_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "StyleComponents";
     private static final String XML_PROPERTIES_FILENAME = DEFAULT_RESOURCE_PACKAGE + "XMLTagNames";
     private static final String STYLESHEET = "default.css";
+    public static final int UI_GAP = 100;
 
     private ResourceBundle myResources;
     private ResourceBundle styleResources;
@@ -66,8 +67,9 @@ public class UserInterface extends Application {
         UIroot = new Group();
         UIstage = primaryStage;
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-        UIstage.setX(screen.getWidth());
+        //UIstage.setX(screen.getWidth());
         createController();
+        UIstage.setOnCloseRequest(e->stopEverything());
     }
 
 
@@ -99,6 +101,8 @@ public class UserInterface extends Application {
         Scene controllerScreen = new Scene(UIroot, controls.getPrefWidth(), controls.getPrefHeight());
         controllerScreen.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
         UIstage.setScene(controllerScreen);
+        UIstage.setX(0);
+        UIstage.setY(0);
         UIstage.show();
     }
 
@@ -188,6 +192,7 @@ public class UserInterface extends Application {
     }
 
     private void stopEverything(){
+        mySim.endSim();
         System.exit(1);
     }
 
@@ -206,7 +211,7 @@ public class UserInterface extends Application {
             dialog.setTitle(myResources.getString(titleProperty));
             final TextField textField = new TextField();
             final Button submitButton = makeButton(buttonProperty, event -> handleFileSubmit(textField.getText(), dialog));
-            dialog.setOnCloseRequest(t->stopEverything());
+            dialog.setOnCloseRequest(t->System.exit(1));
             textField.setMinHeight(TextField.USE_PREF_SIZE);
 
             final VBox layout = new VBox();

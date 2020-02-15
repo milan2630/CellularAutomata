@@ -14,7 +14,6 @@ public class TriangleBoard extends Board {
    **/
   public TriangleBoard(int numCols, int numRows, Rules rules) {
     super(numCols, numRows, rules);
-    //percentOfNeighbors=Double.parseDouble(styleResource.getString("PercentOfNeighbors"));
   }
 
   /**
@@ -24,7 +23,6 @@ public class TriangleBoard extends Board {
    */
   @Override
   protected void addNeighborsToCells(Cell[][] cells) {
-    Cell[] rows;
     for (int row = 0; row < this.getNumRows(); row++) {
       for (int col = 0; col < this.getNumCols(); col++) {
         Cell cell = cells[row][col];
@@ -36,9 +34,6 @@ public class TriangleBoard extends Board {
           addNeighborRow(cells, cell, row - ONE_AWAY, col, ONE_AWAY, true);
         }
         addNeighborsSpecificToOrientation(cells, cell, row, col);
-        //checkTriangleTypeForGridType(cells, cell, row, col);
-        //toroidal for triangle currently not working :(
-        removeUnwantedNeighbors(cells);
       }
     }
   }
@@ -68,79 +63,5 @@ public class TriangleBoard extends Board {
     } else if (row % 2 != col % 2 && row + ONE_AWAY < this.getNumRows()) {
       addNeighborRow(cells, cell, row + ONE_AWAY, col, TWO_AWAY, false);
     }
-    //gridTypeAddNeighborsTriangle1(cells, row, col, cell);
-    //toroidal is currently not working :(
   }
-/*
-  private void checkTriangleTypeForGridType(Cell[][] cells, Cell cell, int row, int col) {
-    if (row % 2 == col % 2) {
-      gridTypeAddNeighborsTriangle1(cells, row, col, cell);
-    } else {
-      gridTypeAddNeighborsTriangle2(cells, row, col, cell);
-    }
-  }
-
-  private void gridTypeAddNeighborsTriangle1(Cell[][] cells, int row, int col, Cell cell) {
-    if (getMyNeighborhood().equals(getStyleResourceBundle().getString("ToroidalTag"))) {
-      if (col == 0) {
-        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 1, ONE_AWAY);
-        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - 2, ONE_AWAY);
-        cell.addNeighbor(cells[row - ONE_AWAY][getNumCols() - ONE_AWAY]);
-      }
-      if (row == 0) {
-        addMyRow(cells, cell, getNumRows() - ONE_AWAY, col, true);
-      }
-      if (col == getNumCols() - ONE_AWAY) {
-        addNeighborsOnOtherSide(cells, cell, row, 0, ONE_AWAY);
-        addNeighborsOnOtherSide(cells, cell, row, ONE_AWAY, ONE_AWAY);
-        cell.addNeighbor((cells[row - ONE_AWAY][0]));
-      }
-      if (row == getNumRows() - ONE_AWAY) {
-        addNeighborRow(cells, cell, 0, col, ONE_AWAY, true);
-      }
-      if (col == ONE_AWAY) {
-        cell.addNeighbor(cells[row][getNumCols() - ONE_AWAY]);
-        cell.addNeighbor(cells[row + ONE_AWAY][getNumCols() - ONE_AWAY]);
-        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, ONE_AWAY);
-      }
-      if (col == getNumCols() - TWO_AWAY) {
-        cell.addNeighbor(cells[row][0]);
-        cell.addNeighbor(cells[row + ONE_AWAY][0]);
-        addNeighborsOnOtherSide(cells, cell, row, 0, ONE_AWAY);
-      }
-    }
-  }
-  private void gridTypeAddNeighborsTriangle2(Cell[][] cells, int row, int col, Cell cell) {
-    if (getMyNeighborhood().equals(getStyleResourceBundle().getString("ToroidalTag"))) {
-      if (col == 0) {
-        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, -ONE_AWAY);
-        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - TWO_AWAY, -ONE_AWAY);
-        cell.addNeighbor(cells[row + ONE_AWAY][getNumCols() - ONE_AWAY]);
-      }
-      if (row == 0) {
-        addNeighborRow(cells, cell, getNumCols() - ONE_AWAY, col, ONE_AWAY, true);
-      }
-      if (col == getNumCols() - ONE_AWAY) {
-        addNeighborsOnOtherSide(cells, cell, row, 0, -ONE_AWAY);
-        addNeighborsOnOtherSide(cells, cell, row, ONE_AWAY, -ONE_AWAY);
-        cell.addNeighbor((cells[row + ONE_AWAY][0]));
-      }
-      if (row == getNumRows() - ONE_AWAY) {
-        addMyRow(cells, cell, 0, col, true);
-      }
-      if (col == 1) {
-        addNeighborsOnOtherSide(cells, cell, row, getNumCols() - ONE_AWAY, -ONE_AWAY);
-      }
-      if (col == getNumCols() - TWO_AWAY) {
-        addNeighborsOnOtherSide(cells, cell, row, 0, -ONE_AWAY);
-      }
-    }
-  }
-
-  private void addNeighborsOnOtherSide(Cell[][] cells,  Cell cell, int row, int col, int rowChange){
-    cell.addNeighbor(cells[row][col]);
-    cell.addNeighbor(cells[row + rowChange][col]);
-  }
-
- */
 }

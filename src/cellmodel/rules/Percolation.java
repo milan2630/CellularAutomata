@@ -2,6 +2,7 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Contains the logic for the Percolation CA
@@ -38,6 +39,19 @@ public class Percolation extends Rules {
     if(state == OPEN && cloneCell.numNeighborsWithGivenState(FILLED)>0){
       cell.changeStateAndView(FILLED);
     }
+  }
+
+  /**
+   * return the list of state names to be used in the graph
+   * @return
+   */
+  @Override
+  public Map<Integer, String> getStateNames() {
+    HashMap<Integer, String> stateNames = new HashMap<>();
+    stateNames.put(FILLED, "filled");
+    stateNames.put(OPEN, "open");
+    stateNames.put(BLOCKED, "blocked");
+    return stateNames;
   }
 
   @Override

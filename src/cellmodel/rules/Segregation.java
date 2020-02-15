@@ -4,6 +4,7 @@ import cellmodel.celltype.Cell;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Moves red and blue cells into white cells until the red and blue cells are surrounded by a given percentage of neighbors that are the same color as themselves
@@ -70,7 +71,18 @@ public class Segregation extends Rules {
       findAndMoveToOpenCell(cellNeighbor,  state);
     }
   }
-
+  /**
+   * return the list of state names to be used in the graph
+   * @return stateNames
+   */
+  @Override
+  public Map<Integer, String> getStateNames() {
+    HashMap<Integer, String> stateNames = new HashMap<>();
+    stateNames.put(RED, "red");
+    stateNames.put(OPEN, "open");
+    stateNames.put(BLUE, "blue");
+    return stateNames;
+  }
   @Override
   /**
    * Does this CA simulation count the corners as neighbors?

@@ -4,6 +4,7 @@ import cellmodel.celltype.Cell;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contains logic for Foraging Ants CA
@@ -129,6 +130,20 @@ public class ForagingAnts extends Rules {
 
   private void setPheromone(Cell cell, int newPheromone){
     cell.setMoves(newPheromone);
+  }
+
+  /**
+   * return the list of state names to be used in the graph
+   * @return stateNames
+   */
+  @Override
+  public Map<Integer, String> getStateNames() {
+    HashMap<Integer, String> stateNames = new HashMap<>();
+    stateNames.put(ANT, "ant");
+    stateNames.put(OPEN, "open");
+    stateNames.put(FOOD, "food");
+    stateNames.put(ANTHASFOOD, "ant with food");
+    return stateNames;
   }
 
   @Override
