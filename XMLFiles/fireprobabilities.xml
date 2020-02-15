@@ -10,8 +10,8 @@
     </Rules_Parameters>
   </Rules_Info>
   <Grid_Config>
-    <Screen_Height>26</Screen_Height>
-    <Screen_Width>26</Screen_Width>
+    <Screen_Height>60</Screen_Height>
+    <Screen_Width>60</Screen_Width>
     <Cells>
       <Probabilites>
         <Prob state="0">0.2</Prob>

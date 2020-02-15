@@ -2,6 +2,7 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Contains logic for Fire CA
@@ -43,7 +44,16 @@ public class Fire extends Rules {
       }
     }
 
-    private boolean treeBurns(){
+  @Override
+  public Map<Integer, String> getStateNames() {
+      HashMap<Integer, String> stateNames = new HashMap<>();
+      stateNames.put(BURNING, "burning");
+      stateNames.put(TREE, "tree");
+      stateNames.put(GROUND, "ground");
+    return stateNames;
+  }
+
+  private boolean treeBurns(){
       return Math.random()<=probCatch;
     }
 

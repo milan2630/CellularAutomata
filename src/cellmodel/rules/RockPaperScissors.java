@@ -2,6 +2,7 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Rules class containing logic for RockPaperScissors CA;
@@ -42,6 +43,19 @@ public class RockPaperScissors extends Rules {
     } else if (state == SCISSORS && cloneCell.numNeighborsWithGivenState(ROCK) > THRESHOLD) {
       cell.changeStateAndView(ROCK);
     }
+  }
+
+  /**
+   * return the list of state names to be used in the graph
+   * @return stateNames
+   */
+  @Override
+  public Map<Integer, String> getStateNames() {
+    HashMap<Integer, String> stateNames = new HashMap<>();
+    stateNames.put(ROCK, "rock");
+    stateNames.put(PAPER, "paper");
+    stateNames.put(SCISSORS, "scissors");
+    return stateNames;
   }
 
   @Override

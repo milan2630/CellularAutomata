@@ -177,8 +177,6 @@ public abstract class Board{
 
   public void randomizeCellState(int row, int col){
     int randState = (int)(Math.random()*myRules.getNumberOfPossibleStates());
-    System.out.println(row);
-    System.out.println(col);
     updateCell(randState, row, col);
   }
 
@@ -245,6 +243,9 @@ public abstract class Board{
   public String getRulesClass() {
     String[] classParts = myRules.getClass().toString().split("\\.");
     return classParts[classParts.length-1];
+  }
+  public Map<Integer, String> getNames(){
+    return myRules.getStateNames();
   }
 
   /**

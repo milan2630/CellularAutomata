@@ -2,6 +2,7 @@ package cellmodel.rules;
 
 import cellmodel.celltype.Cell;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Extends the Rules class, holds the rules for the Game of Life CA simulation
@@ -39,6 +40,18 @@ public class GameOfLife extends Rules {
     } else if (state == ALIVE && (numNeighborsAlive <= 1 || numNeighborsAlive > BIRTH_THRESHOLD)){
       cell.changeStateAndView(DEAD);
     }
+  }
+
+  /**
+   * return the list of state names to be used in the graph
+   * @return stateNames
+   */
+  @Override
+  public Map<Integer, String> getStateNames() {
+    HashMap<Integer, String> stateNames = new HashMap<>();
+    stateNames.put(ALIVE, "alive");
+    stateNames.put(DEAD, "dead");
+    return stateNames;
   }
 
   @Override

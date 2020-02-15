@@ -54,18 +54,15 @@ public class Simulation {
       styleResources = ResourceBundle.getBundle(STYLE_PROPERTIES_FILENAME);
       myBoard = board;
       if( Integer.parseInt(styleResources.getString("NumberOfCorners"))== Visualizer.TRIANGLE_CORNER_NUMBER) {
-        myVisualizer = new TriangleVisualizer(myBoard.getRulesClass(), numPossStates);
+        myVisualizer = new TriangleVisualizer(myBoard.getRulesClass(), myBoard.getNames(), numPossStates);
       } else {
-        myVisualizer = new SquareVisualizer(myBoard.getRulesClass(), numPossStates);
+        myVisualizer = new SquareVisualizer(myBoard.getRulesClass(), myBoard.getNames(), numPossStates);
       }
       myVisualizer.displayBoard(board);
       setFramesPerSec(DEFAULT_FRAMES_PER_SECOND);
       animation = new Timeline();
       animation.setCycleCount(Animation.INDEFINITE);
       setKeyFrame();
-      myGraph = new HistoryGraph();
-      cycleCount = 0;
-      myGraph.beginGraph(myBoard.getNumPossibleStates());
     }
 
     /**
@@ -101,9 +98,7 @@ public class Simulation {
      */
     public void step() {
       myBoard.updateBoard();
-      myGraph.updateGraph(myBoard.getStateHistory(), cycleCount);
       myVisualizer.displayBoard(myBoard);
-      cycleCount++;
     }
 
     /**

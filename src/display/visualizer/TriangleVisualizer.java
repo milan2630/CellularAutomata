@@ -1,5 +1,7 @@
 package display.visualizer;
 
+import java.util.Map;
+
 public class TriangleVisualizer extends Visualizer {
 
   private boolean pointUp;
@@ -7,8 +9,8 @@ public class TriangleVisualizer extends Visualizer {
    * Constructor, creates a scene, a stage, and then set the stage to that scene
    * specifically for creating triangles
    */
-  public TriangleVisualizer(String rulesClass, int numPossibleStates) {
-    super(rulesClass, numPossibleStates);
+  public TriangleVisualizer(String rulesClass, Map<Integer, String> names, int numPossibleStates) {
+    super(rulesClass, names, numPossibleStates);
     pointUp = false;
   }
 
@@ -65,17 +67,18 @@ public class TriangleVisualizer extends Visualizer {
         getXPos() + getWidth() / 2, getYPos() + getHeight() * getThirdTriangleYPoint(pointUp)
     };
   }
+  @Override
+  protected double getIndividualCellWidth(int boardDimension, double screenDimension){
+    return 2*screenDimension/boardDimension;
+  }
 
   /**
    * reset all of the variables that we need to reset
    */
   @Override
   protected void resetVariables(){
-    resetXPos();
-    resetCol();
-    resetRow();
+    super.resetVariables();
     pointUp = false;
-    resetYPos();
   }
 
   private int getThirdTriangleYPoint(boolean up){

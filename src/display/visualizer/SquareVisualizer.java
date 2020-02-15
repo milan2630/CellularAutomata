@@ -1,13 +1,15 @@
 package display.visualizer;
 
+import java.util.Map;
+
 public class SquareVisualizer extends Visualizer {
 
   /**
    * Constructor, creates a scene, a stage, and then set the stage to that scene
    * specifically for creating squares
    */
-  public SquareVisualizer(String rulesClass, int numPossibleStates) {
-    super(rulesClass, numPossibleStates);
+  public SquareVisualizer(String rulesClass, Map<Integer, String> names, int numPossibleStates) {
+    super(rulesClass, names, numPossibleStates);
   }
 
   /**
@@ -27,17 +29,6 @@ public class SquareVisualizer extends Visualizer {
   protected void moveOver(){
     incrementXPos(getWidth());
     incrementCol();
-  }
-
-  /**
-   * reset all of the variables that we need to reset
-   */
-  @Override
-  protected void resetVariables(){
-    resetXPos();
-    resetYPos();
-    resetCol();
-    resetRow();
   }
 
   /**

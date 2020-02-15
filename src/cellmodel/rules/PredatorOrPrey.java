@@ -4,6 +4,7 @@ import cellmodel.celltype.Cell;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Rules class containing logic for PredatorOrPrey CA;
@@ -122,6 +123,19 @@ public class PredatorOrPrey extends Rules {
 
   private void organismGone(Cell cell) {
     cell.changeStateAndView(WATER);
+  }
+
+  /**
+   * return the list of state names to be used in the graph
+   * @return
+   */
+  @Override
+  public Map<Integer, String> getStateNames() {
+    HashMap<Integer, String> stateNames = new HashMap<>();
+    stateNames.put(SHARK, "shark");
+    stateNames.put(FISH, "fish");
+    stateNames.put(WATER, "water");
+    return stateNames;
   }
 
   @Override

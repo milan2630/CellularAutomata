@@ -50,6 +50,8 @@ abstract public class Rules {
     return random;
   }
 
+  abstract public Map<Integer, String> getStateNames();
+
   /**
    * @return the parameters for rules
    */
