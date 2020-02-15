@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+  <Simulation_Type>GameOfLife</Simulation_Type>
+  <Title>gameoflifeblinker</Title>
+  <Setup_Type>CellList</Setup_Type>
+  <Author1>Dana Mulligan</Author1>
+  <Author2>Cayla Schuval</Author2>
+  <Rules_Info>
+    <Rules_Parameters>
+      <probCatch>.5</probCatch>
+    </Rules_Parameters>
+  </Rules_Info>
+  <Grid_Config>
+    <Screen_Height>6</Screen_Height>
+    <Screen_Width>6</Screen_Width>
+    <Cells>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 1 1 1 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+    </Cells>
+  </Grid_Config>
+</Root>

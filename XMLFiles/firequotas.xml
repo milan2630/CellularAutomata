@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+  <Simulation_Type>Fire</Simulation_Type>
+  <Title>firequotas</Title>
+  <Setup_Type>Quotas</Setup_Type>
+  <Author>Dana Mulligan</Author>
+  <Rules_Info>
+    <Rules_Parameters>
+      <probCatch>.66</probCatch>
+    </Rules_Parameters>
+  </Rules_Info>
+  <Grid_Config>
+    <Screen_Height>6</Screen_Height>
+    <Screen_Width>6</Screen_Width>
+    <Cells>
+      <Quotas>
+        <Quota state="0">4</Quota>
+        <Quota state="1">20</Quota>
+        <Quota state="2">12</Quota>
+      </Quotas>
+    </Cells>
+  </Grid_Config>
+</Root>

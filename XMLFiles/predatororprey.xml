@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+  <Simulation_Type>PredatorOrPrey</Simulation_Type>
+  <Title>predatororprey</Title>
+  <Setup_Type>CellList</Setup_Type>
+  <Author>Cayla Schuval</Author>
+  <Rules_Info>
+    <Rules_Parameters>
+      <fishBreed>4</fishBreed>
+      <sharkBreed>8</sharkBreed>
+      <sharkDie>5</sharkDie>
+    </Rules_Parameters>
+  </Rules_Info>
+  <Grid_Config>
+    <Screen_Height>6</Screen_Height>
+    <Screen_Width>6</Screen_Width>
+    <Cells>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 1 0 0 1 0</Row>
+      <Row>0 0 0 0 0 2</Row>
+      <Row>0 0 0 1 0 0</Row>
+      <Row>0 0 0 0 0 0</Row>
+      <Row>0 0 1 0 1 0</Row>
+    </Cells>
+  </Grid_Config>
+</Root>

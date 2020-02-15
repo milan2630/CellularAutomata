@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+  <Simulation_Type>Fire</Simulation_Type>
+  <Title>fireprobabilities</Title>
+  <Setup_Type>Probabilities</Setup_Type>
+  <Author>Dana Mulligan</Author>
+  <Rules_Info>
+    <Rules_Parameters>
+      <probCatch>.66</probCatch>
+    </Rules_Parameters>
+  </Rules_Info>
+  <Grid_Config>
+    <Screen_Height>26</Screen_Height>
+    <Screen_Width>26</Screen_Width>
+    <Cells>
+      <Probabilites>
+        <Prob state="0">0.2</Prob>
+        <Prob state="1">0.5</Prob>
+        <Prob state="2">0.3</Prob>
+      </Probabilites>
+    </Cells>
+  </Grid_Config>
+</Root>
